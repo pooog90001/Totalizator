@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="INFO">
+    <Appenders>
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss} [%t] %-5level %c{2} - %msg%n"/>
+        </Console>
+        <Routing name="File">
+            <Routes pattern="$${ctx:ROUTINGKEY}">
+                <Route key="$${ctx:ROUTINGKEY}">
+                    <RollingFile name="Rolling-default" fileName="logs/fresh.log"
+                                 filePattern="./logs/${date:yyyy-MM}/logs-%d{yyyy-MM-dd}-%i.log">
+                        <PatternLayout>
+                            <pattern>%d{ISO8601} [%t] %p %c{3} - %m%n</pattern>
+                        </PatternLayout>
+                        <Policies>
+                            <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                            <SizeBasedTriggeringPolicy size="50 KB"/>
+                        </Policies>
+                    </RollingFile>
+                </Route>
+            </Routes>
+        </Routing>
+    </Appenders>
+    <Loggers>
+        <Root level="info">
+            <AppenderRef ref="Console"/>
+            <AppenderRef ref="File"/>
+        </Root>
+    </Loggers>
+</Configuration>

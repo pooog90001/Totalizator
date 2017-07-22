@@ -34,7 +34,7 @@ public class ConnectionPool {
         usedConns = new ArrayBlockingQueue<>(config.getPoolCapacity());
     }
 
-    public static ConnectionPool getPool() {
+    public static ConnectionPool getInstance() {
         if (!isCreated.get()) {
             locker.lock();
             if (instance == null) {
@@ -48,7 +48,7 @@ public class ConnectionPool {
     }
 
 
-    private ProxyConnection getConnection() throws SQLException {
+    private ProxyConnection createConnection() throws SQLException {
         Connection connection = null;
         connection = DriverManager.getConnection(config.getUrl(), config.getProperties());
         LOGGER.log(Level.INFO, "Connection created");
@@ -59,7 +59,7 @@ public class ConnectionPool {
         ProxyConnection newConn;
         try {
             newConn = ((availableConns.size() + usedConns.size()) < config.getPoolCapacity()) ?
-                    getConnection() :
+                    createConnection() :
                     availableConns.take();
 
         } catch (SQLException e) {

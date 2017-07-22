@@ -1,16 +1,14 @@
 package by.epam.litvin.constant;
 
-public class GeneralConstant {
+final public class GeneralConstant {
+
+    private GeneralConstant() {}
 
     public static final String PATH_TO_PROPERTIES = "database";
     public static final String SALT = "totalizator";
+    public static final String DUPLICATE_UNIQUE_INDEX = "23000";
 
-    private GeneralConstant() {
-
-    }
-
-    public static class DataBase {
-
+    public static final class DataBase {
         public static final String DRIVER = "driver";
         public static final String URL = "url";
         public static final String USER = "user";

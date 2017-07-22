@@ -11,4 +11,14 @@
         <tag-class>by.epam.litvin.tag.FirstTag</tag-class>
         <body-content>empty</body-content>
     </tag>
+    <tag>
+        <name>profile-bar-tag</name>
+        <tag-class>by.epam.litvin.tag.BarProfileTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>profile-collapse-bar-tag</name>
+        <tag-class>by.epam.litvin.tag.CollapseBarProfileTag</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 </taglib>

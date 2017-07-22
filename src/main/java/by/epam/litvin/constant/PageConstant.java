@@ -1,7 +1,7 @@
 package by.epam.litvin.constant;
 
-public class Page {
-    private Page() {}
+final public class PageConstant {
+    private PageConstant() {}
 
     private static final String ROOT = "jsp/";
 

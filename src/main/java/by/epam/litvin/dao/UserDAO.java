@@ -1,29 +1,31 @@
 package by.epam.litvin.dao;
 
 import by.epam.litvin.bean.User;
-import by.epam.litvin.pool.ProxyConnection;
-import by.epam.litvin.constant.SQLCommand;
+import by.epam.litvin.constant.SQLRequestConstant;
+import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.exception.DAOException;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
+import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
+
+
 public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public List<User> findAll() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public User findEntityById(int id) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     public User findUser(User user) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(SQLCommand.CREATE_USER)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             ResultSet result = statement.executeQuery();
@@ -31,14 +33,14 @@ public class UserDAO extends AbstractDAO<User> {
 
             if (result.next()) {
                 foundUser = new User();
-                foundUser.setId(result.getInt("user_id"));
-                foundUser.setName(result.getString("user_name"));
-                foundUser.setEmail(result.getString("user_email"));
-                foundUser.setPassword(result.getString("user_password"));
-                foundUser.setConfirmUrl(result.getString("user_confirm_url"));
-                foundUser.setConfirm(result.getBoolean("user_is_confirm"));
-                foundUser.setBlocked(result.getBoolean("user_is_bloked"));
-                foundUser.setCash(result.getBigDecimal("user_cash"));
+                foundUser.setId(result.getInt(SQLFieldConstant.User.ID));
+                foundUser.setName(result.getString(SQLFieldConstant.User.NAME));
+                foundUser.setEmail(result.getString(SQLFieldConstant.User.EMAIL));
+                foundUser.setPassword(result.getString(SQLFieldConstant.User.PASSWORD));
+                foundUser.setConfirmUrl(result.getString(SQLFieldConstant.User.CONFIRM_URL));
+                foundUser.setConfirm(result.getBoolean(SQLFieldConstant.User.IS_CONFIRM));
+                foundUser.setBlocked(result.getBoolean(SQLFieldConstant.User.IS_BLOCKED));
+                foundUser.setCash(result.getBigDecimal(SQLFieldConstant.User.CASH));
             }
             return foundUser;
 
@@ -49,18 +51,18 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public boolean delete(int id) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean delete(User entity) {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public boolean create(User entity) throws DAOException {
 
-        try (PreparedStatement statement = connection.prepareStatement(SQLCommand.CREATE_USER)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getEmail());
             statement.setString(3, entity.getPassword());
@@ -69,7 +71,7 @@ public class UserDAO extends AbstractDAO<User> {
             return statement.executeUpdate() == 1;
 
         } catch (SQLException e) {
-            if ("23000".equals(e.getSQLState())) {
+            if (DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
                 return false;
             }
             throw new DAOException("Create user error ", e);
@@ -79,6 +81,6 @@ public class UserDAO extends AbstractDAO<User> {
 
     @Override
     public User update(User entity) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

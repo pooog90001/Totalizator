@@ -5,45 +5,50 @@ import by.epam.litvin.bean.User;
 import by.epam.litvin.dao.UserDAO;
 import by.epam.litvin.receiver.UserReceiver;
 import by.epam.litvin.util.StringEncoder;
-import by.epam.litvin.exception.ConnectionPoolException;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
-import by.epam.litvin.dao.TransactionHandler;
+import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.validator.UserValidator;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import static by.epam.litvin.constant.RequestNameConstant.*;
 
 public class UserReceiverImpl implements UserReceiver {
+    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void signUp(RequestContent requestContent) throws ReceiverException {
         UserValidator validator = new UserValidator();
-        String name = requestContent.getRequestParameters().get("name")[0];
-        String email = requestContent.getRequestParameters().get("email")[0];
-        String password = requestContent.getRequestParameters().get("password")[0];
-        String repeatPassword = requestContent.getRequestParameters().get("repeatPassword")[0];
+        String name = requestContent.getRequestParameters().get(NAME)[0];
+        String email = requestContent.getRequestParameters().get(EMAIL)[0];
+        String password = requestContent.getRequestParameters().get(PASSWORD)[0];
+        String repeatPassword = requestContent.getRequestParameters().get(REPEAT_PASSWORD)[0];
         String confirmURL;
         String dbPassword;
         boolean isValidData = true;
 
-        requestContent.getRequestAttributes().put("name", name);
-        requestContent.getRequestAttributes().put("email", email);
-        requestContent.getRequestAttributes().put("password", password);
-        requestContent.getRequestAttributes().put("repeatPassword", repeatPassword);
+        requestContent.getRequestAttributes().put(NAME, name);
+        requestContent.getRequestAttributes().put(EMAIL, email);
+        requestContent.getRequestAttributes().put(PASSWORD, password);
+        requestContent.getRequestAttributes().put(REPEAT_PASSWORD, repeatPassword);
 
         if (!validator.checkPassword(password)) {
-            requestContent.getRequestAttributes().put("wrongPassword", new Object());
+            requestContent.getRequestAttributes().put(WRONG_PASSWORD, new Object());
             isValidData = false;
 
         } if (!password.equals(repeatPassword)) {
-            requestContent.getRequestAttributes().put("wrongRepeatPassword", new Object());
+            requestContent.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, new Object());
             isValidData = false;
 
         } if (!validator.checkEmail(email)) {
-            requestContent.getRequestAttributes().put("wrongEmail", new Object());
+            requestContent.getRequestAttributes().put(WRONG_EMAIL, new Object());
             isValidData = false;
 
         } if (!validator.checkName(name)) {
-            requestContent.getRequestAttributes().put("wrongName", new Object());
+            requestContent.getRequestAttributes().put(WRONG_NAME, new Object());
             isValidData = false;
 
         } if (!isValidData) {
@@ -57,9 +62,9 @@ public class UserReceiverImpl implements UserReceiver {
         user.setEmail(email);
         user.setPassword(dbPassword);
         user.setConfirmUrl(confirmURL);
-
-        try (TransactionHandler handler = new TransactionHandler()) {
-
+        TransactionManager handler = null;
+        try {
+            handler = new TransactionManager();
             UserDAO userDao = new UserDAO();
             handler.beginTransaction(userDao);
 
@@ -67,9 +72,19 @@ public class UserReceiverImpl implements UserReceiver {
                 handler.commit();
 
             } else {
-                requestContent.getRequestAttributes().put("emailExists", new Object());
+                requestContent.getRequestAttributes().put(EMAIL_EXISTS, new Object());
             }
-        } catch (DAOException | ConnectionPoolException e) {
+
+            handler.endTransaction();
+
+        } catch (DAOException e) {
+            if (handler != null) {
+                try {
+                    handler.rollback();
+                } catch (DAOException e1) {
+                    LOGGER.log(Level.ERROR, "This exception never happens", e);
+                }
+            }
             throw new ReceiverException(e);
         }
 
@@ -77,24 +92,25 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void signIn(RequestContent requestContent) throws ReceiverException {
-        UserValidator validator = new UserValidator();
-        String email = requestContent.getRequestParameters().get("email")[0];
-        String password = requestContent.getRequestParameters().get("password")[0];
+        String email;
+        String password;
         String dbPassword;
+
+        try {
+            email = requestContent.getRequestParameters().get(EMAIL)[0];
+            password = requestContent.getRequestParameters().get(PASSWORD)[0];
+
+        } catch (NullPointerException e) {
+            throw new ReceiverException("Input parameters don't exist", e);
+        }
+
+        UserValidator validator = new UserValidator();
         boolean isValidData = true;
+        requestContent.getRequestAttributes().put(EMAIL, email);
+        requestContent.getRequestAttributes().put(PASSWORD, password);
 
-        requestContent.getRequestAttributes().put("email", email);
-        requestContent.getRequestAttributes().put("password", password);
-
-        if (!validator.checkPassword(password)) {
-            requestContent.getRequestAttributes().put("wrongPassword", new Object());
-            isValidData = false;
-
-        } if (!validator.checkEmail(email)) {
-            requestContent.getRequestAttributes().put("wrongEmail", new Object());
-            isValidData = false;
-
-        } if (!isValidData) {
+        if (!validator.checkPassword(password) || !validator.checkEmail(email)) {
+            requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
             return;
         }
 
@@ -102,20 +118,28 @@ public class UserReceiverImpl implements UserReceiver {
         User user = new User();
         user.setEmail(email);
         user.setPassword(dbPassword);
-
-        try (TransactionHandler handler = new TransactionHandler()) {
-
+        TransactionManager handler = null;
+        try {
+            handler = new TransactionManager();
             UserDAO userDao = new UserDAO();
             handler.beginTransaction(userDao);
             User foundUser = userDao.findUser(user);
 
             if (foundUser != null) {
                 handler.commit();
-
+                requestContent.getSessionAttributes().put(USER, foundUser);
             } else {
-                requestContent.getRequestAttributes().put("wrongData", new Object());
+                requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
             }
-        } catch (DAOException | ConnectionPoolException e) {
+            handler.endTransaction();
+        } catch (DAOException e) {
+            if (handler != null) {
+                try {
+                    handler.rollback();
+                } catch (DAOException e1) {
+                    LOGGER.log(Level.ERROR, "This exception never happens", e);
+                }
+            }
             throw new ReceiverException(e);
         }
 

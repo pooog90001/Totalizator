@@ -20,14 +20,14 @@ public class ContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        ConnectionPool.getPool();
+        ConnectionPool.getInstance();
     }
 
     @Override
     public void contextDestroyed(ServletContextEvent sce) {
 
         try {
-            ConnectionPool.getPool().destroyPool();
+            ConnectionPool.getInstance().destroyPool();
             Enumeration<Driver> drivers = DriverManager.getDrivers();
             while (drivers.hasMoreElements()) {
                 Driver driver = drivers.nextElement();

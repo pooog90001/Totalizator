@@ -18,7 +18,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
     public abstract List<T> findAll();
 
-    public abstract T findEntityById(int id);
+    public abstract T findEntityById(int id) throws DAOException;
 
     public abstract boolean delete(int id);
 

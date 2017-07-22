@@ -7,11 +7,15 @@ import by.epam.litvin.pool.ProxyConnection;
 
 import java.sql.SQLException;
 
-public class TransactionHandler implements AutoCloseable {
+public class TransactionManager {
     private ProxyConnection connection;
 
-    public TransactionHandler() throws ConnectionPoolException {
-        connection = ConnectionPool.getPool().retrieveConnection();
+    public TransactionManager() throws DAOException {
+        try {
+            connection = ConnectionPool.getInstance().retrieveConnection();
+        } catch (ConnectionPoolException e) {
+            throw new DAOException(e);
+        }
     }
 
     public void beginTransaction(AbstractDAO dao, AbstractDAO ... daos) throws DAOException {
@@ -33,7 +37,7 @@ public class TransactionHandler implements AutoCloseable {
         } catch (SQLException e) {
             throw new DAOException("Set auto commit 'true' error", e);
         }
-        ConnectionPool.getPool().putbackConnection(connection);
+        ConnectionPool.getInstance().putbackConnection(connection);
     }
 
     public void commit() throws DAOException {
@@ -52,9 +56,4 @@ public class TransactionHandler implements AutoCloseable {
         }
     }
 
-    @Override
-    public void close() throws DAOException {
-        rollback();
-        endTransaction();
-    }
 }

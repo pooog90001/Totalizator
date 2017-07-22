@@ -6,7 +6,7 @@ import org.junit.Test;
 public class ConnectionPoolTest {
     @Test
     public void getPool() throws ConnectionPoolException {
-      ProxyConnection connection = ConnectionPool.getPool().retrieveConnection();
+      ProxyConnection connection = ConnectionPool.getInstance().retrieveConnection();
     }
 
     @Test

@@ -13,7 +13,9 @@ public class User extends Entity {
      private boolean isConfirm;
      private String confirmUrl;
      private boolean isBlocked;
+     private String userBlockedText;
      private BigDecimal cash;
+     private String avatarURL;
 
     public User() {
     }
@@ -90,6 +92,22 @@ public class User extends Entity {
         this.confirmUrl = confirmUrl;
     }
 
+    public String getAvatarURL() {
+        return avatarURL;
+    }
+
+    public void setAvatarURL(String avatarURL) {
+        this.avatarURL = avatarURL;
+    }
+
+    public String getUserBlockedText() {
+        return userBlockedText;
+    }
+
+    public void setUserBlockedText(String userBlockedText) {
+        this.userBlockedText = userBlockedText;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -97,31 +115,18 @@ public class User extends Entity {
 
         User user = (User) o;
 
-        if (id != user.id) {
+        if (id != user.id) return false;
+        if (isConfirm != user.isConfirm) return false;
+        if (isBlocked != user.isBlocked) return false;
+        if (name != null ? !name.equals(user.name) : user.name != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (type != user.type) return false;
+        if (confirmUrl != null ? !confirmUrl.equals(user.confirmUrl) : user.confirmUrl != null) return false;
+        if (userBlockedText != null ? !userBlockedText.equals(user.userBlockedText) : user.userBlockedText != null)
             return false;
-        }
-        if (isConfirm != user.isConfirm) {
-            return false;
-        }
-        if (isBlocked != user.isBlocked) {
-            return false;
-        }
-        if (name != null ? !name.equals(user.name) : user.name != null) {
-            return false;
-        }
-        if (email != null ? !email.equals(user.email) : user.email != null) {
-            return false;
-        }
-        if (password != null ? !password.equals(user.password) : user.password != null) {
-            return false;
-        }
-        if (type != user.type) {
-            return false;
-        }
-        if (confirmUrl != null ? !confirmUrl.equals(user.confirmUrl) : user.confirmUrl != null) {
-            return false;
-        }
-        return cash != null ? cash.equals(user.cash) : user.cash == null;
+        if (cash != null ? !cash.equals(user.cash) : user.cash != null) return false;
+        return avatarURL != null ? avatarURL.equals(user.avatarURL) : user.avatarURL == null;
     }
 
     @Override
@@ -134,23 +139,10 @@ public class User extends Entity {
         result = 31 * result + (isConfirm ? 1 : 0);
         result = 31 * result + (confirmUrl != null ? confirmUrl.hashCode() : 0);
         result = 31 * result + (isBlocked ? 1 : 0);
+        result = 31 * result + (userBlockedText != null ? userBlockedText.hashCode() : 0);
         result = 31 * result + (cash != null ? cash.hashCode() : 0);
+        result = 31 * result + (avatarURL != null ? avatarURL.hashCode() : 0);
         return result;
     }
 
-    @Override
-    public String
-    toString() {
-        return "\nUser {" +
-                "\n\tid=" + id +
-                "\n\tname='" + name + "\'" +
-                "\n\temail='" + email + "\'" +
-                "\n\tpassword='" + password + "\'" +
-                "\n\ttype=" + type +
-                "\n\tisConfirm=" + isConfirm +
-                "\n\tconfirmUrl='" + confirmUrl + "\'" +
-                "\n\tisBlocked=" + isBlocked +
-                "\n\tcash=" + cash +
-                '}';
-    }
 }

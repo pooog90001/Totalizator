@@ -1,53 +1,48 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vlad_
-  Date: 7/5/2017
-  Time: 9:36 PM
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8"%>
-<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="partial/header.jsp" %>
+<script src="${pageContext.request.contextPath}/js/sign_in.js"></script>
 
-<fmt:setLocale value="ru" scope="session" />
-<fmt:setBundle basename="text" var="rb" />
-<html>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
-<head>
-    <title>$Title$</title>
-</head>
+<fmt:message key="btn.Register" bundle="${rb}" var="register"/>
+<fmt:message key="lbl.SignIn" bundle="${rb}" var="signIn"/>
+<fmt:message key="lbl.Password" bundle="${rb}" var="password"/>
+<fmt:message key="lbl.Email" bundle="${rb}" var="email"/>
+<fmt:message key="warn.wrongEmailorPassword" bundle="${rb}" var="wrongData"/>
+
 <body>
+<div class="w3-row-padding">
+    <div class="w3-third">
+        <div class="w3-container"></div>
+    </div>
+    <div class="w3-third">
+        <h1>${signIn}</h1>
 
-<h2><fmt:message key="lbl.SignIn" bundle="${rb}"/></h2>
+        <form class="w3-container w3-card-2" name="form" action="/generalController" method="post">
+            <input type="hidden" name="command" value="Sign_in">
 
-<form name="form" action="/generalController" method="post">
-    <input type="hidden" name="command" value="Sign_in">
+            <p>${email}:</p>
+            <input class="w3-input w3-border" type="email" id="email" name="email">
+            <br>
 
-    <p><fmt:message key="lbl.Email" bundle="${rb}"/>:</p>
-    <input type="email" name="email" value="${requestScope.get('email')}">
-    <c:if test="${requestScope.containsKey('wrongEmail')}">
-        <p>Bad email</p>
-    </c:if>
+            <p>${password}:</p>
+            <input class="w3-input w3-border" type="password" id="password" name="password">
 
-    <p><fmt:message key="lbl.Password" bundle="${rb}"/>:</p>
-    <input type="password" name="password" value="${requestScope.get('password')}" >
-    <c:if test="${requestScope.containsKey('wrongPassword')}">
-        <p>Bad password</p>
-    </c:if>
+            <c:if test="${requestScope.containsKey('wrongData')}">
+                <span>${wrongData}</span>
+            </c:if>
 
-    <c:if test="${requestScope.containsKey('wrongData')}">
-        <p>this email already exists</p>
-    </c:if>
-
-    <input type="submit" value="<fmt:message key="lbl.SignIn" bundle="${rb}"/>">
-</form>
-
-<script>
-    var app = angular.module('app', []);
-    app.controller('validateCtrl', function($scope) {
-        // $scope.email = 'john.doe@gmail.com';
-    });
-</script>
+            <p>
+                <input class="w3-button w3-black" type="submit" id="submit" value="${signIn}">
+                <a href="#" class="w3-margin-left w3-small w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-black" >
+                    Забыли пароль?
+                </a>
+            </p>
+        </form>
+    </div>
+    <div class="w3-third">
+        <div class="w3-container"></div>
+    </div>
+</div>
 
 </body>
-</html>
+
+<%@include file="partial/footer.jsp" %>

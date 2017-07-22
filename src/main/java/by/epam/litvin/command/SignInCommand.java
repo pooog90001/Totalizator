@@ -1,6 +1,6 @@
 package by.epam.litvin.command;
 
-import by.epam.litvin.constant.Page;
+import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.Receiver;
@@ -28,21 +28,19 @@ public class SignInCommand extends AbstractCommand {
 
             Set<String> keys = requestContent.getRequestAttributes().keySet();
 
-            if (keys.contains("wrongEmail") ||
-                    keys.contains("wrongPassword") ||
-                    keys.contains("wrongData")) {
+            if (keys.contains("wrongData")) {
                 router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(Page.SIGN_IN);
+                router.setRoutePath(PageConstant.SIGN_IN);
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(Page.MAIN);
+                router.setRoutePath(PageConstant.MAIN);
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(Page.ERROR_500);
+            router.setRoutePath(PageConstant.ERROR_500);
         }
 
         return router;

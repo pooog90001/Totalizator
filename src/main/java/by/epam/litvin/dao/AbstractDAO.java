@@ -16,7 +16,7 @@ public abstract class AbstractDAO<T extends Entity> {
 
     protected ProxyConnection connection;
 
-    public abstract List<T> findAll();
+    public abstract List<T> findAll() throws DAOException;
 
     public abstract T findEntityById(int id) throws DAOException;
 

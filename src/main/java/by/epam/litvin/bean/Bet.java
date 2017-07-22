@@ -2,7 +2,7 @@ package by.epam.litvin.bean;
 
 import java.math.BigDecimal;
 
-public class Bet {
+public class Bet extends Entity {
 
     public Bet() {}
 

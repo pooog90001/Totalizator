@@ -2,10 +2,8 @@ package by.epam.litvin.bean;
 
 import java.util.Date;
 
-/**
- * Created by max on 22.07.17.
- */
-public class Comment {
+
+public class Comment extends Entity {
 
     private Integer id;
     private String text;

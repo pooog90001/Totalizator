@@ -1,9 +1,7 @@
 package by.epam.litvin.bean;
 
-/**
- * Created by max on 22.07.17.
- */
-public class CompetitionType {
+
+public class CompetitionType extends Entity {
 
     private Integer id;
     private String type;

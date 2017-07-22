@@ -3,10 +3,8 @@ package by.epam.litvin.bean;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by max on 22.07.17.
- */
-public class Competition {
+
+public class Competition extends Entity {
 
     private Integer id;
     private String name;

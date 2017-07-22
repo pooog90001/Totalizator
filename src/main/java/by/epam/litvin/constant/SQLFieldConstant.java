@@ -16,5 +16,12 @@ final public class SQLFieldConstant {
         public static final String CASH = USER_ + "cash";
     }
 
+    public final class Command {
+        private static final String COMMAND = "command_";
+        public static final String ID = COMMAND + "id";
+        public static final String NAME = COMMAND + "name";
+        public static final String KIND_OF_SPORT_ID = "kind_of_sport_id";
+    }
+
 }
 

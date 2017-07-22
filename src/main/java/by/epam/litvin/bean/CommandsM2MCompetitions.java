@@ -1,9 +1,7 @@
 package by.epam.litvin.bean;
 
-/**
- * Created by max on 22.07.17.
- */
-public class CommandsM2MCompetitions {
+
+public class CommandsM2MCompetitions extends Entity {
 
     private Integer id;
     private Integer commandId;

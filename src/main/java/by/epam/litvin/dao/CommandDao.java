@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
+
 /**
  * Created by max on 22.07.17.
  */
@@ -42,27 +44,78 @@ public class CommandDao extends AbstractDAO<Command> {
 
     @Override
     public Command findEntityById(int id) throws DAOException {
-        return null;
+        Command command = null;
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_COMMAND_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                command = new Command();
+                command.setId(resultSet.getInt(SQLFieldConstant.Command.ID));
+                command.setName(resultSet.getString(SQLFieldConstant.Command.NAME));
+                command.setKindOfSport(resultSet.getString(SQLFieldConstant.Command.KIND_OF_SPORT_ID));
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Find command by id ERROR!", e);
+        }
+        return command;
     }
 
     @Override
-    public boolean delete(int id) {
-        return false;
+    public void delete(int id) throws DAOException {
+        try(PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.DELETE_COMMAND_BY_ID)) {
+            statement.setInt(1, id);
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            throw new DAOException("DELETE command ERROR");
+        }
     }
 
     @Override
-    public boolean delete(Command entity) {
-        return false;
+    public void delete(Command entity) throws DAOException {
+        try(PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.DELETE_COMMAND_BY_ID)) {
+            statement.setInt(1, entity.getId());
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            throw new DAOException("DELETE command ERROR");
+        }
     }
 
     @Override
     public boolean create(Command entity) throws DAOException {
-        return false;
+        try(PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.INSERT_COMMAND)) {
+            statement.setInt(1, entity.getId());
+            statement.setString(2, entity.getName());
+            statement.setString(3, entity.getKindOfSport());
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            if (DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
+                return false;
+            }
+            throw new DAOException("INSERT command ERROR");
+        }
+        return true;
     }
 
     @Override
-    public Command update(Command entity) {
-        return null;
+    public boolean update(Command entity) throws DAOException {
+        try(PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.UPDATE_COMMAND_BY_ID)) {
+            statement.setInt(1, entity.getId());
+            statement.setString(2, entity.getName());
+            statement.setString(3, entity.getKindOfSport());
+            statement.executeQuery();
+
+        } catch (SQLException e) {
+            if (DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
+                return false;
+            }
+            throw new DAOException("UPDATE command ERROR");
+        }
+        return true;
     }
 
     @Override

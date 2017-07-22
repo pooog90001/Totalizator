@@ -52,9 +52,16 @@ final public class SQLRequestConstant {
      * Изменение команды по ID
      */
     public static final String UPDATE_COMMAND_BY_ID =
-                    "UPDATE command" +
+                    "UPDATE command " +
                     "SET command_name = ?, kind_of_sport_id = ? " +
                     "WHERE command_id = ?;";
+
+    /*
+     * Добавление новой команды
+     */
+    public static final String INSERT_COMMAND =
+                    "INSERT INTO command (name, kind_of_sport_id) " +
+                    "VALUES (?, ?);";
 
 
 

@@ -50,12 +50,12 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    public boolean delete(int id) {
+    public void delete(int id) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean delete(User entity) {
+    public void delete(User entity) {
         throw new UnsupportedOperationException();
     }
 
@@ -80,7 +80,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    public User update(User entity) {
+    public boolean update(User entity) {
         throw new UnsupportedOperationException();
     }
 }

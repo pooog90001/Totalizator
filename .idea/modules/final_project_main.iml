@@ -12,7 +12,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_8" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/../../build/classes/main" />
     <exclude-output />
     <content url="file://$MODULE_DIR$/../../src/main">
@@ -37,6 +37,5 @@
     <orderEntry type="library" name="Gradle: commons-io:commons-io:2.2" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet:servlet-api:2.5" level="project" />
     <orderEntry type="library" name="Gradle: javax.servlet.jsp:jsp-api:2.1" level="project" />
-    <orderEntry type="library" name="jquery" level="application" />
   </component>
 </module>

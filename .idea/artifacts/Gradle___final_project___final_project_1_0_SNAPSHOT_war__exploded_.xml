@@ -28,11 +28,11 @@
           <element id="library" level="project" name="Gradle: mysql:mysql-connector-java:5.1.6" />
           <element id="library" level="project" name="Gradle: com.sun.mail:javax.mail:1.5.5" />
           <element id="library" level="project" name="Gradle: javax.activation:activation:1.1.1" />
+          <element id="library" level="project" name="Gradle: com.google.code.gson:gson:2.5" />
           <element id="library" level="project" name="Gradle: javax.servlet.jsp.jstl:jstl-api:1.2" />
           <element id="library" level="project" name="Gradle: commons-io:commons-io:2.2" />
           <element id="library" level="project" name="Gradle: javax.servlet:servlet-api:2.5" />
           <element id="library" level="project" name="Gradle: javax.servlet.jsp:jsp-api:2.1" />
-          <element id="file-copy" path="$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.google.code.gson/gson/2.5/686c608d1805b6d4d425ec4459e88164ffc85870/gson-2.5.jar" />
         </element>
       </element>
     </root>

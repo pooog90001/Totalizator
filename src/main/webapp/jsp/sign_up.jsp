@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: vlad_
-  Date: 7/12/2017
-  Time: 7:24 PM
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="partial/header.jsp" %>
 <script src="${pageContext.request.contextPath}/js/sign_up.js"></script>

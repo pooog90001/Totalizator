@@ -13,7 +13,7 @@ public class User extends Entity {
      private boolean isConfirm;
      private String confirmUrl;
      private boolean isBlocked;
-     private String userBlockedText;
+     private String blockedText;
      private BigDecimal cash;
      private String avatarURL;
 
@@ -100,12 +100,12 @@ public class User extends Entity {
         this.avatarURL = avatarURL;
     }
 
-    public String getUserBlockedText() {
-        return userBlockedText;
+    public String getBlockedText() {
+        return blockedText;
     }
 
-    public void setUserBlockedText(String userBlockedText) {
-        this.userBlockedText = userBlockedText;
+    public void setBlockedText(String blockedText) {
+        this.blockedText = blockedText;
     }
 
     @Override
@@ -123,7 +123,7 @@ public class User extends Entity {
         if (password != null ? !password.equals(user.password) : user.password != null) return false;
         if (type != user.type) return false;
         if (confirmUrl != null ? !confirmUrl.equals(user.confirmUrl) : user.confirmUrl != null) return false;
-        if (userBlockedText != null ? !userBlockedText.equals(user.userBlockedText) : user.userBlockedText != null)
+        if (blockedText != null ? !blockedText.equals(user.blockedText) : user.blockedText != null)
             return false;
         if (cash != null ? !cash.equals(user.cash) : user.cash != null) return false;
         return avatarURL != null ? avatarURL.equals(user.avatarURL) : user.avatarURL == null;
@@ -139,7 +139,7 @@ public class User extends Entity {
         result = 31 * result + (isConfirm ? 1 : 0);
         result = 31 * result + (confirmUrl != null ? confirmUrl.hashCode() : 0);
         result = 31 * result + (isBlocked ? 1 : 0);
-        result = 31 * result + (userBlockedText != null ? userBlockedText.hashCode() : 0);
+        result = 31 * result + (blockedText != null ? blockedText.hashCode() : 0);
         result = 31 * result + (cash != null ? cash.hashCode() : 0);
         result = 31 * result + (avatarURL != null ? avatarURL.hashCode() : 0);
         return result;

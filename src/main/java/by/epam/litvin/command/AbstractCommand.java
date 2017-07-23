@@ -6,7 +6,7 @@ import by.epam.litvin.receiver.Receiver;
 import by.epam.litvin.type.CommandType;
 import by.epam.litvin.util.Router;
 
-public  abstract class AbstractCommand {
+public abstract class AbstractCommand {
     protected Receiver receiver;
 
     public AbstractCommand(Receiver receiver) {

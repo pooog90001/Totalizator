@@ -2,6 +2,7 @@ package by.epam.litvin.receiver.impl;
 
 
 import by.epam.litvin.bean.User;
+import by.epam.litvin.constant.RequestNameConstant;
 import by.epam.litvin.dao.UserDAO;
 import by.epam.litvin.receiver.UserReceiver;
 import by.epam.litvin.util.StringEncoder;
@@ -13,6 +14,9 @@ import by.epam.litvin.validator.UserValidator;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+
+import java.math.BigDecimal;
 
 import static by.epam.litvin.constant.RequestNameConstant.*;
 
@@ -124,9 +128,9 @@ public class UserReceiverImpl implements UserReceiver {
             UserDAO userDao = new UserDAO();
             handler.beginTransaction(userDao);
             User foundUser = userDao.findUser(user);
+            handler.commit();
 
             if (foundUser != null) {
-                handler.commit();
                 requestContent.getSessionAttributes().put(USER, foundUser);
             } else {
                 requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
@@ -136,6 +140,8 @@ public class UserReceiverImpl implements UserReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
+
                 } catch (DAOException e1) {
                     LOGGER.log(Level.ERROR, "This exception never happens", e);
                 }
@@ -147,6 +153,6 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void signOut(RequestContent requestContent) {
-
+       requestContent.getSessionAttributes().remove(RequestNameConstant.USER);
     }
 }

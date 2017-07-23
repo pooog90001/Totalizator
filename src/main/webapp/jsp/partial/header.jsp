@@ -2,8 +2,13 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="ru" scope="session"/>
+
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
 <fmt:setBundle basename="text" var="rb"/>
+<c:set var="user" value="${sessionScope.get('user')}"/>
+
+
+
 
 <html>
 <head>
@@ -25,44 +30,52 @@
                href="javascript:void(0);" onclick="openNav()">
                 <i class="fa fa-bars"></i>
             </a>
-             <div class="w3-bar-item w3-hide-small w3-right w3-padding-16 w3-small">
-                 <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
-                     <fmt:message key="lbl.SignUp" bundle="${rb}"/>
-                 </a>
-                 <fmt:message key="lbl.or" bundle="${rb}"/>
-                 <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow">
-                     <fmt:message key="lbl.SignIn" bundle="${rb}"/>
-                 </a>
+            <c:choose>
+                <%--Present if user signed--%>
+                <c:when test="${user != null}">
 
-             </div>
-            <%--<div class="w3-bar-item w3-dropdown-hover w3-right w3-hide-small" style="padding: 0">
-                <a href="#" class="w3-button w3-padding-small">
-                    <div class="w3-row" style="max-width: 200px">
-                        <div class="w3-col s8">
-                            <div class="w3-row w3-right-align w3-small">
-                                <div class="w3-col s12">
-                                    <p class="w3-padding-small"> Vasuan12345sf2 <- name</p>
-                                </div>
-                                <div class="w3-col s12">
-                                    <p class="w3-padding-small">1012$ <- cash</p>
+                    <div class="w3-bar-item w3-dropdown-hover w3-right w3-hide-small" style="padding: 0">
+                    <a href="#" class="w3-button w3-padding-small">
+                        <div class="w3-row" style="max-width: 200px">
+                            <div class="w3-col s8">
+                                <div class="w3-row w3-right-align w3-small">
+                                    <div class="w3-col s12">
+                                        <p class="w3-padding-small"> ${user.name} <- name</p>
+                                    </div>
+                                    <div class="w3-col s12">
+                                        <p class="w3-padding-small">${user.cash.toEngineeringString()}$ <- cash</p>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="w3-col s4">
+                                <img style="width:60px" class="w3-circle" src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
+                            </div>
                         </div>
-                        <div class="w3-col s4">
-                            <img style="width:60px" class="w3-circle"
-                                 src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
-                        </div>
-
+                    </a>
+                    <div class="w3-dropdown-content w3-bar-block w3-border">
+                        <c:if test="${!user.type.toString().equals('USER')}">
+                            <a href="#" class="w3-bar-item w3-button">Admin panel</a>
+                        </c:if>
+                        <a href="#" class="w3-bar-item w3-button">Profile </a>
+                        <a href="#" class="w3-bar-item w3-button">Settings</a>
+                        <a href="#" class="w3-bar-item w3-button">Sign out</a>
                     </div>
-
-                </a>
-                <div class="w3-dropdown-content w3-bar-block w3-border">
-                    <a href="#" class="w3-bar-item w3-button">Profile </a>
-                    <a href="#" class="w3-bar-item w3-button">Settings</a>
-                    <a href="#" class="w3-bar-item w3-button">Sign out</a>
                 </div>
-            </div>--%>
-            <ctg:profile-bar-tag/>
+                </c:when>
+                <%--Present if user not signed--%>
+                <c:otherwise>
+                    <div class="w3-bar-item w3-hide-small w3-right w3-padding-16 w3-small">
+                        <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
+                            <fmt:message key="lbl.SignUp" bundle="${rb}"/>
+                        </a>
+                        <fmt:message key="lbl.or" bundle="${rb}"/>
+                        <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow">
+                            <fmt:message key="lbl.SignIn" bundle="${rb}"/>
+                        </a>
+                    </div>
+                </c:otherwise>
+            </c:choose>
+
             <a href="#"
                class="w3-bar-item w3-button w3-padding w3-theme-d4 w3-xlarge w3-hover-none w3-hover-text-yellow">
                 <fmt:message key="lbl.title" bundle="${rb}"/>
@@ -90,11 +103,11 @@
                 </a>
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    <%--<i class="fa fa-globe"></i>--%>Правила
+                    Правила
                 </a>
                 <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    <%--<i class="fa fa-globe"></i>--%>Помощь
+                    Помощь
                 </a>
             </div>
         </div>
@@ -103,40 +116,45 @@
     <!-- Navbar on small screens -->
     <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
         <a href="#" class="w3-bar-item w3-button w3-padding">
-
             <div class="w3-row w3-padding">
-
-                <%-- <div class="w3-container w3-cell">
-                     <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow w3-center">
-                         <p class="w3-center"><fmt:message key="lbl.SignIn" bundle="${rb}"/></p>
-                     </a>
-                 </div>
-
-                 <div class="w3-container w3-cell">
-                     <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
-                         <p class="w3-center"><fmt:message key="lbl.SignUp" bundle="${rb}"/></p>
-                     </a>
-                 </div>--%>
-                <div class="w3-col s8">
-                    <div class="w3-row w3-right-align">
-                        <div class="w3-col s12">
-                            <div class="w3-container">
-                                <p class="w3-padding-small"> Vasuan <- name</p>
+                <c:choose>
+                    <%--Present if user signed--%>
+                    <c:when test="${user != null}">
+                        <div class="w3-col s8">
+                            <div class="w3-row w3-right-align">
+                                <div class="w3-col s12">
+                                    <div class="w3-container">
+                                        <p class="w3-padding-small"> ${user.name} <- name</p>
+                                    </div>
+                                </div>
+                                <div class="w3-col s12">
+                                    <div class="w3-container">
+                                        <p class="w3-padding-small">${user.cash}$ <- cash</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="w3-col s12">
-                            <div class="w3-container">
-                                <p class="w3-padding-small">10$ <- cash</p>
-                            </div>
+                        <div class="w3-col s4">
+                            <img style="width:80px" class="w3-circle"
+                                 src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
                         </div>
-                    </div>
-                </div>
-                <div class="w3-col s4">
-                    <img style="width:80px" class="w3-circle"
-                         src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
-                </div>
+                    </c:when>
+                    <%--Present if user not signed--%>
+                    <c:otherwise>
 
+                        <div class="w3-container w3-cell">
+                            <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow w3-center">
+                                <p class="w3-center"><fmt:message key="lbl.SignIn" bundle="${rb}"/></p>
+                            </a>
+                        </div>
 
+                        <div class="w3-container w3-cell">
+                            <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
+                                <p class="w3-center"><fmt:message key="lbl.SignUp" bundle="${rb}"/></p>
+                            </a>
+                        </div>
+                    </c:otherwise>
+                </c:choose>
             </div>
         </a>
         <a href="#" class="w3-bar-item w3-button w3-padding">Новости</a>

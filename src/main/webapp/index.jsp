@@ -5,7 +5,7 @@
     <title>$Title$</title>
   </head>
   <body>
-  <jsp:forward page="/jsp/main.jsp"/>
+  <jsp:forward page="/jsp/createkindofsport.jsp"/>
     <%--<jsp:param name="command" value="Sign_in"/>--%>
   <%--</jsp:forward>--%>
 

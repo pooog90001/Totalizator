@@ -8,7 +8,8 @@ final public class SQLRequestConstant {
                     "VALUES (?, ?, ?, ?);";
 
     public static final String  FIND_USER =
-                    "SELECT user_name , user_email, user_password, user_confirm_url, user_is_blocked , user_is_confirm, user_cash " +
+                    "SELECT user_id, user_name , user_email, user_password, user_avatar_url, user_type, " +
+                            "user_confirm_url, user_is_blocked, user_blocked_text, user_is_confirm, user_cash " +
                     "FROM user " +
                     "WHERE user_email = ? AND user_password = ?;";
 

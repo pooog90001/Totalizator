@@ -19,3 +19,19 @@ function openNav() {
         x.className = x.className.replace(" w3-show", "");
     }
 }
+
+closeSidebar();
+function openSidebar() {
+    document.getElementById("mySidebar").style.display = "block";
+}
+function closeSidebar() {
+    document.getElementById("mySidebar").style.display = "none";
+}
+
+document.getElementById('deleteButton').onclick = function (e) {
+    document.getElementById('modalBeforeDelete').style.display = 'block';
+};
+
+document.getElementById('closeModalBeforeDelete').onclick = function (e) {
+    document.getElementById('modalBeforeDelete').style.display='none';
+};

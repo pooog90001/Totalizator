@@ -14,9 +14,7 @@ import java.util.List;
 
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
 
-/**
- * Created by max on 22.07.17.
- */
+
 public class CommandDao extends AbstractDAO<Command> {
 
     @Override

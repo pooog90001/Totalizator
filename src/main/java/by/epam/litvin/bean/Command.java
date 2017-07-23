@@ -1,6 +1,5 @@
 package by.epam.litvin.bean;
 
-
 public class Command extends Entity {
 
     private Integer id;

@@ -14,6 +14,8 @@ final public class SQLFieldConstant {
         public static final String IS_CONFIRM = USER_ + "is_confirm";
         public static final String IS_BLOCKED = USER_ + "is_blocked";
         public static final String CASH = USER_ + "cash";
+        public static final String TYPE = USER_ + "type";
+        public static final String BLOCKED_TEXT = USER_ + "blocked_text";
     }
 
     public final class Command {

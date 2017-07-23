@@ -4,6 +4,8 @@ import by.epam.litvin.bean.User;
 import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.exception.DAOException;
+import by.epam.litvin.type.UserType;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -25,7 +27,7 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public User findUser(User user) throws DAOException {
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             ResultSet result = statement.executeQuery();
@@ -40,7 +42,10 @@ public class UserDAO extends AbstractDAO<User> {
                 foundUser.setConfirmUrl(result.getString(SQLFieldConstant.User.CONFIRM_URL));
                 foundUser.setConfirm(result.getBoolean(SQLFieldConstant.User.IS_CONFIRM));
                 foundUser.setBlocked(result.getBoolean(SQLFieldConstant.User.IS_BLOCKED));
+                foundUser.setBlockedText(result.getString(SQLFieldConstant.User.BLOCKED_TEXT));
                 foundUser.setCash(result.getBigDecimal(SQLFieldConstant.User.CASH));
+                String userType = result.getString(SQLFieldConstant.User.TYPE);
+                foundUser.setType(UserType.valueOf(userType));
             }
             return foundUser;
 

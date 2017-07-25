@@ -42,7 +42,7 @@ public class RequestContent {
             sessionAttributes.put(sessionAttr, request.getSession().getAttribute(sessionAttr));
         }
 
-        if (responses != null) {
+        if ((responses != null) && (responses.length >= 1)) {
             writer = responses[0].getWriter();
         }
     }

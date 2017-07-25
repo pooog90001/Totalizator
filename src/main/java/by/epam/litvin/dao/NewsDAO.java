@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsDao extends AbstractDAO<News> {
+public class NewsDAO extends AbstractDAO<News> {
     @Override
     public List<News> findAll() {
         throw new UnsupportedOperationException();

@@ -5,9 +5,8 @@
     <title>$Title$</title>
   </head>
   <body>
-  <jsp:forward page="/jsp/createkindofsport.jsp"/>
-    <%--<jsp:param name="command" value="Sign_in"/>--%>
-  <%--</jsp:forward>--%>
-
+  <jsp:forward page="/generalController">
+    <jsp:param name="command" value="OPEN_MAIN_PAGE"/>
+  </jsp:forward>
   </body>
 </html>

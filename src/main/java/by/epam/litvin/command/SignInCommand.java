@@ -40,7 +40,7 @@ public class SignInCommand extends AbstractCommand {
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageConstant.ERROR_500);
+            router.setRoutePath(PageConstant.ERROR_RUNTIME);
         }
 
         return router;

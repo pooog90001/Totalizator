@@ -5,8 +5,9 @@ import by.epam.litvin.exception.DAOException;
 
 import javax.mail.MethodNotSupportedException;
 import java.util.List;
+import java.util.Map;
 
-public class BetDao extends AbstractDAO {
+public class BetDAO extends AbstractDAO {
 
 
     @Override
@@ -38,4 +39,5 @@ public class BetDao extends AbstractDAO {
     public boolean update(Entity entity) {
         throw new UnsupportedOperationException();
     }
+
 }

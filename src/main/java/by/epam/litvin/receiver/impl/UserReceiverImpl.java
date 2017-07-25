@@ -67,6 +67,7 @@ public class UserReceiverImpl implements UserReceiver {
         user.setPassword(dbPassword);
         user.setConfirmUrl(confirmURL);
         TransactionManager handler = null;
+
         try {
             handler = new TransactionManager();
             UserDAO userDao = new UserDAO();
@@ -100,13 +101,11 @@ public class UserReceiverImpl implements UserReceiver {
         String password;
         String dbPassword;
 
-        try {
-            email = requestContent.getRequestParameters().get(EMAIL)[0];
-            password = requestContent.getRequestParameters().get(PASSWORD)[0];
+        email = requestContent.getRequestParameters().get(EMAIL)[0];
+        password = requestContent.getRequestParameters().get(PASSWORD)[0];
 
-        } catch (NullPointerException e) {
-            throw new ReceiverException("Input parameters don't exist", e);
-        }
+
+
 
         UserValidator validator = new UserValidator();
         boolean isValidData = true;
@@ -123,6 +122,7 @@ public class UserReceiverImpl implements UserReceiver {
         user.setEmail(email);
         user.setPassword(dbPassword);
         TransactionManager handler = null;
+
         try {
             handler = new TransactionManager();
             UserDAO userDao = new UserDAO();
@@ -136,6 +136,7 @@ public class UserReceiverImpl implements UserReceiver {
                 requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
             }
             handler.endTransaction();
+
         } catch (DAOException e) {
             if (handler != null) {
                 try {
@@ -143,7 +144,7 @@ public class UserReceiverImpl implements UserReceiver {
                     handler.endTransaction();
 
                 } catch (DAOException e1) {
-                    LOGGER.log(Level.ERROR, "This exception never happens", e);
+                    LOGGER.log(Level.ERROR, "Database exception", e);
                 }
             }
             throw new ReceiverException(e);

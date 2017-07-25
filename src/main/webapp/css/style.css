@@ -15,3 +15,11 @@ body .main-container {
 form span {
     color: red;
 }
+
+html form {
+    margin: 0;
+}
+header select {
+    width: auto;
+    height: auto;
+}

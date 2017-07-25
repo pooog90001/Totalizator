@@ -27,11 +27,12 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     public User findUser(User user) throws DAOException {
+        User foundUser = null;
+
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             ResultSet result = statement.executeQuery();
-            User foundUser = null;
 
             if (result.next()) {
                 foundUser = new User();
@@ -47,11 +48,12 @@ public class UserDAO extends AbstractDAO<User> {
                 String userType = result.getString(SQLFieldConstant.User.TYPE);
                 foundUser.setType(UserType.valueOf(userType));
             }
-            return foundUser;
 
         } catch (SQLException e) {
             throw new DAOException("Find user error ", e);
         }
+
+        return foundUser;
     }
 
     @Override

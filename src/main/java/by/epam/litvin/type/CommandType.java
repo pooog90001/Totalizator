@@ -1,12 +1,11 @@
 package by.epam.litvin.type;
 
 
-import by.epam.litvin.command.AbstractCommand;
-import by.epam.litvin.command.SignInCommand;
-import by.epam.litvin.command.SignOutCommand;
-import by.epam.litvin.command.SignUpCommand;
+import by.epam.litvin.command.*;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
+import by.epam.litvin.receiver.CommonReceiver;
+import by.epam.litvin.receiver.impl.CommonReceiverImpl;
 import by.epam.litvin.receiver.impl.UserReceiverImpl;
 
 import java.util.ArrayList;
@@ -18,21 +17,34 @@ public enum CommandType {
     SIGN_IN(new SignInCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).signIn(content);
-            // добавление результатов метода signIn в content
         }
     },
+
     SIGN_UP(new SignUpCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).signUp(content);
-            // добавление результатов метода signUp в content
         }
     },
+
     SIGN_OUT(new SignOutCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
             ((UserReceiverImpl) getCommand().getReceiver()).signOut(content);
-            // добавление результатов метода signOut в content
+        }
+    },
+
+    CHANGE_LOCALE(new ChangeLocaleCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).changeLocale(content);
+        }
+    },
+
+    OPEN_MAIN_PAGE(new OpenMainPageCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).openMainPage(content);
         }
     };
+
+
 
     private AbstractCommand command;
 
@@ -49,7 +61,7 @@ public enum CommandType {
     public static CommandType takeCommandType(AbstractCommand command) {
         ArrayList<CommandType> result = new ArrayList<>();
         List<CommandType> types = Arrays.asList(CommandType.values());
-        types.stream().filter(t -> t.getCommand().equals(command)).forEach(result::add);
+        types.stream().filter(t -> t.getCommand() == command).forEach(result::add);
         return result.get(0);
     }
 }

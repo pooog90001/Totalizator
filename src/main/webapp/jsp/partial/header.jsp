@@ -7,12 +7,25 @@
 <fmt:setBundle basename="text" var="rb"/>
 <c:set var="user" value="${sessionScope.get('user')}"/>
 
-
+<fmt:message bundle="${rb}" key="lbl.SignIn" var="signIn"/>
+<fmt:message bundle="${rb}" key="lbl.SignUp" var="signUp"/>
+<fmt:message bundle="${rb}" key="lbl.SignOut" var="signOut"/>
+<fmt:message bundle="${rb}" key="lbl.title" var="totalizator"/>
+<fmt:message bundle="${rb}" key="lbl.Settings" var="settings"/>
+<fmt:message bundle="${rb}" key="lbl.Profile" var="profile"/>
+<fmt:message bundle="${rb}" key="lbl.News" var="news"/>
+<fmt:message bundle="${rb}" key="lbl.Live" var="live"/>
+<fmt:message bundle="${rb}" key="lbl.Results" var="results"/>
+<fmt:message bundle="${rb}" key="lbl.Help" var="help"/>
+<fmt:message bundle="${rb}" key="lbl.AboutCompany" var="aboutCompany"/>
+<fmt:message bundle="${rb}" key="lbl.Rules" var="rules"/>
+<fmt:message bundle="${rb}" key="lbl.Upcoming" var="upcoming"/>
+<fmt:message bundle="${rb}" key="lbl.Past" var="past"/>
 
 
 <html>
 <head>
-    <title><fmt:message key="lbl.title" bundle="${rb}"/></title>
+    <title>${totalizator}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/w3.css">
@@ -26,6 +39,8 @@
 <header>
     <div>
         <div class="w3-bar w3-theme-d2 w3-left-align w3-medium">
+
+
             <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-16 w3-hover-white w3-large w3-theme-d2"
                href="javascript:void(0);" onclick="openNav()">
                 <i class="fa fa-bars"></i>
@@ -35,79 +50,90 @@
                 <c:when test="${user != null}">
 
                     <div class="w3-bar-item w3-dropdown-hover w3-right w3-hide-small" style="padding: 0">
-                    <a href="#" class="w3-button w3-padding-small">
-                        <div class="w3-row" style="max-width: 200px">
-                            <div class="w3-col s8">
-                                <div class="w3-row w3-right-align w3-small">
-                                    <div class="w3-col s12">
-                                        <p class="w3-padding-small"> ${user.name} <- name</p>
-                                    </div>
-                                    <div class="w3-col s12">
-                                        <p class="w3-padding-small">${user.cash.toEngineeringString()}$ <- cash</p>
+                        <a href="#" class="w3-button w3-padding-small">
+                            <div class="w3-row" style="max-width: 200px">
+                                <div class="w3-col s8">
+                                    <div class="w3-row w3-right-align w3-small">
+                                        <div class="w3-col s12">
+                                            <p class="w3-padding-small"> ${user.name} <- name</p>
+                                        </div>
+                                        <div class="w3-col s12">
+                                            <p class="w3-padding-small">${user.cash.toPlainString()}$ <- cash</p>
+                                        </div>
                                     </div>
                                 </div>
+                                <div class="w3-col s4">
+                                    <img style="width:60px" class="w3-circle"
+                                         src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
+                                </div>
                             </div>
-                            <div class="w3-col s4">
-                                <img style="width:60px" class="w3-circle" src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
-                            </div>
+                        </a>
+                        <div class="w3-dropdown-content w3-bar-block w3-border">
+                            <c:if test="${!user.type.toString().equals('USER')}">
+                                <a href="#" class="w3-bar-item w3-button">Admin panel</a>
+                            </c:if>
+                            <a href="#" class="w3-bar-item w3-button">${profile} </a>
+                            <a href="#" class="w3-bar-item w3-button">${settings}</a>
+                            <form action="${pageContext.request.contextPath}/generalController">
+                                <input type="hidden" name="command" value="sign_out">
+                                <input type="submit" class="w3-bar-item w3-button" value="Sign out"/>
+                            </form>
                         </div>
-                    </a>
-                    <div class="w3-dropdown-content w3-bar-block w3-border">
-                        <c:if test="${!user.type.toString().equals('USER')}">
-                            <a href="#" class="w3-bar-item w3-button">Admin panel</a>
-                        </c:if>
-                        <a href="#" class="w3-bar-item w3-button">Profile </a>
-                        <a href="#" class="w3-bar-item w3-button">Settings</a>
-                        <a href="#" class="w3-bar-item w3-button">Sign out</a>
                     </div>
-                </div>
                 </c:when>
                 <%--Present if user not signed--%>
                 <c:otherwise>
                     <div class="w3-bar-item w3-hide-small w3-right w3-padding-16 w3-small">
                         <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
-                            <fmt:message key="lbl.SignUp" bundle="${rb}"/>
+                                ${signUp}
                         </a>
                         <fmt:message key="lbl.or" bundle="${rb}"/>
                         <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow">
-                            <fmt:message key="lbl.SignIn" bundle="${rb}"/>
+                                ${signIn}
                         </a>
                     </div>
                 </c:otherwise>
             </c:choose>
 
-            <a href="#"
+            <a href="${pageContext.request.contextPath}/index.jsp"
                class="w3-bar-item w3-button w3-padding w3-theme-d4 w3-xlarge w3-hover-none w3-hover-text-yellow">
-                <fmt:message key="lbl.title" bundle="${rb}"/>
+                ${totalizator}
             </a>
             <div class="w3-bar-item w3-hide-small w3-center w3-padding-16 w3-medium">
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    Новости
+                    ${news}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    LIVE
+                    ${live}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    Предстоящие
+                    ${upcoming}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    Результаты
+                    ${results}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    О компании
+                    ${aboutCompany}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    Правила
+                    ${rules}
                 </a>
-                <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                <a href="#"
+                   class="w3-bar-item w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                    title="XXX">
-                    Помощь
+                    ${help}
                 </a>
             </div>
         </div>
@@ -124,12 +150,12 @@
                             <div class="w3-row w3-right-align">
                                 <div class="w3-col s12">
                                     <div class="w3-container">
-                                        <p class="w3-padding-small"> ${user.name} <- name</p>
+                                        <p class="w3-padding-small"> ${user.name}</p>
                                     </div>
                                 </div>
                                 <div class="w3-col s12">
                                     <div class="w3-container">
-                                        <p class="w3-padding-small">${user.cash}$ <- cash</p>
+                                        <p class="w3-padding-small">${user.cash.toPlainString()}$</p>
                                     </div>
                                 </div>
                             </div>
@@ -143,27 +169,28 @@
                     <c:otherwise>
 
                         <div class="w3-container w3-cell">
-                            <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow w3-center">
-                                <p class="w3-center"><fmt:message key="lbl.SignIn" bundle="${rb}"/></p>
+                            <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp"
+                               class="w3-hover-text-yellow w3-center">
+                                <p class="w3-center">${signIn}</p>
                             </a>
                         </div>
 
                         <div class="w3-container w3-cell">
                             <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
-                                <p class="w3-center"><fmt:message key="lbl.SignUp" bundle="${rb}"/></p>
+                                <p class="w3-center">${signUp}</p>
                             </a>
                         </div>
                     </c:otherwise>
                 </c:choose>
             </div>
         </a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">Новости</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">LIVE</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">Предстоящие</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">Результаты</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">О компании</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">Правила</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">Помощь</a>
-
+        <a href="#" class="w3-bar-item w3-button w3-padding">${news}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${live}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${upcoming}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${results}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${aboutCompany}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${rules}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">${help}</a>
+        ${signIn}
     </div>
 </header>

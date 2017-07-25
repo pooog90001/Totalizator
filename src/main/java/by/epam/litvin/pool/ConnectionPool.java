@@ -49,9 +49,8 @@ public class ConnectionPool {
 
 
     private ProxyConnection createConnection() throws SQLException {
-        Connection connection = null;
-        connection = DriverManager.getConnection(config.getUrl(), config.getProperties());
-        LOGGER.log(Level.INFO, "Connection created");
+        Connection connection = DriverManager.getConnection(config.getUrl(), config.getProperties());
+        LOGGER.log(Level.INFO, "New connection created");
         return new ProxyConnection(connection);
     }
 
@@ -91,13 +90,6 @@ public class ConnectionPool {
         return result;
     }
 
-    public void closeConnection(ProxyConnection connection) throws ConnectionPoolException {
-        try {
-            connection.realClose();
-        } catch (SQLException e) {
-            throw new ConnectionPoolException("Connection close error. ", e);
-        }
-    }
 
     public void destroyPool() throws ConnectionPoolException {
         try {

@@ -8,9 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@include file="partial/header.jsp" %>
 
-<div class="w3-container w3-content w3-hide-large w3-hide-medium">
-    <button class="w3-bar-item w3-button w3-xxxlarge w3-hover-theme" onclick="openSidebar()">&#9776;</button>
-</div>
+
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar">
     <div class="w3-container w3-theme-d2">
@@ -63,7 +61,10 @@
 
         <div class="w3-col m9 w3-container">
             <div class="w3-row-padding">
-                <div class="w3-container">
+                <div class="w3-container w3-col s2 w3-hide-large w3-hide-medium">
+                    <button class=" w3-padding-24 w3-button w3-large w3-hover-theme" onclick="openSidebar()">&#9776;</button>
+                </div>
+                <div class="w3-container w3-col s10">
                     <h1>Виды спорта</h1>
                 </div>
             </div>
@@ -79,16 +80,16 @@
             <c:forEach var = "i" begin = "1" end = "15">
                 <div class="w3-row  w3-hover-light-grey">
                     <div class="w3-container w3-card-2" style="margin: 3px;">
-                        <div class="w3-col s3">
+                        <div class="w3-col s6">
                             <p>фуутбол</p>
                         </div>
-                        <div class="w3-col s3">
+                        <div class="w3-col s2">
                             <p>2</p>
                         </div>
-                        <div class="w3-col s3">
+                        <div class="w3-col s2 w3-small">
                             <a href="#" class="w3-button">изменить</a>
                         </div>
-                        <div class="w3-col s3">
+                        <div class="w3-col s2 w3-small">
                             <button  id="deleteButton" class="w3-button w3-black">Delete</button>
                         </div>
                     </div>

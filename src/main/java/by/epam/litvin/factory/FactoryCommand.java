@@ -5,7 +5,7 @@ import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.type.CommandType;
 
-public class FactoryCommand { //FactoryMethod
+public class FactoryCommand {
     public AbstractCommand initCommand(RequestContent requestContent) {
         AbstractCommand command = null;
         try {

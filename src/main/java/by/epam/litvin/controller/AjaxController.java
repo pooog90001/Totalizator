@@ -32,7 +32,7 @@ public class AjaxController  extends HttpServlet {
         RequestContent requestContent = new RequestContent();
         Router router;
 
-        requestContent.extractValues(req, resp);
+        requestContent.extractValues(req);
         executionCommand = new FactoryCommand().initCommand(requestContent);
         router = executionCommand.execute(requestContent);
         requestContent.insertAttributes(req);

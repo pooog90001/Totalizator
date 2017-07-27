@@ -1,12 +1,12 @@
 package by.epam.litvin.bean;
 
 
-public class CompetitionType extends Entity {
+public class CompetitionTypeEntity extends Entity {
 
     private Integer id;
     private String type;
 
-    public  CompetitionType() {}
+    public CompetitionTypeEntity() {}
 
     public Integer getId() {
         return id;
@@ -29,7 +29,7 @@ public class CompetitionType extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CompetitionType that = (CompetitionType) o;
+        CompetitionTypeEntity that = (CompetitionTypeEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         return type != null ? type.equals(that.type) : that.type == null;

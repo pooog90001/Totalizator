@@ -19,12 +19,23 @@ final public class SQLRequestConstant {
                     "SELECT news_id, news_title, news_image_url, news_text, news_date_creation " +
                     "FROM news " +
                     "ORDER BY news_id DESC " +
-                    "LIMIT ?;";
+                    "LIMIT ?, ?;";
+
+    public static final String FIND_ALL_NEWS =
+            "SELECT news_id, news_title, news_image_url, news_text, news_date_creation " +
+                    "FROM news " +
+                    "ORDER BY news_id DESC;";
 
     public static final String FIND_NEWS_BY_ID =
                     "SELECT news_id, news_title, news_image_url, news_text, news_date_creation " +
                     "FROM news " +
                     "WHERE news_id = ? ;";
+    
+    public static final String FIND_NEWS_COUNT =
+                    "SELECT  " +
+                    "    COUNT(news_id) AS count " +
+                    "FROM " +
+                    "    news;";
 
 
     public static final String FIND_ALL_COMMAND =
@@ -62,15 +73,15 @@ final public class SQLRequestConstant {
                     "    competition_less_total_coeff, " +
                     "    competition_more_total_coeff, " +
                     "    competition_standoff_coeff," +
-                    "    comm_m2m_comp_win_coeff " +
+                    "    competitor_win_coeff " +
                     "FROM " +
                     "    competition, " +
-                    "    comm_m2m_comp, " +
+                    "    competitor, " +
                     "    command, " +
                     "    kind_of_sport " +
                     "WHERE " +
-                    "        comm_m2m_comp.competition_id = competition.competition_id " +
-                    "        AND comm_m2m_comp.command_id = command.command_id " +
+                    "        competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
                     "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
                     "        AND kind_of_sport.competitor_count = 2 " +
                     "        AND competition_date_start < NOW() " +
@@ -87,15 +98,15 @@ final public class SQLRequestConstant {
                     "    competition_less_total_coeff, " +
                     "    competition_more_total_coeff, " +
                     "    competition_standoff_coeff, " +
-                    "    comm_m2m_comp_win_coeff " +
+                    "    competitor_win_coeff " +
                     "FROM " +
                     "    competition, " +
-                    "    comm_m2m_comp, " +
+                    "    competitor, " +
                     "    command, " +
                     "    kind_of_sport " +
                     "WHERE " +
-                    "    comm_m2m_comp.competition_id = competition.competition_id " +
-                    "        AND comm_m2m_comp.command_id = command.command_id " +
+                    "    competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
                     "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
                     "        AND kind_of_sport.competitor_count = 2 " +
                     "        AND competition_date_start > NOW() " +
@@ -109,20 +120,21 @@ final public class SQLRequestConstant {
                     "    competition_date_start, " +
                     "    kind_of_sport_name, " +
                     "    command_name, " +
-                    "    comm_m2m_comp_result " +
+                    "    competitor_result " +
                     "FROM " +
                     "    competition, " +
-                    "    comm_m2m_comp, " +
+                    "    competitor, " +
                     "    command, " +
                     "    kind_of_sport " +
                     "WHERE " +
-                    "    comm_m2m_comp.competition_id = competition.competition_id " +
-                    "        AND comm_m2m_comp.command_id = command.command_id " +
+                    "    competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
                     "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
                     "        AND kind_of_sport.competitor_count = 2 " +
                     "        AND competition_date_finish IS NOT NULL " +
                     "        AND competition_date_finish < NOW() " +
                     "        AND competition_is_active = FALSE " +
+                            "ORDER BY competition.competition_id DESC " +
                     "LIMIT ?;";
     
     public static final String FIND_USING_KIND_OF_SPORTS =
@@ -134,12 +146,33 @@ final public class SQLRequestConstant {
                     "    kind_of_sport, " +
                     "    competition_type, " +
                     "    command, " +
-                    "    comm_m2m_comp, " +
+                    "    competitor, " +
                     "    competition " +
                     "WHERE " +
                     "    competition_type.competition_type_id = competition.competition_type_id " +
-                    "        AND comm_m2m_comp.competition_id = competition.competition_id " +
-                    "        AND command.command_id = comm_m2m_comp.command_id " +
-                    "        AND kind_of_sport.kind_of_sport_id = command.kind_of_sport_id";
+                    "        AND competitor.competition_id = competition.competition_id " +
+                    "        AND command.command_id = competitor.command_id " +
+                    "        AND kind_of_sport.kind_of_sport_id = command.kind_of_sport_id;";
+
+    public static final String FIND_NEWS_COMMENTS =
+                            "SELECT DISTINCT " +
+                            "    comment_id, " +
+                            "    comment_is_blocked, " +
+                            "    comment_post_date, " +
+                            "    comment_text, " +
+                            "    user_avatar_url, " +
+                            "    user_name " +
+                            "FROM " +
+                            "    comment, " +
+                            "    user, " +
+                            "    news " +
+                            "WHERE " +
+                            "    comment.user_id = user.user_id " +
+                            "    AND comment.news_id = ?;";
+
+    public static final String CREATE_COMMENT =
+                    "INSERT INTO comment (comment_text, comment_post_date, news_id, user_id) " +
+                    "VALUES (? , now(), ?, ?);";
+
 
 }

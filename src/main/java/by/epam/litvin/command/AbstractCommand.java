@@ -15,6 +15,7 @@ public abstract class AbstractCommand {
 
     public abstract Router execute(RequestContent requestContent);
 
+
     public Receiver getReceiver() {
         return receiver;
     }

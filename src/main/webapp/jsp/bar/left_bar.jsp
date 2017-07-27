@@ -3,11 +3,11 @@
 
 <div class="w3-card-2 w3-round">
     <div class="w3-white">
-        <c:forEach var="kind" items="${requestScope.get('kindsOfSport')}">
+        <c:forEach var="kind" items="${kindsOfSport}">
             <button onclick="myFunction('${kind.key}')" class="w3-button w3-block w3-theme-l1 w3-center">
                     ${kind.key}
             </button>
-            <div id="${kind.key}" class="w3-hide w3-container">
+            <div id="" class="${kind.key} w3-hide w3-container">
                 <c:forEach var="competition" items="${kind.value}">
                     <form action="${pageContext.request.contextPath}/generalController">
                         <input type="hidden" name="open_competition_type" value="${competition.value}">

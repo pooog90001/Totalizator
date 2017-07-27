@@ -7,14 +7,14 @@
         <span onclick="closeSidebar()" class="w3-button w3-display-topright w3-small">&cross;</span>
         <br>
     </div>
-    <%@include file="bar/userleftbar.jsp" %>
+    <%@include file="bar/left_bar.jsp" %>
 </nav>
 
 <body>
 
 <div class="w3-container w3-content main-container">
     <div class="w3-col m3 w3-hide-small">
-        <%@include file="bar/userleftbar.jsp" %>
+        <%@include file="bar/left_bar.jsp" %>
     </div>
     <div class="w3-container w3-left w3-content w3-hide-large w3-hide-medium">
         <button class="w3-button w3-large w3-hover-theme " onclick="openSidebar()">&#8694;</button>
@@ -30,19 +30,19 @@
                 </button>
             </form>
 
-            <c:forEach var="news" items="${requestScope.get('newsList')}">
+            <c:forEach var="news" items="${newsList}">
                 <div class="w3-half w3-container">
                     <div class="w3-card-2 w3-round">
-                        <div class="w3-display-container w3-hover-opacity">
+                        <div class="w3-display-container">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
-                                 alt="${news.title}" style="width: 100%;"
-                                 class="w3-hover-opacity">
+                                 alt="${news.title}" style="width: 100%;">
                             <div class="w3-display-topright w3-display-hover">
                                 <p class="w3-black w3-padding">${news.dateCreation}</p>
                             </div>
                         </div>
                         <form action="${pageContext.request.contextPath}/generalController">
-                            <input type="hidden" name="open_concrete_news_page">
+                            <input type="hidden" name="command" value="open_concrete_news_page">
+                            <input type="hidden" name="newsId" value="${news.id}">
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
                                 <b> ${news.title} </b>
                             </button>
@@ -51,6 +51,9 @@
                     </div>
                 </div>
             </c:forEach>
+            <div class="pagination">
+                 <ctg:pagination total="${newsCount}" limit="${limit}" command="open_all_news_page"/>
+            </div>
         </div>
     </div>
 </div>

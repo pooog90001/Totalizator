@@ -1,5 +1,6 @@
-package by.epam.litvin.command;
+package by.epam.litvin.command.user;
 
+import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
@@ -13,10 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
-public class SignInCommand extends AbstractCommand {
+public class SignUpCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public SignInCommand(Receiver receiver) {
+    public SignUpCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -28,13 +29,17 @@ public class SignInCommand extends AbstractCommand {
 
             Set<String> keys = requestContent.getRequestAttributes().keySet();
 
-            if (keys.contains("wrongData")) {
+            if (keys.contains("wrongEmail") ||
+                    keys.contains("wrongName") ||
+                    keys.contains("wrongPassword") ||
+                    keys.contains("wrongRepeatPassword") ||
+                    keys.contains("emailExists")) {
                 router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageConstant.SIGN_IN);
+                router.setRoutePath(PageConstant.SIGN_UP);
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageConstant.MAIN);
+                router.setRoutePath(PageConstant.CONFIRM);
             }
 
         } catch (ReceiverException e) {

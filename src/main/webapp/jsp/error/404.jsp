@@ -10,7 +10,7 @@
     <div class="w3-third">
         <h1>404 Page not found :( </h1>
         <h2><a class=" w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-black"
-               href="${pageContext.request.contextPath}/index.jsp">Back on main page</a>
+               href="${pageContext.request.contextPath}/index.jsp">Back on main pageNumber</a>
         </h2>
         Request from ${pageContext.errorData.requestURI} is failed <br>
         Servlet name: ${pageContext.errorData.servletName} <br>

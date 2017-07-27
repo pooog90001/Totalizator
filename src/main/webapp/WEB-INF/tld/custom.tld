@@ -12,13 +12,38 @@
         <body-content>empty</body-content>
     </tag>
     <tag>
-        <name>profile-bar-tag</name>
-        <tag-class>by.epam.litvin.tag.BarProfileTag</tag-class>
-        <body-content>empty</body-content>
+        <name>pagination</name>
+        <tag-class>by.epam.litvin.tag.PaginationTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>total</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>limit</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>command</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
     <tag>
-        <name>profile-collapse-bar-tag</name>
-        <tag-class>by.epam.litvin.tag.CollapseBarProfileTag</tag-class>
-        <body-content>empty</body-content>
+        <name>decimal-presenter</name>
+        <tag-class>by.epam.litvin.tag.DecimalPresentTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>number</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+        <attribute>
+            <name>scale</name>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
+
 </taglib>

@@ -1,14 +1,14 @@
 package by.epam.litvin.bean;
 
 
-public class CommandM2MCompetition extends Entity {
+public class CompetitorEntity extends Entity {
 
     private Integer id;
     private Integer commandId;
     private Integer competitionId;
     private Boolean isWin;
 
-    public CommandM2MCompetition() {}
+    public CompetitorEntity() {}
 
     public Integer getId() {
         return id;
@@ -47,7 +47,7 @@ public class CommandM2MCompetition extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CommandM2MCompetition that = (CommandM2MCompetition) o;
+        CompetitorEntity that = (CompetitorEntity) o;
 
         if (id != null ? !id.equals(that.id) : that.id != null) return false;
         if (commandId != null ? !commandId.equals(that.commandId) : that.commandId != null) return false;

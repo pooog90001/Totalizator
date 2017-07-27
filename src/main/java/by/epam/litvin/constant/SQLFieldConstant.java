@@ -17,6 +17,7 @@ final public class SQLFieldConstant {
         public static final String CASH = USER + "cash";
         public static final String TYPE = USER + "type";
         public static final String BLOCKED_TEXT = USER + "blocked_text";
+        public static final String AVATAR_URL = USER + "avatar_url";
     }
 
     public final class News {
@@ -33,6 +34,7 @@ final public class SQLFieldConstant {
         public static final String ID = COMMENT + "id";
         public static final String TEXT = COMMENT + "text";
         public static final String IS_BLOCKED = COMMENT + "is_blocked";
+        public static final String POST_DATE = COMMENT + "post_date";
     }
 
     public final class Command {
@@ -42,7 +44,7 @@ final public class SQLFieldConstant {
         public static final String KIND_OF_SPORT_ID = "kind_of_sport_id";
     }
 
-    public final class Competition_type {
+    public final class CompetitionType {
         private static final String COMPETITION_TYPE = "competition_type_";
         public static final String ID = COMPETITION_TYPE + "id";
         public static final String NAME = COMPETITION_TYPE + "name";
@@ -70,12 +72,12 @@ final public class SQLFieldConstant {
         public static final String COMPETITOR_COUNT = "competitior_count";
     }
 
-    public final class CommandM2MCompetition {
-        private static final String COMM_M2M_COMP = "comm_m2m_comp_";
-        public static final String ID = COMM_M2M_COMP + "id";
-        public static final String IS_WIN = COMM_M2M_COMP + "is_win";
-        public static final String WIN_COEFF =  COMM_M2M_COMP + "win_coeff";
-        public static final String RESULT = COMM_M2M_COMP + "result";
+    public final class Competitor {
+        private static final String COMPETITOR = "competitor_";
+        public static final String ID = COMPETITOR + "id";
+        public static final String IS_WIN = COMPETITOR + "is_win";
+        public static final String WIN_COEFF =  COMPETITOR + "win_coeff";
+        public static final String RESULT = COMPETITOR + "result";
     }
 
     public final class Bet {

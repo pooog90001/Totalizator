@@ -7,7 +7,7 @@
         <span onclick="closeSidebar()" class="w3-button w3-display-topright w3-small">&cross;</span>
         <br>
     </div>
-    <%@include file="bar/userleftbar.jsp" %>
+    <%@include file="bar/left_bar.jsp" %>
 </nav>
 
 <body>
@@ -21,7 +21,7 @@
     <a href="jsp/sign_in.jsp"> <fmt:message key="lbl.SignIn" bundle="${rb}"/> </a>--%>
     <div class="w3-col m3 w3-hide-small">
         <!-- Accordion -->
-        <%@include file="bar/userleftbar.jsp" %>
+        <%@include file="bar/left_bar.jsp" %>
         <%--<div class="w3-card-2 w3-round w3-hide-small">
             <div class="w3-white">
                 <c:forEach var="kind" items="${requestScope.get('kindsOfSport')}">
@@ -60,16 +60,16 @@
             <c:forEach var="news" items="${requestScope.get('newsList')}">
                 <div class="w3-third w3-container">
                     <div class="w3-card-2 w3-round">
-                        <div class="w3-display-container w3-hover-opacity">
+                        <div class="w3-display-container">
                             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
-                                 alt="${news.title}" style="width: 100%;"
-                                 class="w3-hover-opacity">
+                                 alt="${news.title}" style="width: 100%;">
                             <div class="w3-display-topright w3-display-hover">
                                 <p class="w3-black w3-padding">${news.dateCreation}</p>
                             </div>
                         </div>
                         <form action="${pageContext.request.contextPath}/generalController">
-                            <input type="hidden" name="open_concrete_news_page">
+                            <input type="hidden" name="command" value="open_concrete_news_page">
+                            <input type="hidden" name="newsId" value="${news.id}">
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
                                 <b> ${news.title} </b>
                             </button>
@@ -115,11 +115,21 @@
                                 <div class="w3-col s1">${liveGame['competition_id']}</div>
                                 <div class="w3-col s2">${liveGame['kind_of_sport_name']}</div>
                                 <div class="w3-col s2">${liveGame['command_name']}</div>
-                                <div class="w3-col s1">${liveGame['competition_total']}</div>
-                                <div class="w3-col s1">${liveGame['competition_less_total_coeff']}</div>
-                                <div class="w3-col s1">${liveGame['competition_more_total_coeff']}</div>
-                                <div class="w3-col s1">${liveGame['comm_m2m_comp_win_coeff']}</div>
-                                <div class="w3-col s1">${liveGame['competition_standoff_coeff']}</div>
+                                <div class="w3-col s1">
+                                    <ctg:decimal-presenter number="${liveGame['competition_total']}"/>
+                                </div>
+                                <div class="w3-col s1">
+                                    <ctg:decimal-presenter number="${liveGame['competition_less_total_coeff']}"/>
+                                </div>
+                                <div class="w3-col s1">
+                                    <ctg:decimal-presenter number="${liveGame['competition_more_total_coeff']}"/>
+                                </div>
+                                <div class="w3-col s1">
+                                    <ctg:decimal-presenter number="${liveGame['competitor_win_coeff']}"/>
+                                </div>
+                                <div class="w3-col s1">
+                                    <ctg:decimal-presenter number="${liveGame['competition_standoff_coeff']}"/>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -160,7 +170,7 @@
                                 <div class="w3-col s1">${upcommingGame['competition_total']}</div>
                                 <div class="w3-col s1">${upcommingGame['competition_less_total_coeff']}</div>
                                 <div class="w3-col s1">${upcommingGame['competition_more_total_coeff']}</div>
-                                <div class="w3-col s1">${upcommingGame['comm_m2m_comp_win_coeff']}</div>
+                                <div class="w3-col s1">${upcommingGame['competitor_win_coeff']}</div>
                                 <div class="w3-col s1">${upcommingGame['competition_standoff_coeff']}</div>
                             </div>
                         </div>
@@ -197,7 +207,7 @@
                                 <div class="w3-col s1">${pastGame['competition_date_start']}</div>
                                 <div class="w3-col s2">${pastGame['kind_of_sport_name']}</div>
                                 <div class="w3-col s2">${pastGame['command_name']}</div>
-                                <div class="w3-col s1">${pastGame['comm_m2m_comp_result']}</div>
+                                <div class="w3-col s1">${pastGame['competitor_result']}</div>
                             </div>
                         </div>
                     </div>

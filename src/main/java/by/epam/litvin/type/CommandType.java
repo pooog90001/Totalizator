@@ -2,10 +2,17 @@ package by.epam.litvin.type;
 
 
 import by.epam.litvin.command.*;
+import by.epam.litvin.command.common.ChangeLocaleCommand;
+import by.epam.litvin.command.page.OpenAllNewsPageCommand;
+import by.epam.litvin.command.page.OpenConcreteNewsCommand;
+import by.epam.litvin.command.page.OpenMainPageCommand;
+import by.epam.litvin.command.user.SignInCommand;
+import by.epam.litvin.command.user.SignOutCommand;
+import by.epam.litvin.command.user.SignUpCommand;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
-import by.epam.litvin.receiver.CommonReceiver;
 import by.epam.litvin.receiver.impl.CommonReceiverImpl;
+import by.epam.litvin.receiver.impl.PageReceiverImpl;
 import by.epam.litvin.receiver.impl.UserReceiverImpl;
 
 import java.util.ArrayList;
@@ -38,9 +45,21 @@ public enum CommandType {
         }
     },
 
-    OPEN_MAIN_PAGE(new OpenMainPageCommand(new CommonReceiverImpl())) {
+    OPEN_MAIN_PAGE(new OpenMainPageCommand(new PageReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommonReceiverImpl) getCommand().getReceiver()).openMainPage(content);
+            ((PageReceiverImpl) getCommand().getReceiver()).openMainPage(content);
+        }
+    },
+
+    OPEN_CONCRETE_NEWS_PAGE(new OpenConcreteNewsCommand(new PageReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((PageReceiverImpl) getCommand().getReceiver()).openConcreteNewsPage(content);
+        }
+    },
+
+    OPEN_ALL_NEWS_PAGE(new OpenAllNewsPageCommand(new PageReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((PageReceiverImpl) getCommand().getReceiver()).openAllNewsPage(content);
         }
     };
 

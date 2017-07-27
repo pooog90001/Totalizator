@@ -1,5 +1,6 @@
-package by.epam.litvin.command;
+package by.epam.litvin.command.page;
 
+import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
@@ -11,10 +12,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class OpenMainPageCommand extends AbstractCommand {
+public class OpenConcreteNewsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenMainPageCommand(Receiver receiver) {
+    public OpenConcreteNewsCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -24,14 +25,22 @@ public class OpenMainPageCommand extends AbstractCommand {
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
-            router.setRouteType(RouteType.FORWARD);
-            router.setRoutePath(PageConstant.MAIN);
+
+            if (!requestContent.getRequestAttributes().containsKey("wrongNews")) {
+                router.setRoutePath(PageConstant.CONCRETE_NEWS);
+                router.setRouteType(RouteType.FORWARD);
+
+            } else {
+                router.setRoutePath(PageConstant.ERROR_404);
+                router.setRouteType(RouteType.REDIRECT);
+            }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRouteType(RouteType.REDIRECT);
             router.setRoutePath(PageConstant.ERROR_RUNTIME);
+            router.setRouteType(RouteType.REDIRECT);
         }
+
         return router;
     }
 }

@@ -9,7 +9,9 @@ final public class PageConstant {
     public static final String SIGN_UP = ROOT + "sign_up.jsp";
     public static final String SIGN_IN = ROOT + "sign_in.jsp";
     public static final String CONFIRM = ROOT + "confirm.jsp";
-
+    public static final String ALL_NEWS = ROOT + "all_news.jsp";
+    public static final String CONCRETE_NEWS = ROOT + "concrete_news.jsp";
+    public static final String INDEX = "index.jsp";
     //Error pages
     private static final String ERROR_ROOT = "jsp/error/";
 

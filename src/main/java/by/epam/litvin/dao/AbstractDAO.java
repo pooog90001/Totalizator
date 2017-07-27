@@ -12,7 +12,7 @@ import java.sql.Statement;
 import java.util.List;
 
 public abstract class AbstractDAO<T extends Entity> {
-    private final static Logger LOGGER = LogManager.getLogger();
+    protected final static Logger LOGGER = LogManager.getLogger();
 
     protected ProxyConnection connection;
 

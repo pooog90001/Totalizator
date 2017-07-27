@@ -1,12 +1,12 @@
 package by.epam.litvin.bean;
 
-public class Command extends Entity {
+public class CommandEntity extends Entity {
 
     private Integer id;
     private String name;
     private String kindOfSport;
 
-    public Command() {}
+    public CommandEntity() {}
 
     public Integer getId() {
         return id;
@@ -37,7 +37,7 @@ public class Command extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Command command = (Command) o;
+        CommandEntity command = (CommandEntity) o;
 
         if (id != null ? !id.equals(command.id) : command.id != null) return false;
         if (name != null ? !name.equals(command.name) : command.name != null) return false;

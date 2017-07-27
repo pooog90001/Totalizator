@@ -3,7 +3,7 @@ package by.epam.litvin.bean;
 import java.util.Date;
 
 
-public class Comment extends Entity {
+public class CommentEntity extends Entity {
 
     private Integer id;
     private String text;
@@ -12,7 +12,7 @@ public class Comment extends Entity {
     private Integer newsId;
     private Integer userId;
 
-    public Comment() {}
+    public CommentEntity() {}
 
     public Integer getId() {
         return id;
@@ -67,7 +67,7 @@ public class Comment extends Entity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Comment comment = (Comment) o;
+        CommentEntity comment = (CommentEntity) o;
 
         if (id != null ? !id.equals(comment.id) : comment.id != null) return false;
         if (text != null ? !text.equals(comment.text) : comment.text != null) return false;

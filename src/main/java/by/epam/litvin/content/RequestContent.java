@@ -13,7 +13,6 @@ public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;
     private HashMap<String, Object> sessionAttributes;
-    private PrintWriter writer;
 
     public RequestContent() {
         requestAttributes = new HashMap<>();
@@ -21,7 +20,7 @@ public class RequestContent {
         sessionAttributes = new HashMap<>();
     }
 
-    public void extractValues(HttpServletRequest request, HttpServletResponse... responses) throws IOException {
+    public void extractValues(HttpServletRequest request) throws IOException {
         Enumeration<String> attrNames = request.getAttributeNames();
         Enumeration<String> paramNames = request.getParameterNames();
         Enumeration<String> sessionAttrNames = request.getSession().getAttributeNames();
@@ -42,9 +41,6 @@ public class RequestContent {
             sessionAttributes.put(sessionAttr, request.getSession().getAttribute(sessionAttr));
         }
 
-        if ((responses != null) && (responses.length >= 1)) {
-            writer = responses[0].getWriter();
-        }
     }
 
 
@@ -88,10 +84,6 @@ public class RequestContent {
 
     public void setSessionAttributes(HashMap<String, Object> sessionAttributes) {
         this.sessionAttributes = sessionAttributes;
-    }
-
-    public PrintWriter getWriter() {
-        return writer;
     }
 
 }

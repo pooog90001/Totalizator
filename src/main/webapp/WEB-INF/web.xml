@@ -20,9 +20,6 @@
         <location>/jsp/error/500.jsp</location>
     </error-page>
     <error-page>
-        <exception-type>
-            javax.el.PropertyNotFoundException
-        </exception-type>
         <location>/jsp/error/runtime.jsp</location>
     </error-page>
 </web-app>

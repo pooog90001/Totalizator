@@ -11,7 +11,7 @@ public class BetEntity extends Entity {
     private BigDecimal cash;
     private Boolean isWin;
     private Boolean isActive;
-    private int commandM2MCompetionId;
+    private int CompetitorId;
     private Total total;
 
     public enum Total {
@@ -58,12 +58,12 @@ public class BetEntity extends Entity {
         isActive = active;
     }
 
-    public int getCommandM2MCompetionId() {
-        return commandM2MCompetionId;
+    public int getCompetitorId() {
+        return CompetitorId;
     }
 
-    public void setCommandM2MCompetionId(int commandM2MCompetionId) {
-        this.commandM2MCompetionId = commandM2MCompetionId;
+    public void setCompetitorId(int competitorId) {
+        this.CompetitorId = competitorId;
     }
 
     public Total getTotal() {
@@ -74,4 +74,32 @@ public class BetEntity extends Entity {
         this.total = total;
     }
 
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof BetEntity)) return false;
+
+        BetEntity betEntity = (BetEntity) o;
+
+        if (id != betEntity.id) return false;
+        if (userId != betEntity.userId) return false;
+        if (CompetitorId != betEntity.CompetitorId) return false;
+        if (cash != null ? !cash.equals(betEntity.cash) : betEntity.cash != null) return false;
+        if (isWin != null ? !isWin.equals(betEntity.isWin) : betEntity.isWin != null) return false;
+        if (isActive != null ? !isActive.equals(betEntity.isActive) : betEntity.isActive != null) return false;
+        return total == betEntity.total;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + userId;
+        result = 31 * result + (cash != null ? cash.hashCode() : 0);
+        result = 31 * result + (isWin != null ? isWin.hashCode() : 0);
+        result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
+        result = 31 * result + CompetitorId;
+        result = 31 * result + (total != null ? total.hashCode() : 0);
+        return result;
+    }
 }

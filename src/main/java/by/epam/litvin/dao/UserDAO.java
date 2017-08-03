@@ -1,6 +1,6 @@
 package by.epam.litvin.dao;
 
-import by.epam.litvin.bean.User;
+import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.exception.DAOException;
@@ -14,20 +14,20 @@ import java.util.List;
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
 
 
-public class UserDAO extends AbstractDAO<User> {
+public class UserDAO extends AbstractDAO<UserEntity> {
 
     @Override
-    public List<User> findAll() {
+    public List<UserEntity> findAll() {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public User findEntityById(int id) {
+    public UserEntity findEntityById(int id) {
         throw new UnsupportedOperationException();
     }
 
-    public User findUser(User user) throws DAOException {
-        User foundUser = null;
+    public UserEntity findUser(UserEntity user) throws DAOException {
+        UserEntity foundUser = null;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER)) {
             statement.setString(1, user.getEmail());
@@ -35,7 +35,7 @@ public class UserDAO extends AbstractDAO<User> {
             ResultSet result = statement.executeQuery();
 
             if (result.next()) {
-                foundUser = new User();
+                foundUser = new UserEntity();
                 foundUser.setId(result.getInt(SQLFieldConstant.User.ID));
                 foundUser.setName(result.getString(SQLFieldConstant.User.NAME));
                 foundUser.setEmail(result.getString(SQLFieldConstant.User.EMAIL));
@@ -57,17 +57,18 @@ public class UserDAO extends AbstractDAO<User> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(User entity) {
+    public boolean delete(UserEntity entity) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public boolean create(User entity) throws DAOException {
+    public boolean create(UserEntity entity) throws DAOException {
+        boolean isCreated = false;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
             statement.setString(1, entity.getName());
@@ -75,19 +76,18 @@ public class UserDAO extends AbstractDAO<User> {
             statement.setString(3, entity.getPassword());
             statement.setString(4, entity.getConfirmUrl());
 
-            return statement.executeUpdate() == 1;
+            isCreated = statement.executeUpdate() == 1;
 
         } catch (SQLException e) {
-            if (DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
-                return false;
+            if (!DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
+                throw new DAOException("Create user error ", e);
             }
-            throw new DAOException("Create user error ", e);
         }
-
+        return isCreated;
     }
 
     @Override
-    public boolean update(User entity) {
+    public boolean update(UserEntity entity) {
         throw new UnsupportedOperationException();
     }
 }

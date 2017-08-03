@@ -6,13 +6,13 @@ import java.util.Date;
 
 public class CompetitionEntity extends Entity {
 
-    private Integer id;
+    private int id;
     private String name;
     private String descripton;
     private Date dateStart;
     private Date dateFinish;
     private Boolean isActive;
-    private Integer typeId;
+    private int typeId;
     private BigDecimal total;
     private BigDecimal moreTotal;
     private BigDecimal lessTotal;
@@ -20,11 +20,11 @@ public class CompetitionEntity extends Entity {
 
     public CompetitionEntity() {}
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -68,11 +68,11 @@ public class CompetitionEntity extends Entity {
         isActive = active;
     }
 
-    public Integer getTypeId() {
+    public int getTypeId() {
         return typeId;
     }
 
-    public void setTypeId(Integer typeId) {
+    public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
 
@@ -111,17 +111,17 @@ public class CompetitionEntity extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CompetitionEntity)) return false;
 
         CompetitionEntity that = (CompetitionEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (id != that.id) return false;
+        if (typeId != that.typeId) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (descripton != null ? !descripton.equals(that.descripton) : that.descripton != null) return false;
         if (dateStart != null ? !dateStart.equals(that.dateStart) : that.dateStart != null) return false;
         if (dateFinish != null ? !dateFinish.equals(that.dateFinish) : that.dateFinish != null) return false;
         if (isActive != null ? !isActive.equals(that.isActive) : that.isActive != null) return false;
-        if (typeId != null ? !typeId.equals(that.typeId) : that.typeId != null) return false;
         if (total != null ? !total.equals(that.total) : that.total != null) return false;
         if (moreTotal != null ? !moreTotal.equals(that.moreTotal) : that.moreTotal != null) return false;
         if (lessTotal != null ? !lessTotal.equals(that.lessTotal) : that.lessTotal != null) return false;
@@ -130,13 +130,13 @@ public class CompetitionEntity extends Entity {
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (descripton != null ? descripton.hashCode() : 0);
         result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
         result = 31 * result + (dateFinish != null ? dateFinish.hashCode() : 0);
         result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
-        result = 31 * result + (typeId != null ? typeId.hashCode() : 0);
+        result = 31 * result + typeId;
         result = 31 * result + (total != null ? total.hashCode() : 0);
         result = 31 * result + (moreTotal != null ? moreTotal.hashCode() : 0);
         result = 31 * result + (lessTotal != null ? lessTotal.hashCode() : 0);

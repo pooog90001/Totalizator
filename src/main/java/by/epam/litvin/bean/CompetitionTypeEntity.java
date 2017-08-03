@@ -3,42 +3,42 @@ package by.epam.litvin.bean;
 
 public class CompetitionTypeEntity extends Entity {
 
-    private Integer id;
-    private String type;
+    private int id;
+    private String name;
 
     public CompetitionTypeEntity() {}
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CompetitionTypeEntity)) return false;
 
         CompetitionTypeEntity that = (CompetitionTypeEntity) o;
 
-        if (id != null ? !id.equals(that.id) : that.id != null) return false;
-        return type != null ? type.equals(that.type) : that.type == null;
+        if (id != that.id) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (type != null ? type.hashCode() : 0);
+        int result = id;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         return result;
     }
 }

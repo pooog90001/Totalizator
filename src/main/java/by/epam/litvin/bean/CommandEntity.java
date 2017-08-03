@@ -2,17 +2,17 @@ package by.epam.litvin.bean;
 
 public class CommandEntity extends Entity {
 
-    private Integer id;
+    private int id;
     private String name;
-    private String kindOfSport;
+    private int kindOfSportId;
 
     public CommandEntity() {}
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -24,31 +24,31 @@ public class CommandEntity extends Entity {
         this.name = name;
     }
 
-    public String getKindOfSport() {
-        return kindOfSport;
+    public int getKindOfSportId() {
+        return kindOfSportId;
     }
 
-    public void setKindOfSport(String kindOfSport) {
-        this.kindOfSport = kindOfSport;
+    public void setKindOfSportId(int kindOfSportId  ) {
+        this.kindOfSportId = kindOfSportId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommandEntity)) return false;
 
-        CommandEntity command = (CommandEntity) o;
+        CommandEntity that = (CommandEntity) o;
 
-        if (id != null ? !id.equals(command.id) : command.id != null) return false;
-        if (name != null ? !name.equals(command.name) : command.name != null) return false;
-        return kindOfSport != null ? kindOfSport.equals(command.kindOfSport) : command.kindOfSport == null;
+        if (id != that.id) return false;
+        if (kindOfSportId != that.kindOfSportId) return false;
+        return name != null ? name.equals(that.name) : that.name == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (kindOfSport != null ? kindOfSport.hashCode() : 0);
+        result = 31 * result + kindOfSportId;
         return result;
     }
 }

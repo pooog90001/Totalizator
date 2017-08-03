@@ -2,7 +2,7 @@
 <%@include file="partial/header.jsp" %>
 
 
-<nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar">
+<nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
         <span onclick="closeSidebar()" class="w3-button w3-display-topright w3-small">&cross;</span>
         <br>
@@ -41,7 +41,7 @@
                             </div>
                         </div>
                         <form action="${pageContext.request.contextPath}/generalController">
-                            <input type="hidden" name="command" value="open_concrete_news_page">
+                            <input type="hidden" name="command" value= "open_concrete_news">
                             <input type="hidden" name="newsId" value="${news.id}">
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
                                 <b> ${news.title} </b>
@@ -52,7 +52,7 @@
                 </div>
             </c:forEach>
             <div class="pagination">
-                 <ctg:pagination total="${newsCount}" limit="${limit}" command="open_all_news_page"/>
+                 <ctg:pagination total="${newsCount}" limit="${limit}" command= "open_all_news"/>
             </div>
         </div>
     </div>

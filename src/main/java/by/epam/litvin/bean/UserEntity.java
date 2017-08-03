@@ -4,7 +4,7 @@ import by.epam.litvin.type.UserType;
 
 import java.math.BigDecimal;
 
-public class User extends Entity {
+public class UserEntity extends Entity {
      private int id;
      private String name;
      private String email;
@@ -17,7 +17,7 @@ public class User extends Entity {
      private BigDecimal cash;
      private String avatarURL;
 
-    public User() {
+    public UserEntity() {
     }
 
     public int getId() {
@@ -111,9 +111,9 @@ public class User extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof User)) return false;
+        if (!(o instanceof UserEntity)) return false;
 
-        User user = (User) o;
+        UserEntity user = (UserEntity) o;
 
         if (id != user.id) return false;
         if (isConfirm != user.isConfirm) return false;

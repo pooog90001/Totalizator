@@ -66,3 +66,68 @@ $(document).ready(function() {
     });
 
 });
+
+
+// For live competition filter
+
+$(document).ready(function() {
+
+    //Stops the submit request
+    $("#myAjaxRequestForm").submit(function(e){
+        e.preventDefault();
+    });
+
+    //checks for the button click event
+    $("#selector").change(function(e){
+
+        //get the form data and then serialize that
+        dataString = $("#myAjaxRequestForm").serialize();
+        var selectValue = $("#selector").val();
+
+        //get the form data using another method
+        var countryCode = $("input#countryCode").val();
+        dataString = "kindOfSportId=" + selectValue + "&command=filter_live_competitions";
+
+        //make the AJAX request, dataType is set to json
+        //meaning we are expecting JSON data in response from the server
+        $.ajax({
+            type: "POST",
+            url: "/ajaxController",
+            data: dataString,
+            dataType: "json",
+
+            //if received a response from the server
+            success: function( data, textStatus, jqXHR) {
+                //our country code was correct so we have some information to display
+                if(data.liveGameList !== null){
+/*
+                    presentRequestResult(data.liveGameList);
+*/
+                }
+                //display error message
+                else {
+/*
+                    $("#ajaxResponse").html("<div><b>Just error</b></div>");
+*/
+                }
+            },
+
+            //If there was no resonse from the server
+            error: function(jqXHR, textStatus, errorThrown){
+                console.log("Something really bad happened " + textStatus);
+/*
+                $("#ajaxResponse").html("<div><b>Connection error</b></div>");
+*/
+            },
+
+            //capture the request before it was sent to server
+            beforeSend: function(jqXHR, settings){ },
+
+            //this is called after the response or error functions are finsihed
+            //so that we can take some action
+            complete: function(jqXHR, textStatus){}
+
+        });
+    });
+
+});

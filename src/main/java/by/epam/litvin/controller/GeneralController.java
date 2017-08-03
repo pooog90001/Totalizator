@@ -31,7 +31,6 @@ public class GeneralController extends HttpServlet {
         AbstractCommand executionCommand;
         RequestContent requestContent = new RequestContent();
         Router router;
-
         requestContent.extractValues(req);
         executionCommand = new FactoryCommand().initCommand(requestContent);
         router = executionCommand.execute(requestContent);

@@ -69,19 +69,30 @@ public class CommentDAO extends AbstractDAO<CommentEntity> {
             isCreated = statement.executeUpdate() == 1;
 
         } catch (SQLException e) {
-            throw new DAOException("Error find news comments ",e);
+            throw new DAOException("Error create comment",e);
         }
 
         return isCreated;
     }
 
+    public void changeLockCommentById(int idComment, boolean changeValue) throws DAOException {
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CHANGE_LOCK_COMMENT)) {
+            statement.setBoolean(1, changeValue);
+            statement.setInt(2, idComment);
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Error change comment lock ",e);
+        }
+    }
+
     @Override
-    public void delete(int id) throws DAOException {
+    public boolean delete(int id) throws DAOException {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(CommentEntity entity) throws DAOException {
+    public boolean delete(CommentEntity entity) throws DAOException {
         throw new UnsupportedOperationException();
 
     }

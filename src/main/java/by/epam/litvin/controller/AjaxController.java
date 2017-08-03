@@ -5,6 +5,7 @@ import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.factory.FactoryCommand;
 import by.epam.litvin.type.RouteType;
 import by.epam.litvin.util.Router;
+import com.google.gson.JsonObject;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -32,20 +33,19 @@ public class AjaxController  extends HttpServlet {
         RequestContent requestContent = new RequestContent();
         Router router;
 
+        resp.setContentType("text/html");
+        resp.setCharacterEncoding("utf-8");
         requestContent.extractValues(req);
         executionCommand = new FactoryCommand().initCommand(requestContent);
         router = executionCommand.execute(requestContent);
-        requestContent.insertAttributes(req);
 
-        if (RouteType.FORWARD.equals(router.getRouteType())) {
-            req.getRequestDispatcher(router.getRoutePath()).forward(req, resp);
-
-        } else if (RouteType.REDIRECT.equals(router.getRouteType())) {
+        if (RouteType.REDIRECT.equals(router.getRouteType())) {
             resp.sendRedirect(router.getRoutePath());
 
         } else {
-            resp.sendRedirect(router.getRoutePath());
+            JsonObject json = requestContent.getAjaxResult();
+            resp.getWriter().println(json.toString());
+            resp.getWriter().close();
         }
-
     }
 }

@@ -35,7 +35,7 @@ public class SignInCommand extends AbstractCommand {
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageConstant.MAIN);
+                router.setRoutePath(PageConstant.INDEX);
             }
 
         } catch (ReceiverException e) {

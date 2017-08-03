@@ -1,5 +1,8 @@
 package by.epam.litvin.validator;
 
+import by.epam.litvin.bean.UserEntity;
+import by.epam.litvin.type.UserType;
+
 import java.util.regex.Pattern;
 
 public class UserValidator {
@@ -26,6 +29,45 @@ public class UserValidator {
         boolean hasSatisfactoryLength = name.length() < 45;
 
         return isName && hasSatisfactoryLength;
+    }
+
+    public boolean isAdmin(UserEntity user) {
+        boolean isAdmin = true;
+
+        if (user == null) {
+            isAdmin = false;
+
+        } else if (!UserType.ADMIN.equals(user.getType())) {
+            isAdmin = false;
+        }
+
+        return isAdmin;
+    }
+
+    public boolean isBookmaker(UserEntity user) {
+        boolean isBookmaker = true;
+
+        if (user == null) {
+            isBookmaker = false;
+
+        } else if (!UserType.BOOKMAKER.equals(user.getType())) {
+            isBookmaker = false;
+        }
+
+        return isBookmaker;
+    }
+
+    public boolean isUser(UserEntity user) {
+        boolean isUser = true;
+
+        if (user == null) {
+            isUser = false;
+
+        } else if (!UserType.USER.equals(user.getType())) {
+            isUser = false;
+        }
+
+        return isUser;
     }
 
 }

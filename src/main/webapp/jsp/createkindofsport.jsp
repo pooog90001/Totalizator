@@ -4,7 +4,7 @@
 
 
 
-<nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar">
+<nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
         <span onclick="closeSidebar()" class="w3-button w3-display-topright w3-large">X</span>
         <br>

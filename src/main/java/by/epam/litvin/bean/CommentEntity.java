@@ -5,20 +5,20 @@ import java.util.Date;
 
 public class CommentEntity extends Entity {
 
-    private Integer id;
+    private int id;
     private String text;
     private Boolean isBlocked;
     private Date postDate;
-    private Integer newsId;
-    private Integer userId;
+    private int newsId;
+    private int userId;
 
     public CommentEntity() {}
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -46,45 +46,45 @@ public class CommentEntity extends Entity {
         this.postDate = postDate;
     }
 
-    public Integer getNewsId() {
+    public int getNewsId() {
         return newsId;
     }
 
-    public void setNewsId(Integer newsId) {
+    public void setNewsId(int newsId) {
         this.newsId = newsId;
     }
 
-    public Integer getUserId() {
+    public int getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(int userId) {
         this.userId = userId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (!(o instanceof CommentEntity)) return false;
 
-        CommentEntity comment = (CommentEntity) o;
+        CommentEntity that = (CommentEntity) o;
 
-        if (id != null ? !id.equals(comment.id) : comment.id != null) return false;
-        if (text != null ? !text.equals(comment.text) : comment.text != null) return false;
-        if (isBlocked != null ? !isBlocked.equals(comment.isBlocked) : comment.isBlocked != null) return false;
-        if (postDate != null ? !postDate.equals(comment.postDate) : comment.postDate != null) return false;
-        if (newsId != null ? !newsId.equals(comment.newsId) : comment.newsId != null) return false;
-        return userId != null ? userId.equals(comment.userId) : comment.userId == null;
+        if (id != that.id) return false;
+        if (newsId != that.newsId) return false;
+        if (userId != that.userId) return false;
+        if (text != null ? !text.equals(that.text) : that.text != null) return false;
+        if (isBlocked != null ? !isBlocked.equals(that.isBlocked) : that.isBlocked != null) return false;
+        return postDate != null ? postDate.equals(that.postDate) : that.postDate == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
+        int result = id;
         result = 31 * result + (text != null ? text.hashCode() : 0);
         result = 31 * result + (isBlocked != null ? isBlocked.hashCode() : 0);
         result = 31 * result + (postDate != null ? postDate.hashCode() : 0);
-        result = 31 * result + (newsId != null ? newsId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
+        result = 31 * result + newsId;
+        result = 31 * result + userId;
         return result;
     }
 }

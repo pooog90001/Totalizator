@@ -20,9 +20,9 @@ public abstract class AbstractDAO<T extends Entity> {
 
     public abstract T findEntityById(int id) throws DAOException;
 
-    public abstract void delete(int id) throws DAOException;
+    public abstract boolean delete(int id) throws DAOException;
 
-    public abstract void delete(T entity) throws DAOException;
+    public abstract boolean delete(T entity) throws DAOException;
 
     public abstract boolean create(T entity) throws DAOException;
 

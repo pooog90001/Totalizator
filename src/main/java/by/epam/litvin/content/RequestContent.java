@@ -1,6 +1,7 @@
 package by.epam.litvin.content;
 
 import by.epam.litvin.type.RouteType;
+import com.google.gson.JsonObject;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,6 +14,7 @@ public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;
     private HashMap<String, Object> sessionAttributes;
+    private JsonObject ajaxResult;
 
     public RequestContent() {
         requestAttributes = new HashMap<>();
@@ -86,4 +88,11 @@ public class RequestContent {
         this.sessionAttributes = sessionAttributes;
     }
 
+    public JsonObject  getAjaxResult() {
+        return ajaxResult;
+    }
+
+    public void setAjaxResult(JsonObject  ajaxResult) {
+        this.ajaxResult = ajaxResult;
+    }
 }

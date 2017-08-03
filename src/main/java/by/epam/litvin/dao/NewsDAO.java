@@ -104,12 +104,12 @@ public class NewsDAO extends AbstractDAO<NewsEntity> {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(NewsEntity entity) {
+    public boolean delete(NewsEntity entity) {
         throw new UnsupportedOperationException();
     }
 

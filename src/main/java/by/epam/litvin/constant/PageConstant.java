@@ -10,11 +10,29 @@ final public class PageConstant {
     public static final String SIGN_IN = ROOT + "sign_in.jsp";
     public static final String CONFIRM = ROOT + "confirm.jsp";
     public static final String ALL_NEWS = ROOT + "all_news.jsp";
+    public static final String ALL_LIVE_COMPETITIONS = ROOT + "all_live_competitions.jsp";
+    public static final String ALL_UPCOMING_COMPETITIONS = ROOT + "all_upcoming_competitions.jsp";
+    public static final String ALL_PAST_COMPETITIONS = ROOT + "all_past_competitions.jsp";
     public static final String CONCRETE_NEWS = ROOT + "concrete_news.jsp";
+    public static final String CONCRETE_NEWS_ADD = ROOT + "concrete_news_add.jsp";
     public static final String INDEX = "index.jsp";
+
+    //Admin pages
+    private static final String ADMIN_ROOT = "jsp/admin_panel/";
+    public static final String ADMIN_MAIN = ADMIN_ROOT + "main.jsp";
+    public static final String ADMIN_COMMAND = ADMIN_ROOT + "command.jsp";
+    public static final String ADMIN_COMMAND_ADD = ADMIN_ROOT + "command_add.jsp";
+    public static final String ADMIN_COMPETITION = ADMIN_ROOT + "competition.jsp";
+    public static final String ADMIN_COMPETITION_TYPE = ADMIN_ROOT + "competition_type.jsp";
+    public static final String ADMIN_COMPETITION_TYPE_ADD = ADMIN_ROOT + "competition_type_add.jsp";
+    public static final String ADMIN_KIND_OF_SPORT = ADMIN_ROOT + "kind_of_sport.jsp";
+    public static final String ADMIN_KIND_OF_SPORT_ADD = ADMIN_ROOT + "kind_of_sport_add.jsp";
+    public static final String ADMIN_NEWS = ADMIN_ROOT + "news.jsp";
+    public static final String ADMIN_USER = ADMIN_ROOT + "user.jsp";
+
+
     //Error pages
     private static final String ERROR_ROOT = "jsp/error/";
-
     public static final String ERROR_404 = ERROR_ROOT + "404.jsp";
     public static final String ERROR_500 = ERROR_ROOT + "500.jsp";
     public static final String ERROR_RUNTIME = ERROR_ROOT + "runtime.jsp";

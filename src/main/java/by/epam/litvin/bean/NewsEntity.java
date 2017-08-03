@@ -2,14 +2,14 @@ package by.epam.litvin.bean;
 
 import java.util.Date;
 
-public class News extends Entity {
+public class NewsEntity extends Entity {
     private int id;
     private String title;
     private String text;
     private String imageUrl;
     private Date dateCreation;
 
-    public News() {}
+    public NewsEntity() {}
 
     public int getId() {
         return id;
@@ -54,9 +54,9 @@ public class News extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof News)) return false;
+        if (!(o instanceof NewsEntity)) return false;
 
-        News news = (News) o;
+        NewsEntity news = (NewsEntity) o;
 
         if (id != news.id) return false;
         if (title != null ? !title.equals(news.title) : news.title != null) return false;

@@ -69,7 +69,7 @@ final public class SQLFieldConstant {
         private static final String KIND_OF_SPORT = "kind_of_sport_";
         public static final String ID = KIND_OF_SPORT + "id";
         public static final String NAME = KIND_OF_SPORT + "name";
-        public static final String COMPETITOR_COUNT = "competitior_count";
+        public static final String COMPETITOR_COUNT = "competitor_count";
     }
 
     public final class Competitor {

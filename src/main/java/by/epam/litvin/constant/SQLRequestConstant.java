@@ -42,6 +42,15 @@ final public class SQLRequestConstant {
                     "SELECT command_id,command_name, kind_of_sport_id " +
                     "FROM command;";
 
+    public static final String FIND_ALL_COMMAND_WITH_KIND_OF_SPORT =
+                    "SELECT command_id, " +
+                    "       command_name, " +
+                    "       command.kind_of_sport_id, " +
+                    "       kind_of_sport_name " +
+                    "FROM  command, " +
+                    "       kind_of_sport " +
+                    "WHERE command.kind_of_sport_id = kind_of_sport.kind_of_sport_id;";
+
     public static final String FIND_COMMAND_BY_ID =
                     "SELECT command_name, kind_of_sport_id " +
                     "FROM command " +
@@ -56,13 +65,30 @@ final public class SQLRequestConstant {
 
     public static final String UPDATE_COMMAND_BY_ID =
                     "UPDATE command " +
-                    "SET command_name = ?, kind_of_sport_id = ? " +
+                    "SET command_name = ? " +
                     "WHERE command_id = ?;";
 
 
-    public static final String INSERT_COMMAND =
-                    "INSERT INTO command (name, kind_of_sport_id) " +
+    public static final String CREATE_COMMAND =
+                    "INSERT INTO command (command_name, kind_of_sport_id) " +
                     "VALUES (?, ?);";
+
+    public static final String FIND_LIVE_GAMES_COUNT = 
+                    "SELECT  " +
+                    "    COUNT(DISTINCT competition.competition_id) as count " +
+                    "FROM " +
+                    "    competition, " +
+                    "    competitor, " +
+                    "    command, " +
+                    "    kind_of_sport " +
+                    "WHERE " +
+                    "    competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
+                    "        AND kind_of_sport.competitor_count = 2 " +
+                    "        AND competition_date_start < NOW() " +
+                    "        AND competition_date_finish IS NULL " +
+                    "        AND competition_is_active = TRUE";
 
     public static final String FIND_LIMIT_LIVE_GAMES = 
                     "SELECT  " +
@@ -70,10 +96,13 @@ final public class SQLRequestConstant {
                     "    kind_of_sport_name, " +
                     "    command_name, " +
                     "    competition_total, " +
+                    "    competition_name, " +
                     "    competition_less_total_coeff, " +
                     "    competition_more_total_coeff, " +
                     "    competition_standoff_coeff," +
-                    "    competitor_win_coeff " +
+                    "    competitor_id, " +
+                    "    competitor_win_coeff, " +
+                    "    competition_name " +
                     "FROM " +
                     "    competition, " +
                     "    competitor, " +
@@ -87,9 +116,64 @@ final public class SQLRequestConstant {
                     "        AND competition_date_start < NOW() " +
                     "        AND competition_date_finish IS NULL " +
                     "        AND competition_is_active = TRUE " +
-                    "LIMIT ?;";
+                    "LIMIT ?, ?;";
 
-    public static final String FIND_LIMIT_UPCOMMING_GAMES =
+    public static final String FIND_ALL_LIVE_GAMES =
+            "SELECT  " +
+                    "    competition.competition_id, " +
+                    "    kind_of_sport_name, " +
+                    "    command_name, " +
+                    "    competition_total, " +
+                    "    competition_name, " +
+                    "    competition_less_total_coeff, " +
+                    "    competition_more_total_coeff, " +
+                    "    competition_standoff_coeff," +
+                    "    competitor_id, " +
+                    "    competitor_win_coeff, " +
+                    "    competition_name " +
+                    "FROM " +
+                    "    competition, " +
+                    "    competitor, " +
+                    "    command, " +
+                    "    kind_of_sport " +
+                    "WHERE " +
+                    "        competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
+                    "        AND kind_of_sport.competitor_count = 2 " +
+                    "        AND competition_date_start < NOW() " +
+                    "        AND competition_date_finish IS NULL " +
+                    "        AND competition_is_active = TRUE ;";
+
+    public static final String FIND_FILTERED_LIVE_GAMES =
+            "SELECT  " +
+                    "    competition.competition_id, " +
+                    "    kind_of_sport_name, " +
+                    "    command_name, " +
+                    "    competition_total, " +
+                    "    competition_name, " +
+                    "    competition_less_total_coeff, " +
+                    "    competition_more_total_coeff, " +
+                    "    competition_standoff_coeff," +
+                    "    competitor_id, " +
+                    "    competitor_win_coeff, " +
+                    "    competition_name " +
+                    "FROM " +
+                    "    competition, " +
+                    "    competitor, " +
+                    "    command, " +
+                    "    kind_of_sport " +
+                    "WHERE " +
+                    "        competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
+                    "        AND kind_of_sport.competitor_count = 2 " +
+                    "        AND competition_date_start < NOW() " +
+                    "        AND competition_date_finish IS NULL " +
+                    "        AND competition_is_active = TRUE " +
+                    "        AND kind_of_sport.kind_of_sport_id = ?;";
+
+    public static final String FIND_LIMIT_UPCOMING_GAMES =
                     "SELECT  " +
                     "    competition.competition_id, " +
                     "    kind_of_sport_name, " +
@@ -98,7 +182,10 @@ final public class SQLRequestConstant {
                     "    competition_less_total_coeff, " +
                     "    competition_more_total_coeff, " +
                     "    competition_standoff_coeff, " +
-                    "    competitor_win_coeff " +
+                    "    competitor_win_coeff, " +
+                    "    competitor_id, " +
+                    "    competition_date_start, " +
+                    "    competition_name " +
                     "FROM " +
                     "    competition, " +
                     "    competitor, " +
@@ -112,12 +199,13 @@ final public class SQLRequestConstant {
                     "        AND competition_date_start > NOW() " +
                     "        AND competition_date_finish IS NULL " +
                     "        AND competition_is_active = TRUE " +
-                    "LIMIT ?;";
+                    "LIMIT ?, ?;";
 
     public static final String FIND_LIMIT_PAST_GAMES =
                     "SELECT  " +
                     "    competition.competition_id, " +
                     "    competition_date_start, " +
+                    "    competition_name, " +
                     "    kind_of_sport_name, " +
                     "    command_name, " +
                     "    competitor_result " +
@@ -135,9 +223,9 @@ final public class SQLRequestConstant {
                     "        AND competition_date_finish < NOW() " +
                     "        AND competition_is_active = FALSE " +
                             "ORDER BY competition.competition_id DESC " +
-                    "LIMIT ?;";
+                    "LIMIT ?, ?;";
     
-    public static final String FIND_USING_KIND_OF_SPORTS =
+    public static final String FIND_USING_KINDS_OF_SPORT =
                     "SELECT DISTINCT " +
                     "    kind_of_sport_name,  " +
                     "    competition_type.competition_type_id, " +
@@ -153,6 +241,47 @@ final public class SQLRequestConstant {
                     "        AND competitor.competition_id = competition.competition_id " +
                     "        AND command.command_id = competitor.command_id " +
                     "        AND kind_of_sport.kind_of_sport_id = command.kind_of_sport_id;";
+
+    public static final String FIND_LIVE_GAMES_KINDS_OF_SPORT =
+                    "SELECT DISTINCT " +
+                    "    kind_of_sport.kind_of_sport_id, " +
+                    "    kind_of_sport_name, " +
+                    "    competitor_count " +
+                    "FROM " +
+                    "    competition, " +
+                    "    competitor, " +
+                    "    command, " +
+                    "    kind_of_sport " +
+                    "WHERE " +
+                    "        competitor.competition_id = competition.competition_id " +
+                    "        AND competitor.command_id = command.command_id " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id " +
+                    "        AND kind_of_sport.competitor_count = 2 " +
+                    "        AND competition_date_start < NOW() " +
+                    "        AND competition_date_finish IS NULL " +
+                    "        AND competition_is_active = TRUE;";
+
+    public static final String FIND_ALL_KINDS_OF_SPORT =
+                    "SELECT " +
+                    "    kind_of_sport.kind_of_sport_id, " +
+                    "    kind_of_sport_name, " +
+                    "    competitor_count " +
+                    "FROM " +
+                    "    kind_of_sport; ";
+
+    public static final String UPDATE_KIND_OF_SPORT_BY_ID =
+            "UPDATE `totalizatorr`.`kind_of_sport` " +
+                    "SET `kind_of_sport_name`= ? " +
+                    "WHERE `kind_of_sport_id`= ?; ";
+    
+    public static final String CREATE_KIND_OF_SPORT = 
+            "INSERT INTO `totalizatorr`.`kind_of_sport` (`kind_of_sport_name`, `competitor_count`) " +
+                    "VALUES (?, ?);";
+
+    public static final String DELETE_KIND_OF_SPORT_BY_ID =
+            "DELETE FROM `totalizatorr`.`kind_of_sport` " +
+                    "WHERE `kind_of_sport_id`= ?;\n";
+
 
     public static final String FIND_NEWS_COMMENTS =
                             "SELECT DISTINCT " +
@@ -174,5 +303,27 @@ final public class SQLRequestConstant {
                     "INSERT INTO comment (comment_text, comment_post_date, news_id, user_id) " +
                     "VALUES (? , now(), ?, ?);";
 
+    public static final String CHANGE_LOCK_COMMENT =
+                    "UPDATE comment " +
+                    "SET comment_is_blocked = ? " +
+                    "WHERE comment_id = ?;";
+
+    public static final String FIND_ALL_COMPETITION_TYPES =
+            "SELECT competition_type_id, " +
+                    "competition_type_name " +
+            "FROM competition_type;";
+
+    public static final String CREATE_COMPETITION_TYPE =
+            "INSERT INTO competition_type (competition_type_name) " +
+            "VALUES (?);";
+
+    public static final String UPDATE_COMPETITION_TYPE =
+            "UPDATE competition_type " +
+            "SET competition_type_name = ? " +
+            "WHERE competition_type_id = ?;";
+
+    public static final String DELETE_COMPETITION_TYPE =
+            "DELETE FROM competition_type " +
+            "WHERE competition_type_id = ?;";
 
 }

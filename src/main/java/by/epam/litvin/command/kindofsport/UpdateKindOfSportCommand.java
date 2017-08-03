@@ -1,4 +1,4 @@
-package by.epam.litvin.command.page;
+package by.epam.litvin.command.kindofsport;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
@@ -12,28 +12,20 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class OpenConcreteNewsCommand extends AbstractCommand {
+public class UpdateKindOfSportCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenConcreteNewsCommand(Receiver receiver) {
+    public UpdateKindOfSportCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent requestContent){
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            if (!requestContent.getRequestAttributes().containsKey("wrongNews")) {
-                router.setRoutePath(PageConstant.CONCRETE_NEWS);
-                router.setRouteType(RouteType.FORWARD);
-
-            } else {
-                router.setRoutePath(PageConstant.ERROR_404);
-                router.setRouteType(RouteType.REDIRECT);
-            }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);

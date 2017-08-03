@@ -1,3 +1,5 @@
+closeSidebar();
+
 function myFunction(className) {
     var x = document.getElementsByClassName(className);
     for (var i = 0; i < x.length; i++) {
@@ -24,7 +26,7 @@ function openNav() {
     }
 }
 
-closeSidebar();
+
 function openSidebar() {
     document.getElementById("mySidebar").style.display = "block";
 }
@@ -37,5 +39,5 @@ document.getElementById('deleteButton').onclick = function (e) {
 };
 
 document.getElementById('closeModalBeforeDelete').onclick = function (e) {
-    document.getElementById('modalBeforeDelete').style.display='none';
+    document.getElementById('modalBeforeDelete').style.display = 'none';
 };

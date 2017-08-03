@@ -69,8 +69,11 @@
                             </div>
                         </a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
-                            <c:if test="${!user.type.toString().equals('USER')}">
-                                <a href="#" class="w3-bar-item w3-button">Admin panel</a>
+                            <c:if test="${user.type.toString().equals('ADMIN') || user.type.toString().equals('BOOKMAKER')}">
+                                <form action="${pageContext.request.contextPath}/generalController" method="post">
+                                    <input type="hidden" name="command" value="open_admin_panel">
+                                    <input type="submit" class="w3-bar-item w3-button" value="Admin panel"/>
+                                </form>
                             </c:if>
                             <a href="#" class="w3-bar-item w3-button">${profile} </a>
                             <a href="#" class="w3-bar-item w3-button">${settings}</a>
@@ -101,37 +104,37 @@
             </a>
             <div class="w3-left w3-hide-small w3-center w3-padding-small w3-medium">
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${news}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${live}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${upcoming}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${results}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${aboutCompany}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${rules}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value="open_all_news_page">
+                    <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${help}">
                 </form>
@@ -184,7 +187,7 @@
 
 
         <form>
-            <input type="hidden" name="command" value="open_all_news_page">
+            <input type="hidden" name="command" value= "open_all_news">
             <input type="submit" class="w3-button w3-padding w3-bar-item" value="${news}">
         </form>
 

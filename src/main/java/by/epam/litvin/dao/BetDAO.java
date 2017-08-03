@@ -21,12 +21,12 @@ public class BetDAO extends AbstractDAO {
     }
 
     @Override
-    public void delete(int id) {
+    public boolean delete(int id) {
         throw new UnsupportedOperationException();
     }
 
     @Override
-    public void delete(Entity entity) {
+    public boolean delete(Entity entity) {
         throw new UnsupportedOperationException();
     }
 

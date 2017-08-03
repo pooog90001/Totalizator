@@ -1,7 +1,7 @@
 package by.epam.litvin.receiver.impl;
 
 
-import by.epam.litvin.bean.User;
+import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.RequestNameConstant;
 import by.epam.litvin.dao.UserDAO;
 import by.epam.litvin.receiver.UserReceiver;
@@ -15,8 +15,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-
-import java.math.BigDecimal;
 
 import static by.epam.litvin.constant.RequestNameConstant.*;
 
@@ -40,19 +38,19 @@ public class UserReceiverImpl implements UserReceiver {
         requestContent.getRequestAttributes().put(REPEAT_PASSWORD, repeatPassword);
 
         if (!validator.checkPassword(password)) {
-            requestContent.getRequestAttributes().put(WRONG_PASSWORD, new Object());
+            requestContent.getRequestAttributes().put(WRONG_PASSWORD, true);
             isValidData = false;
 
         } if (!password.equals(repeatPassword)) {
-            requestContent.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, new Object());
+            requestContent.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, true);
             isValidData = false;
 
         } if (!validator.checkEmail(email)) {
-            requestContent.getRequestAttributes().put(WRONG_EMAIL, new Object());
+            requestContent.getRequestAttributes().put(WRONG_EMAIL, true);
             isValidData = false;
 
         } if (!validator.checkName(name)) {
-            requestContent.getRequestAttributes().put(WRONG_NAME, new Object());
+            requestContent.getRequestAttributes().put(WRONG_NAME, true);
             isValidData = false;
 
         } if (!isValidData) {
@@ -61,7 +59,7 @@ public class UserReceiverImpl implements UserReceiver {
 
         dbPassword = StringEncoder.encode(password);
         confirmURL = StringEncoder.encode(email);
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setName(name);
         user.setEmail(email);
         user.setPassword(dbPassword);
@@ -77,7 +75,7 @@ public class UserReceiverImpl implements UserReceiver {
                 handler.commit();
 
             } else {
-                requestContent.getRequestAttributes().put(EMAIL_EXISTS, new Object());
+                requestContent.getRequestAttributes().put(EMAIL_EXISTS, true);
             }
 
             handler.endTransaction();
@@ -87,7 +85,7 @@ public class UserReceiverImpl implements UserReceiver {
                 try {
                     handler.rollback();
                 } catch (DAOException e1) {
-                    LOGGER.log(Level.ERROR, "This exception never happens", e);
+                    throw new ReceiverException("Rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -113,12 +111,12 @@ public class UserReceiverImpl implements UserReceiver {
         requestContent.getRequestAttributes().put(PASSWORD, password);
 
         if (!validator.checkPassword(password) || !validator.checkEmail(email)) {
-            requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
+            requestContent.getRequestAttributes().put(WRONG_DATA, true);
             return;
         }
 
         dbPassword = StringEncoder.encode(password);
-        User user = new User();
+        UserEntity user = new UserEntity();
         user.setEmail(email);
         user.setPassword(dbPassword);
         TransactionManager handler = null;
@@ -127,13 +125,13 @@ public class UserReceiverImpl implements UserReceiver {
             handler = new TransactionManager();
             UserDAO userDao = new UserDAO();
             handler.beginTransaction(userDao);
-            User foundUser = userDao.findUser(user);
+            UserEntity foundUser = userDao.findUser(user);
             handler.commit();
 
             if (foundUser != null) {
                 requestContent.getSessionAttributes().put(USER, foundUser);
             } else {
-                requestContent.getRequestAttributes().put(WRONG_DATA, new Object());
+                requestContent.getRequestAttributes().put(WRONG_DATA, true);
             }
             handler.endTransaction();
 
@@ -141,10 +139,8 @@ public class UserReceiverImpl implements UserReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
-                    handler.endTransaction();
-
                 } catch (DAOException e1) {
-                    LOGGER.log(Level.ERROR, "Database exception", e);
+                    throw new ReceiverException("Rollback error", e);
                 }
             }
             throw new ReceiverException(e);

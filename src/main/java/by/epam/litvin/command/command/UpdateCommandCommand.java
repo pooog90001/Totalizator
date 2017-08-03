@@ -1,4 +1,4 @@
-package by.epam.litvin.command.page;
+package by.epam.litvin.command.command;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
@@ -12,22 +12,20 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class OpenAllNewsPageCommand extends AbstractCommand {
+public class UpdateCommandCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenAllNewsPageCommand(Receiver receiver) {
+    public UpdateCommandCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent requestContent){
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageConstant.ALL_NEWS);
-            router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);

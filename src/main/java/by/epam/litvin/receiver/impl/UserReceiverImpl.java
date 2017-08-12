@@ -84,6 +84,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -139,6 +140,7 @@ public class UserReceiverImpl implements UserReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

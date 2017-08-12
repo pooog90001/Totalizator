@@ -5,7 +5,7 @@ import by.epam.litvin.type.UserType;
 
 import java.util.regex.Pattern;
 
-public class UserValidator {
+public class UserValidator implements Validator {
     private final static String EMAIL_REGEX = "([_\\w-]+(\\.[_\\w-]+)*@[\\w-]+(\\.[\\w-]+)*(\\.[a-zA-Z]{1,6}))";
 
     public boolean checkPassword(String password) {

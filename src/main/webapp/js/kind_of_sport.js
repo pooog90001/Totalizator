@@ -138,7 +138,8 @@ document.getElementById('create').onclick = function (e) {
    }
 };
 
-if (wrong !== null) {
+if (document.getElementById('wrong') !== null) {
     var event = new Event("click");
     create.dispatchEvent(event);
 }
+

@@ -14,10 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
 
-public class OpenCommandCommand extends AbstractCommand {
+public class OpenCommandsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenCommandCommand(Receiver receiver) {
+    public OpenCommandsCommand(Receiver receiver) {
         super(receiver);
     }
 

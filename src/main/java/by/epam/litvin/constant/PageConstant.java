@@ -22,9 +22,10 @@ final public class PageConstant {
     public static final String ADMIN_MAIN = ADMIN_ROOT + "main.jsp";
     public static final String ADMIN_COMMAND = ADMIN_ROOT + "command.jsp";
     public static final String ADMIN_COMMAND_ADD = ADMIN_ROOT + "command_add.jsp";
-    public static final String ADMIN_COMPETITION = ADMIN_ROOT + "competition.jsp";
     public static final String ADMIN_COMPETITION_TYPE = ADMIN_ROOT + "competition_type.jsp";
     public static final String ADMIN_COMPETITION_TYPE_ADD = ADMIN_ROOT + "competition_type_add.jsp";
+    public static final String ADMIN_COMPETITION = ADMIN_ROOT + "competition.jsp";
+    public static final String ADMIN_COMPETITION_ADD = ADMIN_ROOT + "competition_add.jsp";
     public static final String ADMIN_KIND_OF_SPORT = ADMIN_ROOT + "kind_of_sport.jsp";
     public static final String ADMIN_KIND_OF_SPORT_ADD = ADMIN_ROOT + "kind_of_sport_add.jsp";
     public static final String ADMIN_NEWS = ADMIN_ROOT + "news.jsp";

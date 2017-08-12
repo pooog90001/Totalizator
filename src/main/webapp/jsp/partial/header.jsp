@@ -111,11 +111,6 @@
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
                     <input type="hidden" name="command" value= "open_all_news">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
-                           value="${live}">
-                </form>
-                <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value= "open_all_news">
-                    <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${upcoming}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">

@@ -41,3 +41,24 @@ document.getElementById('deleteButton').onclick = function (e) {
 document.getElementById('closeModalBeforeDelete').onclick = function (e) {
     document.getElementById('modalBeforeDelete').style.display = 'none';
 };
+
+function changeLanguage(element) {
+
+    var dataString = "locale=" + element.value + "&command=change_locale";
+
+    $.ajax({
+        type: "POST",
+        url: "/ajaxController",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data, textStatus, jqXHR) {
+            window.location.reload();
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Something really bad happened " + textStatus);
+        },
+        beforeSend: function (jqXHR, settings) {},
+        complete: function (jqXHR, textStatus) {}
+    });
+}

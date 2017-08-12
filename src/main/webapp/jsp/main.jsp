@@ -64,140 +64,7 @@
 
         </div>
 
-
-        <div class="w3-row-padding">
-            <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_all_live_competitions">
-                <button type="submit" class="w3-xlarge w3-button w3-hover-none">
-                    ${live}
-                </button>
-            </form>
-            <div class=" w3-container w3-padding-small w3-card-2 w3-center">
-                <div class="w3-col s12 w3-container w3-padding-small">
-                    <div class="w3-row">
-                        <div class="w3-card-2 w3-white w3-round w3-medium">
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">#</div>
-                            </div>
-                            <div class="w3-col s2 w3-padding-small">
-                                <div class="w3-center">kind of sport</div>
-                            </div>
-                            <div class="w3-col s3 w3-padding-small">
-                                <div class="w3-center">command</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">T</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">L</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">M</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">W1</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">X</div>
-                            </div>
-                            <div class="w3-col s1 w3-padding-small">
-                                <div class="w3-center">W2</div>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                </div>
-                <c:forEach var="liveGame" items="${requestScope.get('liveGames')}">
-                    <div class="w3-col s12 w3-container w3-padding-small">
-                        <div class="w3-row w3-hover-light-grey">
-                            <div class="w3-card-2 w3-white w3-round w3-small">
-                                <div class="w3-col s1 w3-padding-small">
-                                    <div class="w3-center">
-                                            ${liveGame['competition_id']}
-                                    </div>
-                                </div>
-                                <div class="w3-col s2 w3-padding-small">
-                                    <div class="w3-center">
-                                            ${liveGame['kind_of_sport_name']}
-                                    </div>
-                                </div>
-                                <div class="w3-col s3 w3-padding-small">
-                                    <div class="w3-center">
-                                            ${liveGame['command_name'][0]}
-                                        - ${liveGame['command_name'][1]}
-                                    </div>
-                                </div>
-                                <div class="w3-col s1 w3-padding-small">
-                                    <div class="w3-center">
-                                        <ctg:decimal-presenter number="${liveGame['competition_total']}"/>
-                                    </div>
-                                </div>
-                                <div class="w3-col s1">
-                                    <form action="${pageContext.request.contextPath}/generalController">
-                                        <input type="hidden" name="command" value="open_do_bet_page">
-                                        <input type="hidden" name="competitionId"
-                                               value="${liveGame['competition_id']}">
-                                        <button type="submit" class="w3-center w3-button w3-small w3-padding-small">
-                                            <ctg:decimal-presenter
-                                                    number="${liveGame['competition_less_total_coeff']}"/>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="w3-col s1">
-                                    <form action="${pageContext.request.contextPath}/generalController">
-                                        <input type="hidden" name="command" value="open_do_bet_page">
-                                        <input type="hidden" name="competitionId"
-                                               value="${liveGame['competition_id']}">
-                                        <button type="submit" class="w3-center w3-button w3-small w3-padding-small">
-                                            <ctg:decimal-presenter
-                                                    number="${liveGame['competition_more_total_coeff']}"/>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="w3-col s1">
-                                    <form action="${pageContext.request.contextPath}/generalController">
-                                        <input type="hidden" name="command" value="open_do_bet_page">
-                                        <input type="hidden" name="competitorId"
-                                               value="${liveGame['competitor_id']}">
-                                        <button type="submit" class="w3-center w3-button w3-small w3-padding-small">
-                                            <ctg:decimal-presenter number="${liveGame['competitor_win_coeff'][0]}"/>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="w3-col s1">
-                                    <form action="${pageContext.request.contextPath}/generalController">
-                                        <input type="hidden" name="command" value="open_do_bet_page">
-                                        <input type="hidden" name="competitionId"
-                                               value="${liveGame['competition_id']}">
-                                        <button type="submit" class="w3-center w3-button w3-small w3-padding-small">
-                                            <ctg:decimal-presenter number="${liveGame['competition_standoff_coeff']}"/>
-                                        </button>
-                                    </form>
-                                </div>
-                                <div class="w3-col s1">
-                                    <form action="${pageContext.request.contextPath}/generalController">
-                                        <input type="hidden" name="command" value="open_do_bet_page">
-                                        <input type="hidden" name="competitorId"
-                                               value="${liveGame['competitor_id']}">
-                                        <button type="submit" class="w3-center w3-button w3-small w3-padding-small">
-                                            <ctg:decimal-presenter number="${liveGame['competitor_win_coeff'][1]}"/>
-                                        </button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </c:forEach>
-            </div>
-            <form class="w3-container w3-margin-bottom" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_all_live_competitions">
-                <button type="submit" class="w3-right w3-button w3-small">
-                    Все ${live}
-                </button>
-            </form>
-        </div>
-
-
+<%--Start upcoming comeptitions section--%>
         <div class="w3-row-padding">
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="open_upcoming_competition_page">
@@ -239,9 +106,9 @@
                                     <form action="${pageContext.request.contextPath}/generalController">
                                         <input type="hidden" name="command" value="open_do_bet_page">
                                         <input type="hidden" name="competitionId"
-                                               value="${liveGame['competition_id']}">
+                                               value="${upcomingGame['competition_id']}">
                                         <button type="submit" class="w3-right w3-button w3-small">
-                                            <ctg:decimal-presenter number="${liveGame['competition_standoff_coeff']}"/>
+                                            <ctg:decimal-presenter number="${upcomingGame['competition_standoff_coeff']}"/>
                                         </button>
                                     </form>
                                     <ctg:decimal-presenter number="${upcomingGame['competition_less_total_coeff']}"/>
@@ -250,9 +117,9 @@
                                     <form action="${pageContext.request.contextPath}/generalController">
                                         <input type="hidden" name="command" value="open_do_bet_page">
                                         <input type="hidden" name="competitionId"
-                                               value="${liveGame['competition_id']}">
+                                               value="${upcomingGame['competition_id']}">
                                         <button type="submit" class="w3-right w3-button w3-small">
-                                            <ctg:decimal-presenter number="${liveGame['competition_standoff_coeff']}"/>
+                                            <ctg:decimal-presenter number="${upcomingGame['competition_standoff_coeff']}"/>
                                         </button>
                                     </form>
                                     <ctg:decimal-presenter number="${upcomingGame['competition_more_total_coeff']}"/>
@@ -301,8 +168,9 @@
                 </button>
             </form>
         </div>
+        <%--End upcoming comeptitions section--%>
 
-
+        <%--Start past comeptitions section--%>
         <div class="w3-row-padding">
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="open_upcoming_competition_page">
@@ -349,6 +217,8 @@
             </div>
         </div>
     </div>
+    <%--End past comeptitions section--%>
+</div>
 </body>
 
 <%@include file="partial/footer.jsp" %>

@@ -54,6 +54,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -100,6 +101,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -113,6 +115,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         KindOfSportValidator validator = new KindOfSportValidator();
         String[] stringCompetitorsCount = requestContent.getRequestParameters().get("count");
         String kindOfSportName = requestContent.getRequestParameters().get("name")[0].trim();
+        requestContent.getSessionAttributes().remove(TEMPORARY);
 
         int competitorsCount = Integer.valueOf(stringCompetitorsCount[0]);
 
@@ -152,6 +155,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -187,6 +191,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

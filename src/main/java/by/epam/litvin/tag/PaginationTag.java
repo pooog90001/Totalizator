@@ -1,6 +1,5 @@
 package by.epam.litvin.tag;
 
-import by.epam.litvin.util.Paginator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

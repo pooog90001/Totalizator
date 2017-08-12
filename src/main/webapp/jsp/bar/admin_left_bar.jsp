@@ -10,7 +10,7 @@
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_settings_kind_of_sport">
+            <input type="hidden" name="command" value="open_competition_settings">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                 Соревнования
             </button>

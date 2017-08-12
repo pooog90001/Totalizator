@@ -1,7 +1,6 @@
 package by.epam.litvin.dao;
 
 import by.epam.litvin.bean.CommandEntity;
-import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.exception.DAOException;
@@ -16,15 +15,14 @@ import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
-import static by.epam.litvin.constant.SQLRequestConstant.FIND_ALL_COMMAND_WITH_KIND_OF_SPORT;
-import static by.epam.litvin.constant.SQLRequestConstant.FIND_ALL_KINDS_OF_SPORT;
+import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 public class CommandDAO extends AbstractDAO<CommandEntity> {
     @Override
     public List<CommandEntity> findAll() throws DAOException {
         List<CommandEntity> commandList;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_KINDS_OF_SPORT)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMAND)) {
             ResultSet resultSet = statement.executeQuery();
             commandList = new ArrayList<>();
 
@@ -43,10 +41,33 @@ public class CommandDAO extends AbstractDAO<CommandEntity> {
         return commandList;
     }
 
+    public List<CommandEntity> findBySportId(int sportId) throws DAOException {
+        List<CommandEntity> commandList;
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_COMMANDS_BY_SPORT_ID)) {
+            statement.setInt(1, sportId);
+            ResultSet resultSet = statement.executeQuery();
+            commandList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                CommandEntity command = new CommandEntity();
+                command.setId(resultSet.getInt(SQLFieldConstant.Command.ID));
+                command.setName(resultSet.getString(SQLFieldConstant.Command.NAME));
+                command.setKindOfSportId(resultSet.getInt(SQLFieldConstant.Command.KIND_OF_SPORT_ID));
+                commandList.add(command);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("find all kinds of sport error", e);
+        }
+
+        return commandList;
+    }
+
     public List<Map<String, Object>> findAllWithKindOfSport() throws DAOException {
         List<Map<String, Object>> commandList;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMAND_WITH_KIND_OF_SPORT)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMMANDS_WITH_KIND_OF_SPORT)) {
             ResultSet resultSet = statement.executeQuery();
             commandList = new ArrayList<>();
 

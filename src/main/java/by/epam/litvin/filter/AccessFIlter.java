@@ -11,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = { "/jsp/admin_panel/*" },
-        initParams = {
-                @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param") })
+import static by.epam.litvin.constant.GeneralConstant.USER;
+
+@WebFilter(urlPatterns = { "/jsp/admin_panel/*" })
 public class AccessFIlter implements Filter {
     public void init(FilterConfig fConfig) throws ServletException {
     }
@@ -25,7 +25,7 @@ public class AccessFIlter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponce = (HttpServletResponse) response;
         UserValidator validator = new UserValidator();
-        UserEntity user = (UserEntity) httpRequest.getSession().getAttribute("user");
+        UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
 
         if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {
             httpResponce.sendRedirect(PageConstant.INDEX);

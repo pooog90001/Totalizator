@@ -1,6 +1,6 @@
 package by.epam.litvin.validator;
 
-public class CommandValidator {
+public class CommandValidator implements Validator {
 
     public boolean isNameValid(String name) {
         boolean isValid = true;

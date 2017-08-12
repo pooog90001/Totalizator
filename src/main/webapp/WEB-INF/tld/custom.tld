@@ -45,5 +45,15 @@
             <rtexprvalue>true</rtexprvalue>
         </attribute>
     </tag>
+    <tag>
+        <name>date-presenter</name>
+        <tag-class>by.epam.litvin.tag.DatePresentTag</tag-class>
+        <body-content>scriptless</body-content>
+        <attribute>
+            <name>date</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
 
 </taglib>

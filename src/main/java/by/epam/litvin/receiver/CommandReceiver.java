@@ -8,4 +8,5 @@ public interface CommandReceiver extends Receiver {
     void updateCommand(RequestContent requestContent) throws ReceiverException;
     void createCommand(RequestContent requestContent) throws ReceiverException;
     void deleteCommand(RequestContent requestContent) throws ReceiverException;
+    void findCommand(RequestContent requestContent) throws ReceiverException;
 }

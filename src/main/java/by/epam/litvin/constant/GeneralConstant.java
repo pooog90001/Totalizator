@@ -29,6 +29,8 @@ final public class GeneralConstant {
     public static final String KINDS_OF_SPORT_LIST = "kindsOfSportList";
     public static final String CURRENT_ID = "currentId";
     public static final String SUCCESS = "success";
+    public static final String COUNT = "count";
+    public static final String CASH = "cash";
 
 
     public static final int COUNT_NEWS_ON_MAIN_PAGE = 3;

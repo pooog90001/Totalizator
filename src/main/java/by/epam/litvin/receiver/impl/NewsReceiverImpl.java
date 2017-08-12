@@ -46,6 +46,7 @@ public class NewsReceiverImpl implements NewsReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -90,6 +91,7 @@ public class NewsReceiverImpl implements NewsReceiver {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

@@ -1,5 +1,7 @@
 package by.epam.litvin.bean;
 
+import by.epam.litvin.type.ExpectResultType;
+
 import java.math.BigDecimal;
 
 public class BetEntity extends Entity {
@@ -12,11 +14,9 @@ public class BetEntity extends Entity {
     private Boolean isWin;
     private Boolean isActive;
     private int CompetitorId;
-    private Total total;
+    private ExpectResultType total;
 
-    public enum Total {
-        MORE, LESS, EQUALS
-    }
+
 
     public int getId() {
         return id;
@@ -66,11 +66,11 @@ public class BetEntity extends Entity {
         this.CompetitorId = competitorId;
     }
 
-    public Total getTotal() {
+    public ExpectResultType getTotal() {
         return total;
     }
 
-    public void setTotal(Total total) {
+    public void setTotal(ExpectResultType total) {
         this.total = total;
     }
 

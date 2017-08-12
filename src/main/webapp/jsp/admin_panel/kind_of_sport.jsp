@@ -57,13 +57,13 @@
                             <input type="submit" value="Create" class="w3-button w3-theme w3">
                         </div>
                     </form>
-                    <c:if test="${wrongName != null}">
+                    <c:if test="${requestScope.get('wrongName') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Name must be 1-45 symbols</div>
                     </c:if>
-                    <c:if test="${duplicateName != null}">
+                    <c:if test="${requestScope.get('duplicateName') != null}">
                         <div id="wrong" class="w3-row w3-text-red">This competition already exist</div>
                     </c:if>
-                    <c:if test="${wrongCount != null}">
+                    <c:if test="${requestScope.get('wrongCount') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Number of competitors must be 2-1000</div>
                     </c:if>
                 </div>

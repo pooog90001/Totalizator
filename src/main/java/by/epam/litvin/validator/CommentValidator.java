@@ -1,6 +1,6 @@
 package by.epam.litvin.validator;
 
-public class CommentValidator {
+public class CommentValidator implements Validator {
 
     public boolean isCommentTextValid(String text) {
         boolean isValid = true;

@@ -16,6 +16,7 @@ public class CompetitionEntity extends Entity {
     private BigDecimal total;
     private BigDecimal moreTotal;
     private BigDecimal lessTotal;
+    private BigDecimal standoff;
     private BigDecimal resultTotal;
 
     public CompetitionEntity() {}
@@ -108,6 +109,14 @@ public class CompetitionEntity extends Entity {
         this.resultTotal = resultTotal;
     }
 
+    public BigDecimal getStandoff() {
+        return standoff;
+    }
+
+    public void setStandoff(BigDecimal standoff) {
+        this.standoff = standoff;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -125,6 +134,7 @@ public class CompetitionEntity extends Entity {
         if (total != null ? !total.equals(that.total) : that.total != null) return false;
         if (moreTotal != null ? !moreTotal.equals(that.moreTotal) : that.moreTotal != null) return false;
         if (lessTotal != null ? !lessTotal.equals(that.lessTotal) : that.lessTotal != null) return false;
+        if (standoff != null ? !standoff.equals(that.standoff) : that.standoff != null) return false;
         return resultTotal != null ? resultTotal.equals(that.resultTotal) : that.resultTotal == null;
     }
 
@@ -140,6 +150,7 @@ public class CompetitionEntity extends Entity {
         result = 31 * result + (total != null ? total.hashCode() : 0);
         result = 31 * result + (moreTotal != null ? moreTotal.hashCode() : 0);
         result = 31 * result + (lessTotal != null ? lessTotal.hashCode() : 0);
+        result = 31 * result + (standoff != null ? standoff.hashCode() : 0);
         result = 31 * result + (resultTotal != null ? resultTotal.hashCode() : 0);
         return result;
     }

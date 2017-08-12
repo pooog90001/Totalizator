@@ -14,6 +14,7 @@ import by.epam.litvin.type.UserType;
 import by.epam.litvin.util.NewsFormatter;
 import by.epam.litvin.util.Packer;
 import by.epam.litvin.validator.UserValidator;
+import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -31,6 +32,9 @@ public class CommonReceiverImpl implements CommonReceiver{
     public void changeLocale(RequestContent requestContent) throws ReceiverException {
         String locale = requestContent.getRequestParameters().get(LOCALE)[0];
         requestContent.getSessionAttributes().put(LOCALE, locale.toLowerCase());
+
+        JsonObject object = new JsonObject();
+        requestContent.setAjaxResult(object);
     }
 
 
@@ -46,8 +50,6 @@ public class CommonReceiverImpl implements CommonReceiver{
             handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO);
 
             List<NewsEntity> newsList = newsDAO.find(0, COUNT_NEWS_ON_MAIN_PAGE);
-            List<Map<String, Object>> liveGameList =
-                    competitionDAO.findLiveCompetitions(0, COUNT_COMPETITIONS_ON_MAIN_PAGE);
             List<Map<String, Object>> upcommingGameList =
                     competitionDAO.findUpcomingCompetitions(0, COUNT_COMPETITIONS_ON_MAIN_PAGE);
             List<Map<String, Object>> pastGameList =
@@ -60,27 +62,25 @@ public class CommonReceiverImpl implements CommonReceiver{
             Packer packer = new Packer();
             NewsFormatter newsFormatter = new NewsFormatter();
 
-            List<Map<String, Object>> orderedLiveGameList =
-                    packer.orderLiveAndUpcomingGames(liveGameList);
-            List<Map<String, Object>> orderedUpcomingGameList =
+            /*List<Map<String, Object>> orderedUpcomingGameList =
                     packer.orderLiveAndUpcomingGames(upcommingGameList);
             List<Map<String, Object>> orderedPastGameList =
-                    packer.orderPastGames(pastGameList);
+                    packer.orderPastGames(pastGameList);*/
             Map<String, Map<String, Integer>> kindOfSportListResult =
                     packer.orderKindsOfSport(kindOfSportList);
 
             newsFormatter.formatNewsforPreview(newsList);
 
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            requestContent.getRequestAttributes().put(LIVE_GAMES, orderedLiveGameList);
-            requestContent.getRequestAttributes().put(UPCOMING_GAMES, orderedUpcomingGameList);
-            requestContent.getRequestAttributes().put(PAST_GAMES, orderedPastGameList);
+            /*requestContent.getRequestAttributes().put(UPCOMING_GAMES, orderedUpcomingGameList);
+            requestContent.getRequestAttributes().put(PAST_GAMES, orderedPastGameList);*/
             requestContent.getSessionAttributes().put("kindsOfSportLeftBar", kindOfSportListResult);
 
         } catch (DAOException e) {
             if (handler != null) {
                 try {
                     handler.rollback();
+                    handler.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

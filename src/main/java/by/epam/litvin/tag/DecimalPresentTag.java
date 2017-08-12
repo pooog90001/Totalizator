@@ -38,7 +38,14 @@ public class DecimalPresentTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
-        BigDecimal scaledNumber = number.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+        BigDecimal scaledNumber;
+        if (number != null) {
+            scaledNumber = number.setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+
+        } else {
+            scaledNumber = new BigDecimal("0").setScale(scale, BigDecimal.ROUND_HALF_EVEN);
+        }
+
         JspWriter out = pageContext.getOut();
 
         try {

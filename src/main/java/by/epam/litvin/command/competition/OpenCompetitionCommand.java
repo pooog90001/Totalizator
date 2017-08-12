@@ -1,4 +1,4 @@
-package by.epam.litvin.command.common;
+package by.epam.litvin.command.competition;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
@@ -12,25 +12,29 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class ChangeLocaleCommand  extends AbstractCommand {
+public class OpenCompetitionCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ChangeLocaleCommand(Receiver receiver) {
+    public OpenCompetitionCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent requestContent){
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
+            router.setRoutePath(PageConstant.ADMIN_COMPETITION);
+            router.setRouteType(RouteType.FORWARD);
+
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRouteType(RouteType.REDIRECT);
             router.setRoutePath(PageConstant.ERROR_RUNTIME);
+            router.setRouteType(RouteType.REDIRECT);
         }
+
         return router;
     }
 }

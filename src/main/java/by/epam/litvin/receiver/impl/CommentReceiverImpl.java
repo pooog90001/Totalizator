@@ -56,6 +56,7 @@ public class CommentReceiverImpl implements CommentReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -107,6 +108,7 @@ public class CommentReceiverImpl implements CommentReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

@@ -50,6 +50,8 @@
                             <label>
                                 Kind of sport
                                 <select class="w3-select" required name="kindOfSportId">
+                                    <option value="" selected disabled>Choose sport</option>
+
                                     <c:forEach var="kind" items="${kindsOfSport}">
                                         <option value="${kind.id}">${kind.name}</option>
                                     </c:forEach>
@@ -61,10 +63,10 @@
                             <input type="submit" value="Create" class="w3-button w3-theme w3">
                         </div>
                     </form>
-                    <c:if test="${wrongName != null}">
+                    <c:if test="${requestScope.get('wrongName') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Name must be 1-80 symbols</div>
                     </c:if>
-                    <c:if test="${duplicateName != null}">
+                    <c:if test="${requestScope.get('duplicateName') != null}">
                         <div id="wrong" class="w3-row w3-text-red">This name already exists</div>
                     </c:if>
                 </div>

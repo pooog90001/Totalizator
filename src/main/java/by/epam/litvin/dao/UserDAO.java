@@ -5,6 +5,7 @@ import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.type.UserType;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -89,5 +90,17 @@ public class UserDAO extends AbstractDAO<UserEntity> {
     @Override
     public boolean update(UserEntity entity) {
         throw new UnsupportedOperationException();
+    }
+
+
+    public void returnMoneyForBets(int competitionId) throws DAOException {
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.RETURN_MONEY_FOR_BETS)) {
+            statement.setInt(1, competitionId);
+            statement.execute();
+
+        } catch (SQLException e) {
+            throw new DAOException("Ruturn money for bets error ", e);
+        }
     }
 }

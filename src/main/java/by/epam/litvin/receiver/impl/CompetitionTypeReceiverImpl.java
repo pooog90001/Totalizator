@@ -108,6 +108,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     public void createCompetitionType(RequestContent requestContent) throws ReceiverException {
         CompetitionTypeValidator validator = new CompetitionTypeValidator();
         String typeName = requestContent.getRequestParameters().get("name")[0].trim();
+        requestContent.getSessionAttributes().remove(TEMPORARY);
 
 
         Map<String, Object> data = new HashMap<>();
@@ -141,6 +142,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -154,7 +156,6 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         String[] stringId = requestContent.getRequestParameters().get("competitionTypeId");
         int typeId =  Integer.valueOf(stringId[0]);
 
-        Gson gson = new Gson();
         JsonObject object = new JsonObject();
 
         TransactionManager manager = null;
@@ -163,7 +164,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             CompetitionTypeDAO typeDAO = new CompetitionTypeDAO();
             manager.beginTransaction(typeDAO);
 
-            JsonElement element = gson.toJsonTree(typeDAO.delete(typeId));
+            JsonElement element = new Gson().toJsonTree(typeDAO.delete(typeId));
 
             manager.commit();
             manager.endTransaction();
@@ -175,6 +176,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

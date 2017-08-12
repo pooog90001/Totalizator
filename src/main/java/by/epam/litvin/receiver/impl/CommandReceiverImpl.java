@@ -110,6 +110,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         CommandValidator validator = new CommandValidator();
         String[] stringKindOfSportId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
         String commandName = requestContent.getRequestParameters().get("name")[0].trim();
+        requestContent.getSessionAttributes().remove(TEMPORARY);
 
         int kindOfSportId = Integer.valueOf(stringKindOfSportId[0]);
 
@@ -179,6 +180,42 @@ public class CommandReceiverImpl implements CommandReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
+                } catch (DAOException e1) {
+                    throw new ReceiverException("Rollback error", e);
+                }
+            }
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void findCommand(RequestContent requestContent) throws ReceiverException {
+        String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
+        int sportId =  Integer.valueOf(stringId[0]);
+
+        Gson gson = new Gson();
+        JsonObject object = new JsonObject();
+
+        TransactionManager manager = null;
+        try {
+            manager = new TransactionManager();
+            CommandDAO commandDAO = new CommandDAO();
+            manager.beginTransaction(commandDAO);
+
+            JsonElement element = gson.toJsonTree(commandDAO.findBySportId(sportId));
+
+            manager.commit();
+            manager.endTransaction();
+
+            object.add("commands", element);
+            requestContent.setAjaxResult(object);
+
+        } catch (DAOException e) {
+            if (manager != null) {
+                try {
+                    manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }

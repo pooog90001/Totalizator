@@ -38,6 +38,7 @@ public class AjaxController  extends HttpServlet {
         requestContent.extractValues(req);
         executionCommand = new FactoryCommand().initCommand(requestContent);
         router = executionCommand.execute(requestContent);
+        requestContent.insertAttributes(req);
 
         if (RouteType.REDIRECT.equals(router.getRouteType())) {
             resp.sendRedirect(router.getRoutePath());

@@ -2,15 +2,13 @@ package by.epam.litvin.type;
 
 
 import by.epam.litvin.command.*;
-import by.epam.litvin.command.command.CreateCommandCommand;
-import by.epam.litvin.command.command.DeleteCommandCommand;
-import by.epam.litvin.command.command.OpenCommandCommand;
-import by.epam.litvin.command.command.UpdateCommandCommand;
+import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
 import by.epam.litvin.command.comment.CreateCommentCommand;
 import by.epam.litvin.command.common.ChangeLocaleCommand;
 import by.epam.litvin.command.common.OpenAdminPanelCommand;
 import by.epam.litvin.command.common.OpenMainCommand;
+import by.epam.litvin.command.competition.*;
 import by.epam.litvin.command.competitiontype.CreateCompetitionTypeCommand;
 import by.epam.litvin.command.competitiontype.DeleteCompetitionTypeCommand;
 import by.epam.litvin.command.competitiontype.OpenCompetitionTypeCommand;
@@ -19,10 +17,6 @@ import by.epam.litvin.command.kindofsport.CreateKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.DeleteKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.OpenKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.UpdateKindOfSportCommand;
-import by.epam.litvin.command.competition.FilterLiveCompetitionCommand;
-import by.epam.litvin.command.competition.OpenLiveCompetitionCommand;
-import by.epam.litvin.command.competition.OpenPastCompetitionCommand;
-import by.epam.litvin.command.competition.OpenUpcomingCompetitionCommand;
 import by.epam.litvin.command.news.OpenAllNewsCommand;
 import by.epam.litvin.command.news.OpenConcreteNewsCommand;
 import by.epam.litvin.command.user.SignInCommand;
@@ -146,7 +140,7 @@ public enum CommandType {
         }
     },
 
-    OPEN_COMMAND_SETTINGS(new OpenCommandCommand(new CommandReceiverImpl())) {
+    OPEN_COMMAND_SETTINGS(new OpenCommandsCommand(new CommandReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((CommandReceiverImpl) getCommand().getReceiver()).openCommandSetting(content);
         }
@@ -191,6 +185,48 @@ public enum CommandType {
     DELETE_COMPETITION_TYPE(new DeleteCompetitionTypeCommand(new CompetitionTypeReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((CompetitionTypeReceiverImpl) getCommand().getReceiver()).deleteCompetitionType(content);
+        }
+    },
+
+    OPEN_COMPETITION_SETTINGS(new OpenCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).openCompetitionSettings(content);
+        }
+    },
+
+    FIND_COMMANDS(new FindCommandsCommand(new CommandReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommandReceiverImpl) getCommand().getReceiver()).findCommand(content);
+        }
+    },
+
+    CREATE_COMPETITION(new CreateCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).createCompetition(content);
+        }
+    },
+
+    EDIT_UPCOMING_ACTIVE_COMPETITION(new UpdateUpcomingActiveCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingActive(content);
+        }
+    },
+
+    DELETE_UPCOMING_COMPETITION(new DeleteUpcomingCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).deleteUpcomingCompetition(content);
+        }
+    },
+
+    DEACTIVATE_COMPETITION(new DeactivateCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).deactivateCompetition(content);
+        }
+    },
+
+    ACTIVATE_COMPETITION(new ActivateCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).activateCompetition(content);
         }
     };
 

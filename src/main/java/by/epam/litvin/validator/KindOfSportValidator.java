@@ -1,6 +1,6 @@
 package by.epam.litvin.validator;
 
-public class KindOfSportValidator {
+public class KindOfSportValidator implements Validator {
 
     public boolean isCompetitorsCountValid(int competitorsCount) {
         boolean isValid = true;

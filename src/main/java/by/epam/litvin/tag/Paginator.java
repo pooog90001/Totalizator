@@ -1,6 +1,6 @@
-package by.epam.litvin.util;
+package by.epam.litvin.tag;
 
-public class Paginator {
+class Paginator {
 
     /**
      * The name of the command to correctly form the request

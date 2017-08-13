@@ -71,7 +71,7 @@
                                 <label>
                                     Competition name
                                     <input type="text" class="w3-input" id="competitionName" name="competitionName"
-                                           maxlength="100" required pattern="(\w|[А-Яа-я])+">
+                                           maxlength="100" required >
                                 </label>
                             </div>
                             <div class="w3-row">
@@ -179,10 +179,6 @@
                                 onclick="openTab(event,'Deactivated', 'upcoming', 'upcomingLink')">
                             Deactivated
                         </button>
-                        <button class="w3-bar-item w3-button upcomingLink"
-                                onclick="openTab(event,'SetCoeff', 'upcoming', 'upcomingLink')">
-                            Need set coefficient
-                        </button>
                     </div>
 
                     <%--Activated competitions--%>
@@ -191,8 +187,7 @@
                     <%--Deactivated competitions--%>
                     <%@include file="competition_part/upcoming_deactivated.jsp" %>
 
-                    <%--Need set coefficient competitions--%>
-                    <%@include file="competition_part/upcoming_need_set_ceff.jsp" %>
+
 
                 </div>
 

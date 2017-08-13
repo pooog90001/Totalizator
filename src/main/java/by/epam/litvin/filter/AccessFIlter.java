@@ -2,11 +2,10 @@ package by.epam.litvin.filter;
 
 import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.PageConstant;
-import by.epam.litvin.validator.UserValidator;
+import by.epam.litvin.validator.impl.UserValidatorImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
-import javax.servlet.annotation.WebInitParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -24,7 +23,7 @@ public class AccessFIlter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponce = (HttpServletResponse) response;
-        UserValidator validator = new UserValidator();
+        UserValidatorImpl validator = new UserValidatorImpl();
         UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
 
         if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {

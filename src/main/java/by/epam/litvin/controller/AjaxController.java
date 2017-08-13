@@ -39,14 +39,8 @@ public class AjaxController  extends HttpServlet {
         executionCommand = new FactoryCommand().initCommand(requestContent);
         router = executionCommand.execute(requestContent);
         requestContent.insertAttributes(req);
-
-        if (RouteType.REDIRECT.equals(router.getRouteType())) {
-            resp.sendRedirect(router.getRoutePath());
-
-        } else {
-            JsonObject json = requestContent.getAjaxResult();
-            resp.getWriter().println(json.toString());
-            resp.getWriter().close();
-        }
+        JsonObject json = requestContent.getAjaxResult();
+        resp.getWriter().println(json.toString());
+        resp.getWriter().close();
     }
 }

@@ -12,7 +12,7 @@ function activeEdit(e, id) {
         for (var i = 0; i < names.length; i++) {
             $contanier.find("[name*='" + names[i] + "']").each(function () {
                 var value = $(this).text().toString().trim();
-                var $input = $('<input class="w3-input w3" type="number" name= "' + names[i] + '" step="0.01"  min="1" max="20000" onkeypress="return false;">').val(value);
+                var $input = $('<input type="number" name= "' + names[i] + '" step="0.01"  min="1" max="20000" onkeypress="return false;">').val(value);
                 $input.attr('oldCoeff', value);
                 $(this).replaceWith($input);
             });
@@ -25,7 +25,7 @@ function activeEdit(e, id) {
 
 function saveActive(e, id , names) {
     var paramNames = ['lessTotalCoeff', 'moreTotalCoeff', 'standoffCoeff', 'competitorCoeff', 'competitorId', 'competitionId'];
-    var dataString = 'command=EDIT_UPCOMING_ACTIVE_COMPETITION';
+    var dataString = 'command=EDIT_UPCOMING_ACTIVATED_COMPETITION';
     var $container = $("#" + id);
     var $this = $(e);
 

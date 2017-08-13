@@ -206,9 +206,15 @@ public enum CommandType {
         }
     },
 
-    EDIT_UPCOMING_ACTIVE_COMPETITION(new UpdateUpcomingActiveCommand(new CompetitionReceiverImpl())) {
+    EDIT_UPCOMING_ACTIVATED_COMPETITION(new UpdateUpcomingActivatedCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingActive(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingActivated(content);
+        }
+    },
+
+    EDIT_UPCOMING_DEACTIVATED_COMPETITION(new UpdateUpcomingDeactivatedCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingDeactivated(content);
         }
     },
 
@@ -218,17 +224,12 @@ public enum CommandType {
         }
     },
 
-    DEACTIVATE_COMPETITION(new DeactivateCompetitionCommand(new CompetitionReceiverImpl())) {
+    CHANGE_STATE_COMPETITION(new ChangeStateCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).deactivateCompetition(content);
-        }
-    },
-
-    ACTIVATE_COMPETITION(new ActivateCompetitionCommand(new CompetitionReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).activateCompetition(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).changeStateCompetition(content);
         }
     };
+
 
 
 

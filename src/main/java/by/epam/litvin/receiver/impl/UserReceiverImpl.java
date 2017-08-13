@@ -3,15 +3,14 @@ package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.RequestNameConstant;
-import by.epam.litvin.dao.UserDAO;
+import by.epam.litvin.dao.impl.UserDAOImpl;
 import by.epam.litvin.receiver.UserReceiver;
 import by.epam.litvin.util.StringEncoder;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.dao.TransactionManager;
-import by.epam.litvin.validator.UserValidator;
-import org.apache.logging.log4j.Level;
+import by.epam.litvin.validator.impl.UserValidatorImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,7 +22,7 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void signUp(RequestContent requestContent) throws ReceiverException {
-        UserValidator validator = new UserValidator();
+        UserValidatorImpl validator = new UserValidatorImpl();
         String name = requestContent.getRequestParameters().get(NAME)[0];
         String email = requestContent.getRequestParameters().get(EMAIL)[0];
         String password = requestContent.getRequestParameters().get(PASSWORD)[0];
@@ -68,7 +67,7 @@ public class UserReceiverImpl implements UserReceiver {
 
         try {
             handler = new TransactionManager();
-            UserDAO userDao = new UserDAO();
+            UserDAOImpl userDao = new UserDAOImpl();
             handler.beginTransaction(userDao);
 
             if (userDao.create(user)) {
@@ -106,7 +105,7 @@ public class UserReceiverImpl implements UserReceiver {
 
 
 
-        UserValidator validator = new UserValidator();
+        UserValidatorImpl validator = new UserValidatorImpl();
         boolean isValidData = true;
         requestContent.getRequestAttributes().put(EMAIL, email);
         requestContent.getRequestAttributes().put(PASSWORD, password);
@@ -124,7 +123,7 @@ public class UserReceiverImpl implements UserReceiver {
 
         try {
             handler = new TransactionManager();
-            UserDAO userDao = new UserDAO();
+            UserDAOImpl userDao = new UserDAOImpl();
             handler.beginTransaction(userDao);
             UserEntity foundUser = userDao.findUser(user);
             handler.commit();

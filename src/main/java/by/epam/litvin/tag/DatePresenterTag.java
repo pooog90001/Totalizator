@@ -8,8 +8,8 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class DatePresentTag extends TagSupport {
-    public static final String DATE_FORMAT_PATTERN = "MM/dd/yyyy HH:mm:ss";
+public class DatePresenterTag extends TagSupport {
+    public static final String DATE_FORMAT_PATTERN = "dd.MM.yyyy HH:mm";
 
     /**
      * Date date operand

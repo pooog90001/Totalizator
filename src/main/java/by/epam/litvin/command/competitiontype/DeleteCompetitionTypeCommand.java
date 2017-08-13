@@ -29,8 +29,6 @@ public class DeleteCompetitionTypeCommand extends AbstractCommand {
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageConstant.ERROR_RUNTIME);
-            router.setRouteType(RouteType.REDIRECT);
         }
 
         return router;

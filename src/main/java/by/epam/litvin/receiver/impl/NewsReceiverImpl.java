@@ -2,8 +2,8 @@ package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.NewsEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CommentDAO;
-import by.epam.litvin.dao.NewsDAO;
+import by.epam.litvin.dao.impl.CommentDAOImpl;
+import by.epam.litvin.dao.impl.NewsDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
@@ -28,7 +28,7 @@ public class NewsReceiverImpl implements NewsReceiver {
         TransactionManager handler = null;
         try {
             handler = new TransactionManager();
-            NewsDAO newsDAO = new NewsDAO();
+            NewsDAOImpl newsDAO = new NewsDAOImpl();
             handler.beginTransaction(newsDAO);
             List<NewsEntity> newsList = newsDAO.find(startIndex, 2);
             int newsCount = newsDAO.findNewsCount();
@@ -68,8 +68,8 @@ public class NewsReceiverImpl implements NewsReceiver {
         TransactionManager handler = null;
         try {
             handler = new TransactionManager();
-            NewsDAO newsDAO = new NewsDAO();
-            CommentDAO commentDAO = new CommentDAO();
+            NewsDAOImpl newsDAO = new NewsDAOImpl();
+            CommentDAOImpl commentDAO = new CommentDAOImpl();
             handler.beginTransaction(newsDAO, commentDAO);
             NewsEntity news = newsDAO.findEntityById(newsId);
 

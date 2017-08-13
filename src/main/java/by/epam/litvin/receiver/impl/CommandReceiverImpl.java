@@ -3,13 +3,13 @@ package by.epam.litvin.receiver.impl;
 import by.epam.litvin.bean.CommandEntity;
 import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CommandDAO;
-import by.epam.litvin.dao.KindOfSportDAO;
+import by.epam.litvin.dao.impl.CommandDAOImpl;
+import by.epam.litvin.dao.impl.KindOfSportDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommandReceiver;
-import by.epam.litvin.validator.CommandValidator;
+import by.epam.litvin.validator.impl.CommandValidatorImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,8 +36,8 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
-            CommandDAO commandDAO = new CommandDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
+            CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(kindOfSportDAO, commandDAO);
             List<KindOfSportEntity> kindOfSportList = kindOfSportDAO.findAll();
             List<Map<String, Object>> commandList = commandDAO.findAllWithKindOfSport();
@@ -51,6 +51,7 @@ public class CommandReceiverImpl implements CommandReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -61,7 +62,7 @@ public class CommandReceiverImpl implements CommandReceiver {
 
     @Override
     public void updateCommand(RequestContent requestContent) throws ReceiverException {
-        CommandValidator validator = new CommandValidator();
+        CommandValidatorImpl validator = new CommandValidatorImpl();
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get(NEW_NAME)[0].trim();
@@ -82,7 +83,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommandDAO commandDAO = new CommandDAO();
+            CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
             JsonElement element = gson.toJsonTree(commandDAO.update(command));
@@ -97,6 +98,7 @@ public class CommandReceiverImpl implements CommandReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -107,7 +109,7 @@ public class CommandReceiverImpl implements CommandReceiver {
 
     @Override
     public void createCommand(RequestContent requestContent) throws ReceiverException {
-        CommandValidator validator = new CommandValidator();
+        CommandValidatorImpl validator = new CommandValidatorImpl();
         String[] stringKindOfSportId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
         String commandName = requestContent.getRequestParameters().get("name")[0].trim();
         requestContent.getSessionAttributes().remove(TEMPORARY);
@@ -129,7 +131,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommandDAO commandDAO = new CommandDAO();
+            CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
             boolean isCreated = commandDAO.create(command);
@@ -146,6 +148,7 @@ public class CommandReceiverImpl implements CommandReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -165,7 +168,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommandDAO commandDAO = new CommandDAO();
+            CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
             JsonElement element = gson.toJsonTree(commandDAO.delete(commandId));
@@ -200,7 +203,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommandDAO commandDAO = new CommandDAO();
+            CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
             JsonElement element = gson.toJsonTree(commandDAO.findBySportId(sportId));

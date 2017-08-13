@@ -1,15 +1,13 @@
 package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.KindOfSportEntity;
-import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.KindOfSportDAO;
+import by.epam.litvin.dao.impl.KindOfSportDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.KindOfSportReceiver;
-import by.epam.litvin.validator.KindOfSportValidator;
-import by.epam.litvin.validator.UserValidator;
+import by.epam.litvin.validator.impl.KindOfSportValidatorImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -42,7 +40,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
             List<KindOfSportEntity> kindOfSportList = kindOfSportDAO.findAll();
             manager.commit();
@@ -65,7 +63,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
     @Override
     public void updateKindOfSport(RequestContent requestContent) throws ReceiverException {
-        KindOfSportValidator validator = new KindOfSportValidator();
+        KindOfSportValidatorImpl validator = new KindOfSportValidatorImpl();
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get("newName")[0].trim();
@@ -86,7 +84,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
 
             JsonElement element = gson.toJsonTree(kindOfSportDAO.update(kindOfSport));
@@ -112,7 +110,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
     @Override
     public void createKindOfSport(RequestContent requestContent) throws ReceiverException {
-        KindOfSportValidator validator = new KindOfSportValidator();
+        KindOfSportValidatorImpl validator = new KindOfSportValidatorImpl();
         String[] stringCompetitorsCount = requestContent.getRequestParameters().get("count");
         String kindOfSportName = requestContent.getRequestParameters().get("name")[0].trim();
         requestContent.getSessionAttributes().remove(TEMPORARY);
@@ -138,7 +136,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
 
             boolean isCreated = kindOfSportDAO.create(kindOfSport);
@@ -176,7 +174,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
 
             JsonElement element = gson.toJsonTree(kindOfSportDAO.delete(kindOfSportId));

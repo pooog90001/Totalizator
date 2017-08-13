@@ -1,16 +1,13 @@
 package by.epam.litvin.receiver.impl;
 
-import by.epam.litvin.bean.CommandEntity;
 import by.epam.litvin.bean.CompetitionTypeEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CommandDAO;
-import by.epam.litvin.dao.CompetitionTypeDAO;
+import by.epam.litvin.dao.impl.CompetitionTypeDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CompetitonTypeReceiver;
-import by.epam.litvin.validator.CommandValidator;
-import by.epam.litvin.validator.CompetitionTypeValidator;
+import by.epam.litvin.validator.impl.CompetitionTypeValidatorImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -38,7 +35,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionTypeDAO competitionTypeDAO = new CompetitionTypeDAO();
+            CompetitionTypeDAOImpl competitionTypeDAO = new CompetitionTypeDAOImpl();
             manager.beginTransaction( competitionTypeDAO);
             List<CompetitionTypeEntity> typesList = competitionTypeDAO.findAll();
             manager.commit();
@@ -50,6 +47,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -60,7 +58,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
 
     @Override
     public void updateCompetitionType(RequestContent requestContent) throws ReceiverException {
-        CompetitionTypeValidator validator = new CompetitionTypeValidator();
+        CompetitionTypeValidatorImpl validator = new CompetitionTypeValidatorImpl();
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get(NEW_NAME)[0].trim();
@@ -81,7 +79,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionTypeDAO typeDAO = new CompetitionTypeDAO();
+            CompetitionTypeDAOImpl typeDAO = new CompetitionTypeDAOImpl();
             manager.beginTransaction(typeDAO);
 
             JsonElement element = gson.toJsonTree(typeDAO.update(type));
@@ -96,6 +94,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             if (manager != null) {
                 try {
                     manager.rollback();
+                    manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Rollback error", e);
                 }
@@ -106,7 +105,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
 
     @Override
     public void createCompetitionType(RequestContent requestContent) throws ReceiverException {
-        CompetitionTypeValidator validator = new CompetitionTypeValidator();
+        CompetitionTypeValidatorImpl validator = new CompetitionTypeValidatorImpl();
         String typeName = requestContent.getRequestParameters().get("name")[0].trim();
         requestContent.getSessionAttributes().remove(TEMPORARY);
 
@@ -125,7 +124,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionTypeDAO typeDAO = new CompetitionTypeDAO();
+            CompetitionTypeDAOImpl typeDAO = new CompetitionTypeDAOImpl();
             manager.beginTransaction(typeDAO);
 
             boolean isCreated = typeDAO.create(type);
@@ -161,7 +160,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionTypeDAO typeDAO = new CompetitionTypeDAO();
+            CompetitionTypeDAOImpl typeDAO = new CompetitionTypeDAOImpl();
             manager.beginTransaction(typeDAO);
 
             JsonElement element = new Gson().toJsonTree(typeDAO.delete(typeId));

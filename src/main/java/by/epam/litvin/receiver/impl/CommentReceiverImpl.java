@@ -3,13 +3,13 @@ package by.epam.litvin.receiver.impl;
 import by.epam.litvin.bean.CommentEntity;
 import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CommentDAO;
+import by.epam.litvin.dao.impl.CommentDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommentReceiver;
-import by.epam.litvin.validator.CommentValidator;
-import by.epam.litvin.validator.UserValidator;
+import by.epam.litvin.validator.impl.CommentValidatorImpl;
+import by.epam.litvin.validator.impl.UserValidatorImpl;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ public class CommentReceiverImpl implements CommentReceiver {
 
     @Override
     public void changeLockComment(RequestContent requestContent) throws ReceiverException {
-        UserValidator userValidator = new UserValidator();
+        UserValidatorImpl userValidator = new UserValidatorImpl();
         UserEntity user = (UserEntity) requestContent.getSessionAttributes().get(USER);
         String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
         String[] commentIdString = requestContent.getRequestParameters().get(COMMENT_ID);
@@ -41,7 +41,7 @@ public class CommentReceiverImpl implements CommentReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommentDAO commentDAO = new CommentDAO();
+            CommentDAOImpl commentDAO = new CommentDAOImpl();
             manager.beginTransaction(commentDAO);
 
             commentDAO.changeLockCommentById(commentId, !isLockedComment);
@@ -67,7 +67,7 @@ public class CommentReceiverImpl implements CommentReceiver {
 
     @Override
     public void createComment(RequestContent requestContent) throws ReceiverException {
-        CommentValidator commentValidator = new CommentValidator();
+        CommentValidatorImpl commentValidator = new CommentValidatorImpl();
         UserEntity user = (UserEntity) requestContent.getSessionAttributes().get(USER);
         String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
         String commentText = requestContent.getRequestParameters().get(TEXT)[0].trim();
@@ -94,7 +94,7 @@ public class CommentReceiverImpl implements CommentReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CommentDAO commentDAO = new CommentDAO();
+            CommentDAOImpl commentDAO = new CommentDAOImpl();
             manager.beginTransaction(commentDAO);
             commentDAO.create(comment);
             manager.commit();

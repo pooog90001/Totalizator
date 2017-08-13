@@ -210,7 +210,7 @@ final public class SQLRequestConstant {
                     "        AND competition_is_active = TRUE " +
                     "LIMIT ?, ?;";
 
-    public static final String FIND_ACTIVE_UPCOMING_GAMES_FOR_SETTINGS =
+    public static final String FIND_ACTIVATED_UPCOMING_GAMES_FOR_SETTINGS =
                     "SELECT  DISTINCT " +
                     "    competition.competition_id,  " +
                     "    competition_type_name,  " +
@@ -236,6 +236,31 @@ final public class SQLRequestConstant {
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = TRUE ";
 
+    public static final String FIND_DEACTIVATED_UPCOMING_GAMES_FOR_SETTINGS =
+            "SELECT  DISTINCT " +
+                    "    competition.competition_id,  " +
+                    "    competition_type_name,  " +
+                    "    kind_of_sport_name,  " +
+                    "    competition_total,  " +
+                    "    competition_less_total_coeff,  " +
+                    "    competition_more_total_coeff,  " +
+                    "    competition_standoff_coeff,  " +
+                    "    competition_date_start,  " +
+                    "    competition_date_finish,  " +
+                    "    competition_name  " +
+                    "FROM  " +
+                    "    competition,  " +
+                    "    competition_type,  " +
+                    "    competitor,  " +
+                    "    command,  " +
+                    "    kind_of_sport  " +
+                    "WHERE  " +
+                    "    competitor.competition_id = competition.competition_id  " +
+                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competition.competition_type_id = competition_type.competition_type_id  " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND competition_date_start > NOW()  " +
+                    "        AND competition_is_active = FALSE ";
 
     public static final String FIND_LIMIT_PAST_GAMES =
                     "SELECT  " +
@@ -445,12 +470,29 @@ final public class SQLRequestConstant {
                     "`competitor_win_coeff`) " +
             "VALUES (?, ?, ?);";
 
-    public static final String UPDATE_COMPETITION_COEFFS =
+    public static final String UPDATE_UPCOMING_ACTIVATED_COMPETITION_COEFFS =
                     "UPDATE competition  " +
                     "SET  " +
                     "    competition_more_total_coeff = ?, " +
                     "    competition_less_total_coeff = ?, " +
-                    "    competition_standoff_coeff = ?" +
+                    "    competition_standoff_coeff = ? " +
+                    "WHERE " +
+                    "    competition_id = ?;";
+
+    public static final String UPDATE_UPCOMING_DEACTIVATED_COMPETITION_COEFFS =
+            "UPDATE competition  " +
+                    "SET  " +
+                    "    competition_more_total_coeff = ?, " +
+                    "    competition_less_total_coeff = ?, " +
+                    "    competition_standoff_coeff = ?, " +
+                    "    competition_total = ? " +
+                    "WHERE " +
+                    "    competition_id = ?;";
+
+    public static final String UPDATE_COMPETITION_NAME =
+            "UPDATE competition  " +
+                    "SET  " +
+                    "    competition_name = ? " +
                     "WHERE " +
                     "    competition_id = ?;";
 

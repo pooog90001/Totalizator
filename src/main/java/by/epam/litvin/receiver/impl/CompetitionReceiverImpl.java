@@ -3,14 +3,15 @@ package by.epam.litvin.receiver.impl;
 import by.epam.litvin.bean.*;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.*;
+import by.epam.litvin.dao.TransactionManager;
+import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CompetitionReceiver;
 import by.epam.litvin.type.ExpectResultType;
 import by.epam.litvin.util.Packer;
-import by.epam.litvin.validator.CompetitionValidator;
-import by.epam.litvin.validator.UserValidator;
+import by.epam.litvin.validator.impl.CompetitionValidatorImpl;
+import by.epam.litvin.validator.impl.UserValidatorImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,8 +37,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(competitionDAO, kindOfSportDAO);
 
             List<Map<String, Object>> liveGameList = (kindOfSportId != 0) ?
@@ -82,7 +83,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
 
             manager.beginTransaction(competitionDAO);
 
@@ -146,65 +147,20 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
-            CompetitionTypeDAO typeDAO = new CompetitionTypeDAO();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            CompetitorDAO competitorDAO = new CompetitorDAO();
-            CommonDAO commonDAO = new CommonDAO();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
+            CompetitionTypeDAOImpl typeDAO = new CompetitionTypeDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            CommonDAOImpl commonDAO = new CommonDAOImpl();
             manager.beginTransaction(kindOfSportDAO, typeDAO, competitorDAO, competitionDAO, commonDAO);
             List<KindOfSportEntity> kindOfSportList = kindOfSportDAO.findAll();
             List<CompetitionTypeEntity> competitionTypes = typeDAO.findAll();
-            List<Map<String, Object>> upcomingActiveCompetitions = competitionDAO.findActiveUpcomingCompetitions();
 
-            for (Map<String, Object> competition : upcomingActiveCompetitions) {
-                int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-                List<Map<String, Object>> competitors = competitorDAO.findWithCommandByCompetitionId(compId);
+            List<Map<String, Object>> upcomingActiveCompetitions =
+                    extractUpcomingActivated(competitionDAO, competitorDAO, commonDAO);
 
-                for (Map<String, Object> competitor : competitors) {
-                    int competitorId = (int) competitor.get("competitor_id");
-                    int betsCount = commonDAO.findCountBetsOnCompetitor(competitorId);
-                    BigDecimal amountOfMoney = betsCount == 0 ?
-                            new BigDecimal("0") :
-                            commonDAO.findAmountOfMoneyOnCompetitor(competitorId);
-
-                    competitor.put("betsCount", betsCount);
-                    competitor.put("amountOfMoney", amountOfMoney);
-
-                }
-                competition.put("competitors", competitors);
-
-                if (competitors.size() == 2) {
-                    int competitionId = (int) competition.get(SQLFieldConstant.Competition.ID);
-                    String resultTypeLess = ExpectResultType.LESS.toString();
-                    int betsLessTotalCount =
-                            commonDAO.findCountBetsOnCompetition(competitionId, resultTypeLess);
-                    BigDecimal lessAmountOfMoney = betsLessTotalCount == 0 ?
-                            new BigDecimal("0") :
-                            commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeLess);
-
-                    String resultTypeMore = ExpectResultType.MORE.toString();
-                    int betsMoreTotalCount =
-                            commonDAO.findCountBetsOnCompetition(competitionId, resultTypeMore);
-                    BigDecimal moreAmountOfMoney = betsMoreTotalCount == 0 ?
-                            new BigDecimal("0") :
-                            commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeMore);
-
-                    String resultTypeStandoff = ExpectResultType.EQUALS.toString();
-                    int betsStandoffTotalCount =
-                            commonDAO.findCountBetsOnCompetition(competitionId, resultTypeStandoff);
-                    BigDecimal standoffAmountOfMoney = betsMoreTotalCount == 0 ?
-                            new BigDecimal("0") :
-                            commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeStandoff);
-
-                    competition.put("betsLessTotalCount", betsLessTotalCount);
-                    competition.put("betsMoreTotalCount", betsMoreTotalCount);
-                    competition.put("betsStandoffTotalCount", betsStandoffTotalCount);
-                    competition.put("lessAmountOfMoney", lessAmountOfMoney);
-                    competition.put("moreAmountOfMoney", moreAmountOfMoney);
-                    competition.put("standoffAmountOfMoney", standoffAmountOfMoney);
-                }
-            }
-
+            List<Map<String, Object>> upcomingDeactiveCompetitions =
+                    extractUpcomingDeactivated(competitionDAO, competitorDAO);
 
             manager.commit();
             manager.endTransaction();
@@ -212,6 +168,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             requestContent.getRequestAttributes().put("kindsOfSport", kindOfSportList);
             requestContent.getRequestAttributes().put("competitionTypes", competitionTypes);
             requestContent.getRequestAttributes().put("upcomingActiveCompetitions", upcomingActiveCompetitions);
+            requestContent.getRequestAttributes().put("upcomingDeactiveCompetitions", upcomingDeactiveCompetitions);
 
         } catch (DAOException e) {
             if (manager != null) {
@@ -224,6 +181,74 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
             throw new ReceiverException(e);
         }
+    }
+
+
+    private List<Map<String, Object>> extractUpcomingActivated(
+            CompetitionDAOImpl competitionDAO, CompetitorDAOImpl competitorDAO, CommonDAOImpl commonDAO ) throws DAOException {
+        List<Map<String, Object>> upcomingActiveCompetitions = competitionDAO.findActivatedUpcomingCompetitions();
+
+        for (Map<String, Object> competition : upcomingActiveCompetitions) {
+            int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
+            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByCompetitionId(compId);
+
+            for (Map<String, Object> competitor : competitors) {
+                int competitorId = (int) competitor.get("competitor_id");
+                int betsCount = commonDAO.findCountBetsOnCompetitor(competitorId);
+                BigDecimal amountOfMoney = betsCount == 0 ?
+                        new BigDecimal("0") :
+                        commonDAO.findAmountOfMoneyOnCompetitor(competitorId);
+
+                competitor.put("betsCount", betsCount);
+                competitor.put("amountOfMoney", amountOfMoney);
+
+            }
+            competition.put("competitors", competitors);
+
+            if (competitors.size() == 2) {
+                int competitionId = (int) competition.get(SQLFieldConstant.Competition.ID);
+                String resultTypeLess = ExpectResultType.LESS.toString();
+                int betsLessTotalCount =
+                        commonDAO.findCountBetsOnCompetition(competitionId, resultTypeLess);
+                BigDecimal lessAmountOfMoney = betsLessTotalCount == 0 ?
+                        new BigDecimal("0") :
+                        commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeLess);
+
+                String resultTypeMore = ExpectResultType.MORE.toString();
+                int betsMoreTotalCount =
+                        commonDAO.findCountBetsOnCompetition(competitionId, resultTypeMore);
+                BigDecimal moreAmountOfMoney = betsMoreTotalCount == 0 ?
+                        new BigDecimal("0") :
+                        commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeMore);
+
+                String resultTypeStandoff = ExpectResultType.EQUALS.toString();
+                int betsStandoffTotalCount =
+                        commonDAO.findCountBetsOnCompetition(competitionId, resultTypeStandoff);
+                BigDecimal standoffAmountOfMoney = betsMoreTotalCount == 0 ?
+                        new BigDecimal("0") :
+                        commonDAO.findAmountOfMoneyOnCompetition(competitionId, resultTypeStandoff);
+
+                competition.put("betsLessTotalCount", betsLessTotalCount);
+                competition.put("betsMoreTotalCount", betsMoreTotalCount);
+                competition.put("betsStandoffTotalCount", betsStandoffTotalCount);
+                competition.put("lessAmountOfMoney", lessAmountOfMoney);
+                competition.put("moreAmountOfMoney", moreAmountOfMoney);
+                competition.put("standoffAmountOfMoney", standoffAmountOfMoney);
+            }
+        }
+        return upcomingActiveCompetitions;
+    }
+
+    private List<Map<String, Object>> extractUpcomingDeactivated(
+            CompetitionDAOImpl competitionDAO, CompetitorDAOImpl competitorDAO) throws DAOException {
+        List<Map<String, Object>> upcomingActiveCompetitions = competitionDAO.findDeactivatedUpcomingCompetitions();
+
+        for (Map<String, Object> competition : upcomingActiveCompetitions) {
+            int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
+            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByCompetitionId(compId);
+            competition.put("competitors", competitors);
+        }
+        return upcomingActiveCompetitions;
     }
 
     @Override
@@ -244,8 +269,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringMoreTotalCoeff = content.getRequestParameters().get("more_total_coeff");
         String[] stringStandoffCoeff = content.getRequestParameters().get("standoff_coeff");
         CompetitorEntity[] competitors = new CompetitorEntity[commandsId.length];
-        CompetitionValidator competitionValidator = new CompetitionValidator();
-        UserValidator userValidator = new UserValidator();
+        CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
+        UserValidatorImpl userValidator = new UserValidatorImpl();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         Map<String, Object> data = new HashMap<>();
         Date dStart;
@@ -340,8 +365,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         try {
             boolean transactionAccess = true;
             manager = new TransactionManager();
-            CompetitorDAO competitorDAO = new CompetitorDAO();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             manager.beginTransaction(competitionDAO, competitorDAO);
 
             int competitionId = competitionDAO.createAndGetId(competition);
@@ -385,7 +410,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     }
 
     @Override
-    public void editUpcomingActive(RequestContent content) throws ReceiverException {
+    public void editUpcomingActivated(RequestContent content) throws ReceiverException {
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         String[] stringLessTotalCoeff = content.getRequestParameters().get("lessTotalCoeff");
         String[] stringMoreTotalCoeff = content.getRequestParameters().get("moreTotalCoeff");
@@ -395,13 +420,13 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringCompetitionId = content.getRequestParameters().get("competitionId");
         CompetitorEntity[] competitors = new CompetitorEntity[stringCompetitorCoeff.length];
 
-        CompetitionValidator competitionValidator = new CompetitionValidator();
-        UserValidator userValidator = new UserValidator();
+        CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
+        UserValidatorImpl userValidator = new UserValidatorImpl();
         JsonObject object = new JsonObject();
         boolean isDataValid = true;
 
         if (!userValidator.isBookmaker(user)) {
-            isDataValid = false;
+            return;
         }
 
         CompetitionEntity competition = new CompetitionEntity();
@@ -444,18 +469,21 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitorDAO competitorDAO = new CompetitorDAO();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             manager.beginTransaction(competitorDAO, competitionDAO);
             boolean transactionSuccess = true;
 
             if (competitors.length == 2) {
-                transactionSuccess = competitionDAO.update(competition);
+                transactionSuccess = competitionDAO.updateUpcomingActivatedCoeffs(competition);
             }
 
-            for (CompetitorEntity competitor : competitors) {
-                if (!competitorDAO.update(competitor)) {
-                    transactionSuccess = false;
+            if (transactionSuccess) {
+                for (CompetitorEntity competitor : competitors) {
+                    if (!competitorDAO.update(competitor)) {
+                        transactionSuccess = false;
+                        break;
+                    }
                 }
             }
 
@@ -485,17 +513,64 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     }
 
     @Override
-    public void deleteUpcomingCompetition(RequestContent content) throws ReceiverException {
+    public void editUpcomingDeactivated(RequestContent content) throws ReceiverException {
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
-        UserValidator userValidator = new UserValidator();
+        String[] stringTotal = content.getRequestParameters().get("total");
+        String[] stringLessTotalCoeff = content.getRequestParameters().get("lessTotalCoeff");
+        String[] stringMoreTotalCoeff = content.getRequestParameters().get("moreTotalCoeff");
+        String[] stringStandoffCoeff = content.getRequestParameters().get("standoffCoeff");
+        String[] stringCompetitorCoeff = content.getRequestParameters().get("competitorCoeff");
+        String[] stringCompetitorId = content.getRequestParameters().get("competitorId");
+        String[] stringCompetitionId = content.getRequestParameters().get("competitionId");
+        String[]  stringCompetitionName = content.getRequestParameters().get("competitionName");
+        CompetitorEntity[] competitors = new CompetitorEntity[stringCompetitorCoeff.length];
+
+        CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
+        UserValidatorImpl userValidator = new UserValidatorImpl();
         JsonObject object = new JsonObject();
         boolean isDataValid = true;
 
         if (!userValidator.isBookmaker(user)) {
-            isDataValid = false;
+            return;
         }
 
+        CompetitionEntity competition = new CompetitionEntity();
+        competition.setLessTotal(stringLessTotalCoeff == null ? null :
+                competitionValidator.checkStringCoeff(stringLessTotalCoeff[0]));
+        competition.setMoreTotal(stringMoreTotalCoeff == null ? null :
+                competitionValidator.checkStringCoeff(stringMoreTotalCoeff[0]));
+        competition.setStandoff(stringStandoffCoeff == null ? null :
+                competitionValidator.checkStringCoeff(stringStandoffCoeff[0]));
+        competition.setTotal(stringTotal == null ? null :
+                competitionValidator.checkStringNumber(stringTotal[0]));
+        competition.setId(Integer.valueOf(stringCompetitionId[0]));
+        competition.setName(stringCompetitionName[0]);
+
+
+        for (int i = 0; i < competitors.length; i++) {
+            CompetitorEntity competitor = new CompetitorEntity();
+            competitor.setId(Integer.valueOf(stringCompetitorId[i]));
+            competitor.setWinCoeff(competitionValidator.checkStringCoeff(stringCompetitorCoeff[i]));
+            competitors[i] = competitor;
+        }
+
+        for (CompetitorEntity competitor : competitors) {
+            if (competitor.getWinCoeff() == null) {
+                isDataValid = false;
+                break;
+            }
+        }
+
+        if (competitors.length == 2) {
+            if (competition.getLessTotal() == null || competition.getMoreTotal() == null ||
+                    competition.getStandoff() == null || competition.getTotal() == null) {
+                isDataValid = false;
+            }
+        }
+
+        if (!competitionValidator.isNameValid(competition.getName())) {
+            isDataValid = false;
+        }
 
         if (!isDataValid) {
             JsonElement element = new Gson().toJsonTree(false);
@@ -507,10 +582,72 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitorDAO competitorDAO = new CompetitorDAO();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            BetDAO betDAO = new BetDAO();
-            UserDAO userDAO = new UserDAO();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            manager.beginTransaction(competitorDAO, competitionDAO);
+            boolean transactionSuccess = true;
+
+            if (competitors.length == 2) {
+                transactionSuccess = competitionDAO.updateUpcomingDeactivatedCoeffs(competition);
+            }
+
+            if (transactionSuccess) {
+                transactionSuccess = competitionDAO.updateName(competition);
+            }
+
+            if (transactionSuccess) {
+                for (CompetitorEntity competitor : competitors) {
+                    if (!competitorDAO.update(competitor)) {
+                        transactionSuccess = false;
+                        break;
+                    }
+                }
+            }
+
+            if (transactionSuccess) {
+                manager.commit();
+            } else {
+                manager.rollback();
+            }
+
+            manager.endTransaction();
+            JsonElement element = new Gson().toJsonTree(transactionSuccess);
+            object.add(SUCCESS, element);
+            content.setAjaxResult(object);
+
+        } catch (DAOException e) {
+            if (manager != null) {
+                try {
+                    manager.rollback();
+                    manager.endTransaction();
+                } catch (DAOException e1) {
+                    throw new ReceiverException("Rollback edit upcoming active competition error", e);
+                }
+            }
+            throw new ReceiverException(e);
+        }
+    }
+
+
+    @Override
+    public void deleteUpcomingCompetition(RequestContent content) throws ReceiverException {
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
+        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
+        UserValidatorImpl userValidator = new UserValidatorImpl();
+        JsonObject object = new JsonObject();
+        boolean isDataValid = true;
+
+        if (!userValidator.isBookmaker(user)) {
+            return;
+        }
+
+        TransactionManager manager = null;
+        try {
+            manager = new TransactionManager();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            BetDAOImpl betDAO = new BetDAOImpl();
+            UserDAOImpl userDAO = new UserDAOImpl();
             manager.beginTransaction(competitorDAO, competitionDAO, betDAO, userDAO);
             boolean transactionSuccess = true;
 
@@ -548,16 +685,16 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     }
 
     @Override
-    public void deactivateCompetition(RequestContent content) throws ReceiverException {
+    public void changeStateCompetition(RequestContent content) throws ReceiverException {
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
-        UserValidator userValidator = new UserValidator();
+        boolean state = Boolean.valueOf(content.getRequestParameters().get("state")[0]);
+        UserValidatorImpl userValidator = new UserValidatorImpl();
         content.getSessionAttributes().remove(TEMPORARY);
         Map<String, Object> data = new HashMap<>();
 
 
         if (!userValidator.isBookmaker(user)) {
-            content.getRequestAttributes().put(ACCESS_DENIED, true);
             return;
         }
 
@@ -565,16 +702,16 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         TransactionManager manager = null;
         try {
             manager = new TransactionManager();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            BetDAO betDAO = new BetDAO();
-            UserDAO userDAO = new UserDAO();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            BetDAOImpl betDAO = new BetDAOImpl();
+            UserDAOImpl userDAO = new UserDAOImpl();
             manager.beginTransaction(competitionDAO, betDAO, userDAO);
             boolean transactionSuccess = true;
 
             userDAO.returnMoneyForBets(competitionId);
             betDAO.deleteByCompetitionId(competitionId);
 
-            if (!competitionDAO.changeActiveState(competitionId, false)) {
+            if (!competitionDAO.changeActiveState(competitionId, state)) {
                 transactionSuccess = false;
             }
 
@@ -596,67 +733,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
                     manager.endTransaction();
                 } catch (DAOException e1) {
                     throw new ReceiverException("Deactivate competition rollback error", e);
-                }
-            }
-            throw new ReceiverException(e);
-        }
-
-    }
-
-    @Override
-    public void activateCompetition(RequestContent content) throws ReceiverException {
-        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
-        UserValidator userValidator = new UserValidator();
-        JsonObject object = new JsonObject();
-        boolean isDataValid = true;
-
-        if (!userValidator.isBookmaker(user)) {
-            isDataValid = false;
-        }
-
-
-        if (!isDataValid) {
-            JsonElement element = new Gson().toJsonTree(false);
-            object.add(SUCCESS, element);
-            content.setAjaxResult(object);
-            return;
-        }
-
-        TransactionManager manager = null;
-        try {
-            manager = new TransactionManager();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            BetDAO betDAO = new BetDAO();
-            UserDAO userDAO = new UserDAO();
-            manager.beginTransaction(competitionDAO, betDAO, userDAO);
-            boolean transactionSuccess = true;
-
-            userDAO.returnMoneyForBets(competitionId);
-            betDAO.deleteByCompetitionId(competitionId);
-
-            if (!competitionDAO.changeActiveState(competitionId, true)) {
-                transactionSuccess = false;
-            }
-
-            if (transactionSuccess) {
-                manager.commit();
-            } else {
-                manager.rollback();
-            }
-
-            manager.endTransaction();
-            JsonElement element = new Gson().toJsonTree(transactionSuccess);
-            object.add(SUCCESS, element);
-            content.setAjaxResult(object);
-
-        } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Activate competition rollback error", e);
                 }
             }
             throw new ReceiverException(e);

@@ -37,7 +37,8 @@
                         <div class="w3-row">
                             <div class="w3-half">
                                 <form action="/generalController" method="post">
-                                    <input type="hidden" name="command" value="deactivate_competition">
+                                    <input type="hidden" name="command" value="change_state_competition">
+                                    <input type="hidden" name="state" value="false">
                                     <input type="hidden" name="competitionId" value="${competition['competition_id']}">
                                     <input type="submit" class="w3-button" value="Yes">
                                 </form>
@@ -188,5 +189,5 @@
         </div>
     </c:forEach>
 </div>
-<script src="${pageContext.request.contextPath}/js/competition_upcoming_active.js"></script>
+<script src="${pageContext.request.contextPath}/js/competition_upcoming_activated.js"></script>
 

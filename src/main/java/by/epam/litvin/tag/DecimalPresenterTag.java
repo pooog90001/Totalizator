@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.format.DecimalStyle;
 
-public class DecimalPresentTag extends TagSupport {
+public class DecimalPresenterTag extends TagSupport {
 
     /**
      * BigDecimal number operand

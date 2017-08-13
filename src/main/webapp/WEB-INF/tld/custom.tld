@@ -33,7 +33,7 @@
     </tag>
     <tag>
         <name>decimal-presenter</name>
-        <tag-class>by.epam.litvin.tag.DecimalPresentTag</tag-class>
+        <tag-class>by.epam.litvin.tag.DecimalPresenterTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>number</name>
@@ -47,7 +47,7 @@
     </tag>
     <tag>
         <name>date-presenter</name>
-        <tag-class>by.epam.litvin.tag.DatePresentTag</tag-class>
+        <tag-class>by.epam.litvin.tag.DatePresenterTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>date</name>

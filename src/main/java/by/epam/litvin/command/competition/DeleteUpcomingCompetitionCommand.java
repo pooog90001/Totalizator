@@ -28,11 +28,6 @@ public class DeleteUpcomingCompetitionCommand extends AbstractCommand{
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            if (requestContent.getRequestAttributes().containsKey(ACCESS_DENIED)) {
-                router.setRoutePath(PageConstant.INDEX);
-                router.setRouteType(RouteType.REDIRECT);
-            }
-
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);

@@ -14,25 +14,19 @@ import org.apache.logging.log4j.Logger;
 
 import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
 
-public class ActivateCompetitionCommand extends AbstractCommand {
+public class UpdateUpcomingActivatedCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public ActivateCompetitionCommand(Receiver receiver) {
+    public UpdateUpcomingActivatedCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent requestContent){
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
-
-            if (!requestContent.getRequestAttributes().containsKey(ACCESS_DENIED)) {
-                router.setRoutePath(PageConstant.INDEX);
-                router.setRouteType(RouteType.REDIRECT);
-            }
-
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);

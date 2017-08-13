@@ -1,19 +1,16 @@
 package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.NewsEntity;
-import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CompetitionDAO;
-import by.epam.litvin.dao.KindOfSportDAO;
-import by.epam.litvin.dao.NewsDAO;
+import by.epam.litvin.dao.impl.CompetitionDAOImpl;
+import by.epam.litvin.dao.impl.KindOfSportDAOImpl;
+import by.epam.litvin.dao.impl.NewsDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommonReceiver;
-import by.epam.litvin.type.UserType;
 import by.epam.litvin.util.NewsFormatter;
 import by.epam.litvin.util.Packer;
-import by.epam.litvin.validator.UserValidator;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,9 +40,9 @@ public class CommonReceiverImpl implements CommonReceiver{
         TransactionManager handler = null;
         try {
             handler = new TransactionManager();
-            NewsDAO newsDAO = new NewsDAO();
-            CompetitionDAO competitionDAO = new CompetitionDAO();
-            KindOfSportDAO kindOfSportDAO = new KindOfSportDAO();
+            NewsDAOImpl newsDAO = new NewsDAOImpl();
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
 
             handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO);
 

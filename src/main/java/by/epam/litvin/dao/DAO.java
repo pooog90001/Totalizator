@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
-public abstract class AbstractDAO<T extends Entity> {
+public abstract class DAO<T extends Entity> {
     protected final static Logger LOGGER = LogManager.getLogger();
 
     protected ProxyConnection connection;

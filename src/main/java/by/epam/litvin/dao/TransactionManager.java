@@ -1,5 +1,6 @@
 package by.epam.litvin.dao;
 
+import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.ConnectionPoolException;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.pool.ConnectionPool;
@@ -18,14 +19,14 @@ public class TransactionManager {
         }
     }
 
-    public void beginTransaction(AbstractDAO dao, AbstractDAO ... daos) throws DAOException {
+    public void beginTransaction(DAO dao, DAO... daos) throws DAOException {
         try {
             connection.setAutoCommit(false);
         } catch (SQLException e) {
             throw new DAOException("Set auto commit 'false' error", e);
         }
         dao.setConnection(connection);
-        for (AbstractDAO d : daos) {
+        for (DAO d : daos) {
             d.setConnection(connection);
         }
     }

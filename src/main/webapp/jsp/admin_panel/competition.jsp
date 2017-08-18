@@ -48,8 +48,7 @@
                                     <select id="selectKind" required name="sportId" class="w3-select">
                                         <option value='' selected disabled> Choose sport</option>
                                         <c:forEach var="kind" items="${kindsOfSport}">
-                                            <option value="${kind.id}"
-                                                    count="${kind.competitorCount}">${kind.name}</option>
+                                            <option value="${kind.id}" count="${kind.competitorCount}">${kind.name}</option>
                                         </c:forEach>
                                     </select>
 
@@ -187,18 +186,51 @@
                     <%--Deactivated competitions--%>
                     <%@include file="competition_part/upcoming_deactivated.jsp" %>
 
-
-
                 </div>
 
-                <div id="Past" class="w3-container w3-border general" style="display:none">
-                    <h2>Paris</h2>
-                    <p>Paris is the capital of France.</p>
+                <div id="Past" class="general" style="display:none">
+                    <div class="w3-bar w3-black">
+                        <button class="w3-bar-item w3-button pastLink w3-white"
+                                onclick="openTab(event,'PastFilled', 'past', 'pastLink')">
+                            Filled
+                        </button>
+                        <button class="w3-bar-item w3-button pastLink"
+                                onclick="openTab(event,'PastUnfilled', 'past', 'pastLink')">
+                            Unfilled
+                        </button>
+                        <button class="w3-bar-item w3-button pastLink"
+                                onclick="openTab(event,'PastDeactivated', 'past', 'pastLink')">
+                            Deactivated
+                        </button>
+                    </div>
+
+                    <%--Filled competitions--%>
+                    <%@include file="competition_part/past_filled.jsp" %>
+
+                    <%--Unfilled competitions--%>
+                    <%@include file="competition_part/past_unfilled.jsp" %>
+
+                    <%--Deactivated competitions--%>
+                    <%@include file="competition_part/past_deactivated.jsp" %>
                 </div>
 
-                <div id="Now" class="w3-container w3-border general" style="display:none">
-                    <h2>Tokyo</h2>
-                    <p>Tokyo is the capital of Japan.</p>
+                <div id="Now" class="general" style="display:none">
+                    <div class="w3-bar w3-black">
+                        <button class="w3-bar-item w3-button nowLink w3-white"
+                                onclick="openTab(event,'NowActivated', 'now', 'nowLink')">
+                            Activated
+                        </button>
+                        <button class="w3-bar-item w3-button nowLink"
+                                onclick="openTab(event,'NowDeactivated', 'now', 'nowLink')">
+                            Deactivated
+                        </button>
+                    </div>
+
+                    <%--Activated competitions--%>
+                    <%@include file="competition_part/now_activated.jsp" %>
+
+                    <%--Deactivated competitions--%>
+                    <%@include file="competition_part/now_deactivated.jsp" %>
                 </div>
             </div>
         </div>
@@ -245,6 +277,15 @@
         </div>
     </div>
 </div>
+<div id="modal_fill_warning" class="w3-modal">
+    <div class="w3-modal-content">
+        <div class="w3-container w3-center">
+            <span onclick="(modal_fill_warning).style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <p>Incorrect number format or duplicate place</p>
+            <input type="button" class="w3-button" value="Ok" onclick="(modal_fill_warning).style.display='none'">
+        </div>
+    </div>
+</div>
 <c:if test="${requestScope.get('deactivateError') != null}">
     <div id="modal_deactivate_error" class="w3-modal" style="display: inherit;">
         <div class="w3-modal-content">
@@ -257,6 +298,31 @@
         </div>
     </div>
 </c:if>
+<c:if test="${requestScope.get('fillError') != null}">
+    <div id="modal_fill_error" class="w3-modal" style="display: inherit;">
+        <div class="w3-modal-content">
+            <div class="w3-container w3-center">
+                <span onclick="(modal_fill_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <p>Fill result database error.</p>
+                <input type="button" class="w3-button" value="Ok"
+                       onclick="(modal_fill_error).style.display='none'">
+            </div>
+        </div>
+    </div>
+</c:if>
+<c:if test="${requestScope.get('wrongNumberFormat') != null}">
+    <div id="modal_number_error" class="w3-modal" style="display: inherit;">
+        <div class="w3-modal-content">
+            <div class="w3-container w3-center">
+                <span onclick="(modal_number_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                <p>Fill result error. Please, check input date</p>
+                <input type="button" class="w3-button" value="Ok"
+                       onclick="(modal_number_error).style.display='none'">
+            </div>
+        </div>
+    </div>
+</c:if>
+
 
 </body>
 <script src="${pageContext.request.contextPath}/js/competition.js"></script>

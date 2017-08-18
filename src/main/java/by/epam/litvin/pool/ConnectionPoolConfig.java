@@ -9,9 +9,8 @@ import java.util.Properties;
 import java.util.ResourceBundle;
 
 import static by.epam.litvin.constant.GeneralConstant.ConnectionPool.CAPACITY;
-import static by.epam.litvin.constant.GeneralConstant.ConnectionPool.CONNECTION_WAIT_TIME;
 import static by.epam.litvin.constant.GeneralConstant.DataBase.*;
-import static by.epam.litvin.constant.GeneralConstant.PATH_TO_PROPERTIES;
+import static by.epam.litvin.constant.GeneralConstant.PATH_TO_DB_PROPERTIES;
 
 
 class ConnectionPoolConfig {
@@ -22,7 +21,7 @@ class ConnectionPoolConfig {
 
     ConnectionPoolConfig() {
         try {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle(PATH_TO_PROPERTIES);
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(PATH_TO_DB_PROPERTIES);
             properties = new Properties();
             Class.forName(resourceBundle.getString(DRIVER));
             url = resourceBundle.getString(URL);
@@ -36,9 +35,10 @@ class ConnectionPoolConfig {
         } catch (ClassNotFoundException e) {
             LOGGER.log(Level.FATAL, "Connection pool will nowhere create. ", e);
             throw new RuntimeException("Driver not found. ", e);
+
         } catch (MissingResourceException e) {
             LOGGER.log(Level.FATAL, "Connection pool will nowhere create. ", e);
-            throw new RuntimeException("Configuration file not found. ", e);
+            throw new RuntimeException("Data base configuration file not found. ", e);
 
         }
     }

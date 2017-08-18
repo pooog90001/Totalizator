@@ -57,7 +57,7 @@ public class ConnectionPool {
     public ProxyConnection retrieveConnection() throws ConnectionPoolException {
         ProxyConnection newConn;
         try {
-            newConn = ((availableConns.size() + usedConns.size()) < config.getPoolCapacity()) ?
+            newConn = (((availableConns.size() + usedConns.size()) < config.getPoolCapacity()) && availableConns.size() == 0) ?
                     createConnection() :
                     availableConns.take();
 
@@ -77,7 +77,7 @@ public class ConnectionPool {
         }
     }
 
-    public int getAvailableConnsCnt() {
+    public int getAvailableConnsCount() {
         int result;
 
         if ((availableConns.size() + usedConns.size()) < config.getPoolCapacity()) {

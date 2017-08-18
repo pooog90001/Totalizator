@@ -12,18 +12,14 @@ import by.epam.litvin.receiver.CommonReceiver;
 import by.epam.litvin.util.NewsFormatter;
 import by.epam.litvin.util.Packer;
 import com.google.gson.JsonObject;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.*;
 
 public class CommonReceiverImpl implements CommonReceiver{
-    private static final Logger LOGGER = LogManager.getLogger();
-
-
 
     @Override
     public void changeLocale(RequestContent requestContent) throws ReceiverException {
@@ -43,6 +39,8 @@ public class CommonReceiverImpl implements CommonReceiver{
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
+            String newsImagePath = "/image/news";
+
 
             handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO);
 
@@ -72,6 +70,7 @@ public class CommonReceiverImpl implements CommonReceiver{
             /*requestContent.getRequestAttributes().put(UPCOMING_GAMES, orderedUpcomingGameList);
             requestContent.getRequestAttributes().put(PAST_GAMES, orderedPastGameList);*/
             requestContent.getSessionAttributes().put("kindsOfSportLeftBar", kindOfSportListResult);
+            requestContent.getRequestAttributes().put("newsImagePath", newsImagePath);
 
         } catch (DAOException e) {
             if (handler != null) {
@@ -79,7 +78,7 @@ public class CommonReceiverImpl implements CommonReceiver{
                     handler.rollback();
                     handler.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Open main page tollback error", e);
                 }
             }
             throw new ReceiverException(e);

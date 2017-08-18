@@ -3,27 +3,28 @@
 
     <c:forEach var="competition" items="${upcomingDeactiveCompetitions}">
         <div id="upcomingDeactivatedGame${competition['competition_id']}"
-                class="w3-container w3-card-2 w3-display-container w3-margin-top">
+             class="w3-container w3-card-2 w3-display-container w3-margin-top">
 
-            <div class="w3-display-topright w3-display-hover w3-small">
-                <button class="w3-button w3-black w3-padding-small"
-                        onclick="(dmodal_active${competition['competition_id']}).style.display='block'">
-                    <i class="fa fa-check-square-o"></i>
-                </button>
-                <button class="w3-button w3-black w3-padding-small"
-                        onclick="deactivatedEdit(this, 'upcomingDeactivatedGame'+${competition['competition_id']})">
-                    <i class="fa fa-edit"></i>
-                </button>
-                <button class="w3-button w3-black w3-padding-small"
-                        onclick="(dmodal_del${competition['competition_id']}).style.display='block'">
-                    <i class="fa fa-remove"></i>
-                </button>
-
-            </div>
+            <c:if test="${user.type.toString().equals('BOOKMAKER')}">
+                <div class="w3-display-topright w3-display-hover w3-small">
+                    <button class="w3-button w3-black w3-padding-small"
+                            onclick="(dmodal_active${competition['competition_id']}).style.display='block'">
+                        <i class="fa fa-check-square-o"></i>
+                    </button>
+                    <button class="w3-button w3-black w3-padding-small"
+                            onclick="deactivatedEdit(this, 'upcomingDeactivatedGame'+${competition['competition_id']})">
+                        <i class="fa fa-edit"></i>
+                    </button>
+                    <button class="w3-button w3-black w3-padding-small"
+                            onclick="(dmodal_del${competition['competition_id']}).style.display='block'">
+                        <i class="fa fa-remove"></i>
+                    </button>
+                </div>
+            </c:if>
 
             <div id="dmodal_active${competition['competition_id']}" class="w3-modal">
                 <div class="w3-modal-content">
-                    <div class="w3-container w3-center" >
+                    <div class="w3-container w3-center">
                                                         <span onclick="(dmodal_active${competition['competition_id']}).style.display='none'"
                                                               class="w3-button w3-display-topright">&times;</span>
                         <p>
@@ -56,7 +57,7 @@
                         <div class="w3-row">
                             <div class="w3-half">
                                 <input onclick="(dmodal_del${competition['competition_id']}).style.display='none';
-                                        delDeactivated(this, 'upcomingDeactivatedGame'+${competition['competition_id']});"
+                                        delUnfilled(this, 'upcomingDeactivatedGame'+${competition['competition_id']});"
                                        type="button" class="w3-button" value="Yes">
                             </div>
                             <div class="w3-half">

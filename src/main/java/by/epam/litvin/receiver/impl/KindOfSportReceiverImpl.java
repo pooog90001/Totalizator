@@ -23,18 +23,14 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
     @Override
     public void openKindOfSportSetting(RequestContent requestContent) throws ReceiverException {
 
-        String[] wrongName = requestContent.getRequestParameters().get("wrongName");
-        String[] duplicateName = requestContent.getRequestParameters().get("duplicateName");
-        String[] wrongCount = requestContent.getRequestParameters().get("wrongCount");
+        String[] errorNames = {"wrongName", "duplicateName", "wrongCount"};
 
-        if (wrongName != null && !wrongName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("wrongName", true);
-        }
-        if (duplicateName != null && !duplicateName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("duplicateName", true);
-        }
-        if (wrongCount != null && !wrongCount[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("wrongCount", true);
+        for (String name : errorNames) {
+            String[] error = requestContent.getRequestParameters().get(name);
+
+            if (error != null && !error[0].isEmpty()) {
+                requestContent.getRequestAttributes().put(name, true);
+            }
         }
 
         TransactionManager manager = null;
@@ -54,7 +50,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Open sport setting rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -64,8 +60,6 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
     @Override
     public void updateKindOfSport(RequestContent requestContent) throws ReceiverException {
         KindOfSportValidatorImpl validator = new KindOfSportValidatorImpl();
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get("newName")[0].trim();
         String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
         int id = Integer.valueOf(stringId[0]);
@@ -75,9 +69,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         kindOfSport.setName(newName);
 
         if (!validator.isNameValid(kindOfSport.getName())) {
-            JsonElement element = gson.toJsonTree(false);
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
+            requestContent.setAjaxSuccess(false);
             return;
         }
 
@@ -87,13 +79,10 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
 
-            JsonElement element = gson.toJsonTree(kindOfSportDAO.update(kindOfSport));
+            requestContent.setAjaxSuccess(kindOfSportDAO.update(kindOfSport));
 
             manager.commit();
             manager.endTransaction();
-
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
             if (manager != null) {
@@ -101,7 +90,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Update sport rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -155,7 +144,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Create sport rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -191,7 +180,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Delete sport rollback error", e);
                 }
             }
             throw new ReceiverException(e);

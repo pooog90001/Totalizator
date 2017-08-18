@@ -37,6 +37,14 @@ final public class SQLRequestConstant {
                     "FROM " +
                     "    news;";
 
+    public static final String CREATE_NEWS =
+            "INSERT INTO news  (news_title, news_text, news_date_creation)" +
+                    "VALUES (?, ?, now());";
+
+    public static final String UPDATE_IMAGE_PATH_NEWS =
+            "UPDATE news  " +
+                    "SET news_image_url = ? " +
+                    "WHERE news_id = ? ;";
 
     public static final String FIND_ALL_COMMAND =
                     "SELECT command_id, command_name, kind_of_sport_id " +
@@ -210,7 +218,7 @@ final public class SQLRequestConstant {
                     "        AND competition_is_active = TRUE " +
                     "LIMIT ?, ?;";
 
-    public static final String FIND_ACTIVATED_UPCOMING_GAMES_FOR_SETTINGS =
+    public static final String FIND_UPCOMING_GAMES_FOR_SETTINGS =
                     "SELECT  DISTINCT " +
                     "    competition.competition_id,  " +
                     "    competition_type_name,  " +
@@ -234,9 +242,9 @@ final public class SQLRequestConstant {
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
                     "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start > NOW()  " +
-                    "        AND competition_is_active = TRUE ";
+                    "        AND competition_is_active = ? ";
 
-    public static final String FIND_DEACTIVATED_UPCOMING_GAMES_FOR_SETTINGS =
+    public static final String FIND_NOW_GAMES_FOR_SETTINGS =
             "SELECT  DISTINCT " +
                     "    competition.competition_id,  " +
                     "    competition_type_name,  " +
@@ -259,8 +267,37 @@ final public class SQLRequestConstant {
                     "        AND competitor.command_id = command.command_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
                     "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
-                    "        AND competition_date_start > NOW()  " +
-                    "        AND competition_is_active = FALSE ";
+                    "        AND competition_date_start < NOW()  " +
+                    "        AND competition_date_finish > NOW()  " +
+                    "        AND competition_is_active = ?; ";
+
+    public static final String FIND_PAST_GAMES_FOR_SETTINGS =
+                    "SELECT  DISTINCT " +
+                    "    competition.competition_id,  " +
+                    "    competition_type_name,  " +
+                    "    kind_of_sport_name,  " +
+                    "    competition_total,  " +
+                    "    competition_less_total_coeff,  " +
+                    "    competition_more_total_coeff,  " +
+                    "    competition_standoff_coeff,  " +
+                    "    competition_date_start,  " +
+                    "    competition_date_finish,  " +
+                    "    competition_name  " +
+                    "FROM  " +
+                    "    competition,  " +
+                    "    competition_type,  " +
+                    "    competitor,  " +
+                    "    command,  " +
+                    "    kind_of_sport  " +
+                    "WHERE  " +
+                    "    competitor.competition_id = competition.competition_id  " +
+                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competition.competition_type_id = competition_type.competition_type_id  " +
+                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND competition_date_finish < NOW()  " +
+                    "        AND competition_is_result_filled = ?  " +
+                    "        AND competition_is_active = ?; ";
+
 
     public static final String FIND_LIMIT_PAST_GAMES =
                     "SELECT  " +
@@ -391,6 +428,8 @@ final public class SQLRequestConstant {
             "    SELECT   " +
             "          competitor.competitor_id,   " +
             "          command_name,   " +
+            "          competitor_result,   " +
+            "          competitor_is_win,   " +
             "          competitor_win_coeff  " +
             "    FROM  " +
             "          competitor,  " +
@@ -502,6 +541,14 @@ final public class SQLRequestConstant {
                     "    competitor_win_coeff = ? " +
                     "WHERE " +
                     "    competitor_id = ?;";
+
+    public static final String UPDATE_COMPETITOR_RESULT =
+            "UPDATE competitor " +
+                    "SET  " +
+                    "    competitor_is_win = ?, " +
+                    "    competitor_result = ? " +
+                    "WHERE " +
+                    "    competitor_id = ?;";
     
     public static final String FIND_COMPETITOR_IDS_BY_COMPETITION_ID =
                     "SELECT  " +
@@ -552,4 +599,66 @@ final public class SQLRequestConstant {
                     "    competition_is_active = ? " +
                     "WHERE " +
                     "    competition_id = ?;";
+
+    public static final String CHANGE_COMPETITION_RESULT_FILL_STATE =
+            "UPDATE competition  " +
+                    "SET  " +
+                    "    competition_is_result_filled = ? " +
+                    "WHERE " +
+                    "    competition_id = ?;";
+
+
+    public static final String UPDATE_COMPETITOR_RESULT_AND_PAY_MONEY =
+                    "UPDATE user, " +
+                    "    bet, " +
+                    "    competitor  " +
+                    "SET  " +
+                    "    user.user_cash = IF(competitor_is_win = TRUE, " +
+                    "        user_cash + bet_cash * competitor_win_coeff, user_cash), " +
+                    "    bet.bet_is_win = competitor_is_win " +
+                    "WHERE " +
+                    "    competitor.competition_id = ? " +
+                    "        AND competitor.command_id != 0 " +
+                    "        AND competitor.competitor_id = bet.competitor_id " +
+                    "        AND bet.user_id = user.user_id;";
+    
+    public static final String SET_VAR_FIRST_COMPETITOR_RESULT = "SET @competitor1 = ?;";
+
+    public static final String SET_VAR_SECOND_COMPETITOR_RESULT = "SET @competitor2 = ?;";
+
+    public static final String UPDATE_COMPETITION_RESULT_AND_PAY_MONEY =
+                    "        UPDATE user,  " +
+                    "            bet,  " +
+                    "            competitor,  " +
+                    "            competition   " +
+                    "        SET   " +
+                    "            user.user_cash =  " +
+                    "            CASE  " +
+                    "                WHEN bet.bet_total = 'LESS' AND competition_total < (@competitor1 + @competitor2)  " +
+                    "                      THEN user_cash + (bet_cash * competition_less_total_coeff)  " +
+                    "                WHEN bet.bet_total = 'MORE' AND competition_total > (@competitor1 + @competitor2)  " +
+                    "                      THEN user_cash + (bet_cash * competition_more_total_coeff)  " +
+                    "                WHEN bet.bet_total = 'EQUALS' AND @competitor1 = @competitor2  " +
+                    "                      THEN user_cash + (bet_cash * competition_standoff_coeff)  " +
+                    "                ELSE user_cash  " +
+                    "            END,  " +
+                    "            bet.bet_is_win =  " +
+                    "            CASE  " +
+                    "                WHEN bet.bet_total = 'LESS' AND competition_total < (@competitor1 + @competitor2)   " +
+                    "                   THEN TRUE  " +
+                    "                WHEN bet.bet_total = 'MORE' AND competition_total > (@competitor1 + @competitor2)   " +
+                    "                   THEN TRUE  " +
+                    "                WHEN bet.bet_total = 'EQUALS' AND @competitor1 = @competitor2   " +
+                    "                   THEN TRUE  " +
+                    "                ELSE FALSE  " +
+                    "            END  " +
+                    "        WHERE  " +
+                    "            competition.competition_id = ?  " +
+                    "                AND competitor.competition_id = competition.competition_id  " +
+                    "                AND competitor.command_id = 0  " +
+                    "                AND competitor.competitor_id = bet.competitor_id  " +
+                    "                AND bet.user_id = user.user_id;";
 }
+
+
+        

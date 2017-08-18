@@ -13,6 +13,8 @@ public interface CompetitionReceiver extends Receiver {
     void createCompetition(RequestContent requestContent) throws ReceiverException;
     void editUpcomingActivated(RequestContent requestContent) throws ReceiverException;
     void editUpcomingDeactivated(RequestContent requestContent) throws ReceiverException;
-    void deleteUpcomingCompetition(RequestContent requestContent) throws ReceiverException;
-    void changeStateCompetition(RequestContent requestContent) throws ReceiverException;
+    void deleteUnfilledCompetition(RequestContent requestContent) throws ReceiverException;
+    void deleteFilledCompetition(RequestContent requestContent) throws ReceiverException;
+    void updateStateCompetition(RequestContent requestContent) throws ReceiverException;
+    void updateResultsCompetition(RequestContent requestContent) throws ReceiverException;
 }

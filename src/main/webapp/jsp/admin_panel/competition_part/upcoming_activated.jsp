@@ -65,7 +65,7 @@
                         <div class="w3-row">
                             <div class="w3-half">
                                 <input onclick="(amodal_del${competition['competition_id']}).style.display='none';
-                                delActive(this, 'upcomingActiveGame'+${competition['competition_id']});"
+                                delUnfilled(this, 'upcomingActiveGame'+${competition['competition_id']});"
                                        type="button" class="w3-button" value="Yes">
                             </div>
                             <div class="w3-half">

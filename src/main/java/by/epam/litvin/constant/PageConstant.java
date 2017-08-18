@@ -1,6 +1,33 @@
 package by.epam.litvin.constant;
 
+import com.sun.xml.internal.bind.v2.TODO;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.MissingResourceException;
+import java.util.Properties;
+import java.util.ResourceBundle;
+import static by.epam.litvin.constant.GeneralConstant.PATH_TO_PAGE_PATH_PROPERTIES;
+
 final public class PageConstant {
+    private final static Logger LOGGER = LogManager.getLogger();
+   /* private final static Properties properties;
+
+    static {
+        ResourceBundle resourceBundle = ResourceBundle.getBundle(PATH_TO_PAGE_PATH_PROPERTIES);
+        properties = new Properties();
+
+        try {
+            ttt = resourceBundle.getString("sdf");
+
+        } catch (MissingResourceException e) {
+            LOGGER.log(Level.FATAL, "Connection pool will nowhere create. ", e);
+            throw new RuntimeException("Data base configuration file not found. ", e);
+
+        }
+    }*/
+// TODO Что делать с путями к страницам? Как вариант сделать ENUM
     private PageConstant() {}
 
     private static final String ROOT = "jsp/";

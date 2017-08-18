@@ -38,7 +38,7 @@
                 <div class="w3-third w3-container">
                     <div class="w3-card-2 w3-round">
                         <div class="w3-display-container">
-                            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
+                            <img src="file:///${newsImagePath}${news.imageUrl}"
                                  alt="${news.title}" style="width: 100%;">
                             <div class="w3-display-topright w3-display-hover">
                                 <p class="w3-black w3-padding">${news.dateCreation}</p>

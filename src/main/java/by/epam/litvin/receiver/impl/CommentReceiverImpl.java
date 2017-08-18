@@ -58,7 +58,7 @@ public class CommentReceiverImpl implements CommentReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Change block comment error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -75,10 +75,8 @@ public class CommentReceiverImpl implements CommentReceiver {
         Map<String, Object> data = new HashMap<>();
 
         if (user == null) {
-            data.put(ACCESS_DENIED, true);
-            requestContent.getSessionAttributes().put(TEMPORARY, data);
+            requestContent.getRequestAttributes().put(ACCESS_DENIED, true);
             return;
-
         }
         if (!commentValidator.isCommentTextValid(commentText)) {
             data.put(INVALID_TEXT, true);
@@ -110,7 +108,7 @@ public class CommentReceiverImpl implements CommentReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Create comment rollback error", e);
                 }
             }
             throw new ReceiverException(e);

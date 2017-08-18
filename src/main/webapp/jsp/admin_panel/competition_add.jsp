@@ -9,6 +9,8 @@
     <jsp:param name="wrongActive" value="${temporary['wrongActive']}"/>
     <jsp:param name="createError" value="${temporary['createError']}"/>
     <jsp:param name="deactivateError" value="${temporary['deactivateError']}"/>
+    <jsp:param name="wrongNumberFormat" value="${temporary['wrongNumberFormat']}"/>
+    <jsp:param name="fillError" value="${temporary['fillError']}"/>
 </jsp:forward>
 
 

@@ -38,6 +38,10 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
                         resultSet.getBigDecimal(SQLFieldConstant.Competitor.WIN_COEFF));
                 competitor.put(SQLFieldConstant.Command.NAME,
                         resultSet.getString(SQLFieldConstant.Command.NAME));
+                competitor.put(SQLFieldConstant.Competitor.RESULT,
+                        resultSet.getInt(SQLFieldConstant.Competitor.RESULT));
+                competitor.put(SQLFieldConstant.Competitor.IS_WIN,
+                        resultSet.getBoolean(SQLFieldConstant.Competitor.IS_WIN));
                 competitorList.add(competitor);
             }
         } catch (SQLException e) {
@@ -116,7 +120,7 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
 
     public void deleteByCompetitionId(int competitionId) throws DAOException {
 
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.DELETE_COMPETITORS_BY_COMPETITION_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(DELETE_COMPETITORS_BY_COMPETITION_ID)) {
             statement.setInt(1, competitionId);
             statement.execute();
 
@@ -124,4 +128,23 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
             throw new DAOException("Delete competitors error", e);
         }
     }
+
+    public boolean updateResult(CompetitorEntity entity) throws DAOException {
+        boolean isUpdated;
+
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_COMPETITOR_RESULT)) {
+            statement.setBoolean(1, entity.getWin());
+            statement.setInt(2, entity.getResult());
+            statement.setInt(3, entity.getId());
+
+            isUpdated = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DAOException("Update competitor result error", e);
+        }
+
+        return isUpdated;
+    }
+
+
 }

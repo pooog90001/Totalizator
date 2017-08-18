@@ -118,33 +118,50 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return upcommingGamesList;
     }
 
-    public List<Map<String, Object>> findActivatedUpcomingCompetitions() throws DAOException {
-        List<Map<String, Object>> upcommingGamesList;
+    public List<Map<String, Object>> findSettingUpcomingCompetitions(boolean isActivated) throws DAOException {
+        List<Map<String, Object>> upcomingGamesList;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ACTIVATED_UPCOMING_GAMES_FOR_SETTINGS)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_UPCOMING_GAMES_FOR_SETTINGS)) {
+            statement.setBoolean(1, isActivated);
             ResultSet resultSet = statement.executeQuery();
-            upcommingGamesList = extractUpcomingCompetitions(resultSet);
+            upcomingGamesList = extractCompetitions(resultSet);
 
         } catch (SQLException e) {
             throw new DAOException("find upcoming games error", e);
         }
-        return upcommingGamesList;
+        return upcomingGamesList;
     }
 
-    public List<Map<String, Object>> findDeactivatedUpcomingCompetitions() throws DAOException {
-        List<Map<String, Object>> upcommingGamesList;
+    public List<Map<String, Object>> findSettingNowCompetitions(boolean isActivated) throws DAOException {
+        List<Map<String, Object>> nowGamesList;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_DEACTIVATED_UPCOMING_GAMES_FOR_SETTINGS)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_NOW_GAMES_FOR_SETTINGS)) {
+            statement.setBoolean(1, isActivated);
             ResultSet resultSet = statement.executeQuery();
-            upcommingGamesList = extractUpcomingCompetitions(resultSet);
+            nowGamesList = extractCompetitions(resultSet);
+
+        } catch (SQLException e) {
+            throw new DAOException("find now games error", e);
+        }
+        return nowGamesList;
+    }
+
+    public List<Map<String, Object>> findSettingPastCompetitions(boolean isResultFilled, boolean isActivated) throws DAOException {
+        List<Map<String, Object>> pastGamesList;
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_PAST_GAMES_FOR_SETTINGS)) {
+            statement.setBoolean(1, isResultFilled);
+            statement.setBoolean(2, isActivated);
+            ResultSet resultSet = statement.executeQuery();
+            pastGamesList = extractCompetitions(resultSet);
 
         } catch (SQLException e) {
             throw new DAOException("find upcoming games error", e);
         }
-        return upcommingGamesList;
+        return pastGamesList;
     }
 
-    private List<Map<String, Object>> extractUpcomingCompetitions(ResultSet resultSet)
+    private List<Map<String, Object>> extractCompetitions(ResultSet resultSet)
             throws SQLException {
         List<Map<String, Object>> upcommingGamesList = new ArrayList<>();
 
@@ -349,7 +366,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
     public boolean changeActiveState(int competitionId, boolean state) throws DAOException {
         boolean isChanged;
 
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CHANGE_COMPETITION_ACTIVE_STATE)) {
+        try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_ACTIVE_STATE)) {
             statement.setBoolean(1, state);
             statement.setInt(2, competitionId);
 
@@ -357,6 +374,22 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
 
         } catch (SQLException e) {
             throw new DAOException("Change active state error", e);
+        }
+
+        return isChanged;
+    }
+
+    public boolean changeResultFillState(int competitionId, boolean state) throws DAOException {
+        boolean isChanged;
+
+        try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_RESULT_FILL_STATE)) {
+            statement.setBoolean(1, state);
+            statement.setInt(2, competitionId);
+
+            isChanged = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DAOException("Change result fill state error", e);
         }
 
         return isChanged;

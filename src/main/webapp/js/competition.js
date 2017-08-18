@@ -267,3 +267,82 @@ function isCompetitorsCoeffValid(competitorsCoeff) {
     }
     return true;
 }
+
+function delFilled(e, id) {
+
+    var $this = $(e);
+    var $container = $("#" + id);
+    var dataString = "&command=delete_filled_competition";
+    var paramName = 'competitionId';
+
+    $container.find("[name*='"+paramName+"']").each(function () {
+        dataString += '&';
+        dataString += paramName;
+        dataString += '=';
+        dataString += $(this).val().toString().trim();
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/ajaxController",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data, textStatus, jqXHR) {
+            if (data.success === true) {
+                console.log("Something really bad happened " + textStatus);
+                $container.css("display", "none");
+            } else {
+                modal_del_wrong.style.display = 'block';
+            }
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Something really bad happened " + textStatus);
+            modal_del_error.style.display = 'block';
+        },
+
+        beforeSend: function (jqXHR, settings) {},
+        complete: function (jqXHR, textStatus) {}
+    });
+}
+
+function delUnfilled(e, id) {
+
+    var $this = $(e);
+    var $container = $("#" + id);
+    var dataString = "&command=delete_unfilled_competition";
+    var paramName = 'competitionId';
+
+    $container.find("[name*='"+paramName+"']").each(function () {
+        dataString += '&';
+        dataString += paramName;
+        dataString += '=';
+        dataString += $(this).val().toString().trim();
+    });
+
+    $.ajax({
+        type: "POST",
+        url: "/ajaxController",
+        data: dataString,
+        dataType: "json",
+
+        success: function (data, textStatus, jqXHR) {
+            if (data.success === true) {
+                console.log("Something really bad happened " + textStatus);
+                $container.css("display", "none");
+
+            } else {
+                modal_del_wrong.style.display = 'block';
+            }
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Something really bad happened " + textStatus);
+            modal_del_error.style.display = 'block';
+        },
+
+        beforeSend: function (jqXHR, settings) {},
+        complete: function (jqXHR, textStatus) {}
+    });
+}

@@ -23,14 +23,15 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 public class CommandReceiverImpl implements CommandReceiver {
     @Override
     public void openCommandSetting(RequestContent requestContent) throws ReceiverException {
-        String[] wrongName = requestContent.getRequestParameters().get("wrongName");
-        String[] duplicateName = requestContent.getRequestParameters().get("duplicateName");
 
-        if (wrongName != null && !wrongName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("wrongName", true);
-        }
-        if (duplicateName != null && !duplicateName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("duplicateName", true);
+        String[] errorNames = {"wrongName", "duplicateName"};
+
+        for (String name : errorNames) {
+            String[] error = requestContent.getRequestParameters().get(name);
+
+            if (error != null && !error[0].isEmpty()) {
+                requestContent.getRequestAttributes().put(name, true);
+            }
         }
 
         TransactionManager manager = null;
@@ -53,7 +54,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Open command setting rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -63,8 +64,6 @@ public class CommandReceiverImpl implements CommandReceiver {
     @Override
     public void updateCommand(RequestContent requestContent) throws ReceiverException {
         CommandValidatorImpl validator = new CommandValidatorImpl();
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get(NEW_NAME)[0].trim();
         String[] stringId = requestContent.getRequestParameters().get(COMMAND_ID);
         int id = Integer.valueOf(stringId[0]);
@@ -74,9 +73,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         command.setName(newName);
 
         if (!validator.isNameValid(command.getName())) {
-            JsonElement element = gson.toJsonTree(false);
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
+            requestContent.setAjaxSuccess(false);
             return;
         }
 
@@ -86,13 +83,10 @@ public class CommandReceiverImpl implements CommandReceiver {
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
-            JsonElement element = gson.toJsonTree(commandDAO.update(command));
+            requestContent.setAjaxSuccess(commandDAO.update(command));
 
             manager.commit();
             manager.endTransaction();
-
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
             if (manager != null) {
@@ -100,7 +94,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Update command rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -150,7 +144,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Create command rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -185,7 +179,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Delete command rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -220,7 +214,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Find command rollback error", e);
                 }
             }
             throw new ReceiverException(e);

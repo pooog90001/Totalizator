@@ -22,14 +22,15 @@ import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
 public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     @Override
     public void openCompetitionTypeSetting(RequestContent requestContent) throws ReceiverException {
-        String[] wrongName = requestContent.getRequestParameters().get("wrongName");
-        String[] duplicateName = requestContent.getRequestParameters().get("duplicateName");
 
-        if (wrongName != null && !wrongName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("wrongName", true);
-        }
-        if (duplicateName != null && !duplicateName[0].isEmpty()) {
-            requestContent.getRequestAttributes().put("duplicateName", true);
+        String[] errorNames = {"wrongName", "duplicateName"};
+
+        for (String name : errorNames) {
+            String[] error = requestContent.getRequestParameters().get(name);
+
+            if (error != null && !error[0].isEmpty()) {
+                requestContent.getRequestAttributes().put(name, true);
+            }
         }
 
         TransactionManager manager = null;
@@ -49,7 +50,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Open competition type rollback error ", e);
                 }
             }
             throw new ReceiverException(e);
@@ -59,8 +60,6 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     @Override
     public void updateCompetitionType(RequestContent requestContent) throws ReceiverException {
         CompetitionTypeValidatorImpl validator = new CompetitionTypeValidatorImpl();
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
         String newName = requestContent.getRequestParameters().get(NEW_NAME)[0].trim();
         String[] stringId = requestContent.getRequestParameters().get("competitionTypeId");
         int id = Integer.valueOf(stringId[0]);
@@ -70,9 +69,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         type.setName(newName);
 
         if (!validator.isNameValid(type.getName())) {
-            JsonElement element = gson.toJsonTree(false);
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
+            requestContent.setAjaxSuccess(false);
             return;
         }
 
@@ -82,13 +79,11 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             CompetitionTypeDAOImpl typeDAO = new CompetitionTypeDAOImpl();
             manager.beginTransaction(typeDAO);
 
-            JsonElement element = gson.toJsonTree(typeDAO.update(type));
+            requestContent.setAjaxSuccess(typeDAO.update(type));
 
             manager.commit();
             manager.endTransaction();
 
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
             if (manager != null) {
@@ -96,7 +91,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Update competition type rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -143,7 +138,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Create competition type rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -177,7 +172,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
                     manager.rollback();
                     manager.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Delete competition type rollback error", e);
                 }
             }
             throw new ReceiverException(e);

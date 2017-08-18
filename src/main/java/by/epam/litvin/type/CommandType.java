@@ -17,8 +17,10 @@ import by.epam.litvin.command.kindofsport.CreateKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.DeleteKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.OpenKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.UpdateKindOfSportCommand;
+import by.epam.litvin.command.news.CreateNewsCommand;
 import by.epam.litvin.command.news.OpenAllNewsCommand;
 import by.epam.litvin.command.news.OpenConcreteNewsCommand;
+import by.epam.litvin.command.news.OpenNewsSettingsCommand;
 import by.epam.litvin.command.user.SignInCommand;
 import by.epam.litvin.command.user.SignOutCommand;
 import by.epam.litvin.command.user.SignUpCommand;
@@ -218,17 +220,43 @@ public enum CommandType {
         }
     },
 
-    DELETE_UPCOMING_COMPETITION(new DeleteUpcomingCompetitionCommand(new CompetitionReceiverImpl())) {
+    DELETE_UNFILLED_COMPETITION(new DeleteUnfilledCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).deleteUpcomingCompetition(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).deleteUnfilledCompetition(content);
         }
     },
 
-    CHANGE_STATE_COMPETITION(new ChangeStateCompetitionCommand(new CompetitionReceiverImpl())) {
+    DELETE_FILLED_COMPETITION(new DeleteFilledCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).changeStateCompetition(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).deleteFilledCompetition(content);
+        }
+    },
+
+    CHANGE_STATE_COMPETITION(new UpdateStateCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).updateStateCompetition(content);
+        }
+    },
+
+    FILL_RESULTS_COMPETITION(new UpdateResultsCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).updateResultsCompetition(content);
+        }
+    },
+
+    OPEN_NEWS_SETTINGS(new OpenNewsSettingsCommand(new NewsReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((NewsReceiverImpl) getCommand().getReceiver()).openNewsSettings(content);
+        }
+    },
+
+    CREATE_NEWS(new CreateNewsCommand(new NewsReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((NewsReceiverImpl) getCommand().getReceiver()).createNews(content);
         }
     };
+
+
 
 
 
@@ -239,6 +267,7 @@ public enum CommandType {
         this.command = command;
 
     }
+
     public AbstractCommand getCommand() {
         return command;
     }

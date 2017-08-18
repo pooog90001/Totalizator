@@ -4,7 +4,15 @@ final public class GeneralConstant {
 
     private GeneralConstant() {}
 
-    public static final String PATH_TO_PROPERTIES = "database";
+    public static final String NEWS_ID = "newsId";
+    public static final String NEWS_LIST = "newsList";
+    public static final String _NEWS_DOT = "_news.";
+    public static final String NEWS = "news";
+
+    public static final String PATH_TO_DB_PROPERTIES = "database";
+    public static final String PATH_TO_PAGE_PATH_PROPERTIES = "pages";
+
+
     public static final String SALT = "totalizator";
     public static final String DUPLICATE_UNIQUE_INDEX = "23000";
     public static final String CAN_NOT_DELETE_OR_UPDATE = "23000";
@@ -12,8 +20,6 @@ final public class GeneralConstant {
     public static final String ACCESS_DENIED = "accessDenied";
     public static final String WRONG_NEWS = "wrongNews";
     public static final String USER = "user";
-    public static final String NEWS_ID = "newsId";
-    public static final String NEWS_LIST = "newsList";
     public static final String LIVE_GAMES = "liveGames";
     public static final String UPCOMING_GAMES = "upcomingGames";
     public static final String PAST_GAMES = "pastGames";
@@ -32,6 +38,8 @@ final public class GeneralConstant {
     public static final String COUNT = "count";
     public static final String CASH = "cash";
 
+    public static final String IMAGE = "image";
+
 
     public static final int COUNT_NEWS_ON_MAIN_PAGE = 3;
     public static final int COUNT_COMPETITIONS_ON_MAIN_PAGE = 20;
@@ -49,7 +57,6 @@ final public class GeneralConstant {
 
     public static class ConnectionPool {
         public static final String CAPACITY = "poolCapacity";
-        public static final String CONNECTION_WAIT_TIME = "connectionWaitTime";
     }
 
 

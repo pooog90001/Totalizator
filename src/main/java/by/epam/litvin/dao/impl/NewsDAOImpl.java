@@ -12,6 +12,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.epam.litvin.constant.SQLRequestConstant.UPDATE_IMAGE_PATH_NEWS;
+
 public class NewsDAOImpl extends DAO<NewsEntity> {
 
     @Override
@@ -116,7 +118,46 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
 
     @Override
     public boolean create(NewsEntity entity) throws DAOException {
-        throw new UnsupportedOperationException();    }
+        throw new UnsupportedOperationException();
+    }
+
+
+    public int createAndGetId(NewsEntity entity) throws DAOException {
+        int newsId = 0;
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_NEWS,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, entity.getTitle());
+            statement.setString(2, entity.getText());
+
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                newsId = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Create news error ", e);
+        }
+
+        return newsId;
+    }
+
+    public void updateImagePath(NewsEntity entity) throws DAOException {
+
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_IMAGE_PATH_NEWS)) {
+
+            statement.setString(1, entity.getImageUrl());
+            statement.setInt(2, entity.getId());
+
+            statement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new DAOException("Update news error ", e);
+        }
+
+    }
 
     @Override
     public boolean update(NewsEntity entity) {

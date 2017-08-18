@@ -3,22 +3,22 @@ package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.RequestNameConstant;
+import by.epam.litvin.content.RequestContent;
+import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.dao.impl.UserDAOImpl;
+import by.epam.litvin.exception.DAOException;
+import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.UserReceiver;
 import by.epam.litvin.util.StringEncoder;
-import by.epam.litvin.exception.DAOException;
-import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.exception.ReceiverException;
-import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
+import java.util.HashMap;
+import java.util.Map;
 
+import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
 import static by.epam.litvin.constant.RequestNameConstant.*;
 
 public class UserReceiverImpl implements UserReceiver {
-    private static final Logger LOGGER = LogManager.getLogger();
 
     @Override
     public void signUp(RequestContent requestContent) throws ReceiverException {
@@ -40,19 +40,23 @@ public class UserReceiverImpl implements UserReceiver {
             requestContent.getRequestAttributes().put(WRONG_PASSWORD, true);
             isValidData = false;
 
-        } if (!password.equals(repeatPassword)) {
+        }
+        if (!password.equals(repeatPassword)) {
             requestContent.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, true);
             isValidData = false;
 
-        } if (!validator.checkEmail(email)) {
+        }
+        if (!validator.checkEmail(email)) {
             requestContent.getRequestAttributes().put(WRONG_EMAIL, true);
             isValidData = false;
 
-        } if (!validator.checkName(name)) {
+        }
+        if (!validator.checkName(name)) {
             requestContent.getRequestAttributes().put(WRONG_NAME, true);
             isValidData = false;
 
-        } if (!isValidData) {
+        }
+        if (!isValidData) {
             return;
         }
 
@@ -85,7 +89,7 @@ public class UserReceiverImpl implements UserReceiver {
                     handler.rollback();
                     handler.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Sign up rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -98,15 +102,12 @@ public class UserReceiverImpl implements UserReceiver {
         String email;
         String password;
         String dbPassword;
+        Map<String, Object> data = new HashMap<>();
 
         email = requestContent.getRequestParameters().get(EMAIL)[0];
         password = requestContent.getRequestParameters().get(PASSWORD)[0];
 
-
-
-
         UserValidatorImpl validator = new UserValidatorImpl();
-        boolean isValidData = true;
         requestContent.getRequestAttributes().put(EMAIL, email);
         requestContent.getRequestAttributes().put(PASSWORD, password);
 
@@ -126,14 +127,25 @@ public class UserReceiverImpl implements UserReceiver {
             UserDAOImpl userDao = new UserDAOImpl();
             handler.beginTransaction(userDao);
             UserEntity foundUser = userDao.findUser(user);
+
             handler.commit();
+            handler.endTransaction();
 
             if (foundUser != null) {
-                requestContent.getSessionAttributes().put(USER, foundUser);
+                if (foundUser.isBlocked()) {
+                    data.put("blockedText", foundUser.getBlockedText());
+                    requestContent.getSessionAttributes().put(TEMPORARY, data);
+                    requestContent.getRequestAttributes().put("isBlocked", true);
+
+                } else if (!foundUser.isConfirm()) {
+                    requestContent.getRequestAttributes().put("isNotConfirmed", true);
+
+                } else {
+                    requestContent.getSessionAttributes().put(USER, foundUser);
+                }
             } else {
                 requestContent.getRequestAttributes().put(WRONG_DATA, true);
             }
-            handler.endTransaction();
 
         } catch (DAOException e) {
             if (handler != null) {
@@ -141,7 +153,7 @@ public class UserReceiverImpl implements UserReceiver {
                     handler.rollback();
                     handler.endTransaction();
                 } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback error", e);
+                    throw new ReceiverException("Sign in rollback error", e);
                 }
             }
             throw new ReceiverException(e);
@@ -151,6 +163,6 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void signOut(RequestContent requestContent) {
-       requestContent.getSessionAttributes().remove(RequestNameConstant.USER);
+        requestContent.getSessionAttributes().remove(RequestNameConstant.USER);
     }
 }

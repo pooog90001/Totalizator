@@ -10,8 +10,17 @@ public class CompetitorEntity extends Entity {
     private int competitionId;
     private BigDecimal winCoeff;
     private Boolean isWin;
+    private int result;
 
     public CompetitorEntity() {}
+
+    public int getResult() {
+        return result;
+    }
+
+    public void setResult(int result) {
+        this.result = result;
+    }
 
     public int getId() {
         return id;
@@ -63,17 +72,19 @@ public class CompetitorEntity extends Entity {
         if (id != that.id) return false;
         if (commandId != that.commandId) return false;
         if (competitionId != that.competitionId) return false;
+        if (result != that.result) return false;
         if (winCoeff != null ? !winCoeff.equals(that.winCoeff) : that.winCoeff != null) return false;
         return isWin != null ? isWin.equals(that.isWin) : that.isWin == null;
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + commandId;
-        result = 31 * result + competitionId;
-        result = 31 * result + (winCoeff != null ? winCoeff.hashCode() : 0);
-        result = 31 * result + (isWin != null ? isWin.hashCode() : 0);
-        return result;
+        int result1 = id;
+        result1 = 31 * result1 + commandId;
+        result1 = 31 * result1 + competitionId;
+        result1 = 31 * result1 + (winCoeff != null ? winCoeff.hashCode() : 0);
+        result1 = 31 * result1 + (isWin != null ? isWin.hashCode() : 0);
+        result1 = 31 * result1 + result;
+        return result1;
     }
 }

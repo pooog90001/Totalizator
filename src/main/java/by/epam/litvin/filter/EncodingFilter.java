@@ -5,20 +5,28 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
 import java.io.IOException;
 
-@WebFilter(urlPatterns = { "/generalController","/ajaxController" },
+@WebFilter(urlPatterns = { "/generalController","/ajaxController", "/uploadController" },
         initParams = {
-                @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param") })
+                @WebInitParam(name = "encoding", value = "UTF-8", description = "Encoding Param"),
+                @WebInitParam(name = "contentType", value = "text/html", description = "Content type Param") })
 public class EncodingFilter implements Filter {
     private String code;
+    private String contentType;
 
 
     public void init(FilterConfig fConfig) throws ServletException {
         code = fConfig.getInitParameter("encoding");
+        contentType = fConfig.getInitParameter("contentType");
     }
 
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         String codeRequest = request.getCharacterEncoding();
+        String contentTypeRequest = request.getContentType();
+
+        if (contentType != null && !contentType.equalsIgnoreCase(contentTypeRequest)) {
+            response.setContentType(contentType);
+        }
 
         if (code != null && !code.equalsIgnoreCase(codeRequest)) {
             request.setCharacterEncoding(code);
@@ -29,6 +37,7 @@ public class EncodingFilter implements Filter {
 
     public void destroy() {
         code = null;
+        contentType = null;
     }
 }
 

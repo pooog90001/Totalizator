@@ -1,20 +1,28 @@
 package by.epam.litvin.content;
 
-import by.epam.litvin.type.RouteType;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-import java.util.HashMap;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static by.epam.litvin.constant.GeneralConstant.SUCCESS;
 
 public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;
     private HashMap<String, Object> sessionAttributes;
+    private Map<String, Part> requestParts;
     private JsonObject ajaxResult;
+
+    private String contextPath;
+    private String realPath;
 
     public RequestContent() {
         requestAttributes = new HashMap<>();
@@ -22,7 +30,7 @@ public class RequestContent {
         sessionAttributes = new HashMap<>();
     }
 
-    public void extractValues(HttpServletRequest request) throws IOException {
+    public void extractValues(HttpServletRequest request) throws IOException, ServletException {
         Enumeration<String> attrNames = request.getAttributeNames();
         Enumeration<String> paramNames = request.getParameterNames();
         Enumeration<String> sessionAttrNames = request.getSession().getAttributeNames();
@@ -43,7 +51,15 @@ public class RequestContent {
             sessionAttributes.put(sessionAttr, request.getSession().getAttribute(sessionAttr));
         }
 
+        if (ServletFileUpload.isMultipartContent(request)) {
+            requestParts = request.getParts().stream()
+                    .collect(Collectors.toMap(Part::getName, x -> x));
+        }
+
+        contextPath = request.getContextPath();
+        realPath = request.getServletContext().getRealPath("");
     }
+
 
 
     public void insertAttributes(HttpServletRequest request) {
@@ -68,24 +84,12 @@ public class RequestContent {
         return requestAttributes;
     }
 
-    public void setRequestAttributes(HashMap<String, Object> requestAttributes) {
-        this.requestAttributes = requestAttributes;
-    }
-
     public HashMap<String, String[]> getRequestParameters() {
         return requestParameters;
     }
 
-    public void setRequestParameters(HashMap<String, String[]> requestParameters) {
-        this.requestParameters = requestParameters;
-    }
-
     public HashMap<String, Object> getSessionAttributes() {
         return sessionAttributes;
-    }
-
-    public void setSessionAttributes(HashMap<String, Object> sessionAttributes) {
-        this.sessionAttributes = sessionAttributes;
     }
 
     public JsonObject  getAjaxResult() {
@@ -94,5 +98,24 @@ public class RequestContent {
 
     public void setAjaxResult(JsonObject  ajaxResult) {
         this.ajaxResult = ajaxResult;
+    }
+
+    public void setAjaxSuccess(boolean isSuccess) {
+        JsonObject jsonObject = new JsonObject();
+        JsonElement element = new Gson().toJsonTree(isSuccess);
+        jsonObject.add(SUCCESS, element);
+        this.ajaxResult = jsonObject;
+    }
+
+    public Map<String, Part> getRequestParts() {
+        return requestParts;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public String getRealPath() {
+        return realPath;
     }
 }

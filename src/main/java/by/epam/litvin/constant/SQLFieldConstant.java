@@ -62,6 +62,7 @@ final public class SQLFieldConstant {
         public static final String LESS_TOTAL_COEFF = COMPETITION + "less_total_coeff";
         public static final String STANDOFF_COEFF = COMPETITION + "standoff_coeff";
         public static final String IS_ACTIVE = COMPETITION + "is_active";
+        public static final String IS_RESULT_FILLED = COMPETITION + "is_result_filled";
 
     }
 

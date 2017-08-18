@@ -28,13 +28,13 @@
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_kind_of_sport_settings">
+            <input type="hidden" name="command" value="open_user_settings">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                Пользователи
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_kind_of_sport_settings">
+            <input type="hidden" name="command" value="open_news_settings">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                 Новости
             </button>

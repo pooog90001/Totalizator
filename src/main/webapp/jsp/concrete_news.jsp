@@ -27,7 +27,7 @@
             <div class="w3-col s12 w3-container">
                 <div class="w3-card-2 w3-round">
                     <div class="w3-display-container">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
+                        <img src="${newsImagePath + news.imageUrl}"
                              alt="${attrNews.title}" style="width: 100%;">
                         <div class="w3-display-topright w3-display-hover">
                             <p class="w3-black w3-padding">${attrNews.dateCreation}</p>
@@ -37,31 +37,7 @@
                 <div class="w3-coll s12">
                     <div class="w3-container w3-padding-large">
                         <p class="w3-small">${attrNews.text}
-                            sdfsdfsdf asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasdsdfsdfsdf asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasdsdfsdfsdf asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasdsdfsdfsdf asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasdsdfsdfsdf asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                            asdasd asdasd asdasd asdasd asdasd asdasd asdasd
+
                         </p>
                     </div>
                 </div>
@@ -87,7 +63,7 @@
                                                     class="w3-padding-small w3-button w3-theme w3-right w3-margin-top">
                                                 post comment
                                             </button>
-                                            <c:if test="${invalidText != null}">
+                                            <c:if test="${requestScope['invalidText'] != null}">
                                                 <div class=" w3-row w3-text-red">Must be 1-300 symbols</div>
                                             </c:if>
                                         </form>
@@ -153,13 +129,11 @@
                                 <div class="w3-row">
                                     <div class="w3-col s6">
                                         <div class="w3-container w3-small">
-
                                                 ${comment.user_name}
                                         </div>
                                     </div>
                                     <div class="w3-col s6">
                                         <div class="w3-container w3-small w3-text-dark-gray">
-
                                                 ${comment.comment_post_date}
                                         </div>
                                     </div>
@@ -174,9 +148,7 @@
                                                 </div>
                                                 <c:if test="${user.type.toString().equals('ADMIN') || user.type.toString().equals('BOOKMAKER')}">
                                                     <div>
-                                                        <p class="w3-small">
-                                                                ${comment.comment_text}
-                                                        </p>
+                                                        <p class="w3-small">${comment.comment_text}</p>
                                                     </div>
                                                 </c:if>
 
@@ -184,13 +156,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="w3-col s12">
-                                                <p class="w3-small">${comment.comment_text} sdf
-                                                    sdfsdfsdf asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                                                    asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                                                    asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                                                    asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                                                    asdasd asdasd asdasd asdasd asdasd asdasd asdasd
-                                                </p>
+                                                <p class="w3-small">${comment.comment_text} </p>
                                             </div>
                                         </c:otherwise>
                                     </c:choose>

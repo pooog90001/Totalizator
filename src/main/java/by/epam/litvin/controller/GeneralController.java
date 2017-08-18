@@ -39,10 +39,7 @@ public class GeneralController extends HttpServlet {
         if (RouteType.FORWARD.equals(router.getRouteType())) {
             req.getRequestDispatcher(router.getRoutePath()).forward(req, resp);
 
-        } else if (RouteType.REDIRECT.equals(router.getRouteType())) {
-            resp.sendRedirect(router.getRoutePath());
-
-        } else {
+        }  else {
             resp.sendRedirect(router.getRoutePath());
         }
 

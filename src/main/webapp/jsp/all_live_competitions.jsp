@@ -191,7 +191,7 @@
 </div>
 
 </body>
-<script src="${pageContext.request.contextPath}/js/ajax.js"></script>
+
 <%@include file="partial/footer.jsp" %>
 
 

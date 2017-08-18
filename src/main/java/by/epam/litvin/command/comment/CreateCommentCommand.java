@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
+
 public class CreateCommentCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -26,7 +28,7 @@ public class CreateCommentCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            if (!requestContent.getRequestAttributes().containsKey("accessDenied")) {
+            if (!requestContent.getRequestAttributes().containsKey(ACCESS_DENIED)) {
                 router.setRoutePath(PageConstant.CONCRETE_NEWS_ADD);
                 router.setRouteType(RouteType.REDIRECT);
 

@@ -9,4 +9,5 @@ public interface NewsReceiver extends Receiver {
     void openAllNewsPage(RequestContent requestContent) throws ReceiverException;
     void openNewsSettings(RequestContent requestContent) throws ReceiverException;
     void createNews(RequestContent requestContent) throws ReceiverException;
+    void deleteNews(RequestContent requestContent) throws ReceiverException;
 }

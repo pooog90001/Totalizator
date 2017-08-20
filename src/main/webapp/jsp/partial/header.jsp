@@ -64,21 +64,21 @@
                                 </div>
                                 <div class="w3-col s4">
                                     <img style="width:50px" class="w3-circle"
-                                         src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
+                                         src="${userImagePath}${user.avatarURL}"/>
                                 </div>
                             </div>
                         </a>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
                             <c:if test="${user.type.toString().equals('ADMIN') || user.type.toString().equals('BOOKMAKER')}">
                                 <form action="${pageContext.request.contextPath}/generalController" method="post">
-                                    <input type="hidden" name="command" value="open_admin_panel">
+                                    <input type="hidden" name="command" value="OPEN_ADMIN_STATISTIC">
                                     <input type="submit" class="w3-bar-item w3-button" value="Admin panel"/>
                                 </form>
                             </c:if>
                             <a href="#" class="w3-bar-item w3-button">${profile} </a>
                             <a href="#" class="w3-bar-item w3-button">${settings}</a>
                             <form action="${pageContext.request.contextPath}/generalController">
-                                <input type="hidden" name="command" value="sign_out">
+                                <input type="hidden" name="command" value="${signOut}">
                                 <input type="submit" class="w3-bar-item w3-button" value="Sign out"/>
                             </form>
                         </div>

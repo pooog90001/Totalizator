@@ -12,6 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.litvin.constant.SQLRequestConstant.UPDATE_IMAGE_PATH_NEWS;
 
 public class NewsDAOImpl extends DAO<NewsEntity> {
@@ -56,7 +57,7 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
             news.setText(resultSet.getString(SQLFieldConstant.News.TEXT));
             news.setTitle(resultSet.getString(SQLFieldConstant.News.TITLE));
             news.setImageUrl(resultSet.getString(SQLFieldConstant.News.IMAGE_URL));
-            news.setDateCreation(resultSet.getDate(SQLFieldConstant.News.DATE_CREATION));
+            news.setDateCreation(resultSet.getTimestamp(SQLFieldConstant.News.DATE_CREATION));
             newsList.add(news);
         }
 
@@ -107,8 +108,20 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
     }
 
     @Override
-    public boolean delete(int id) {
-        throw new UnsupportedOperationException();
+    public boolean delete(int id) throws DAOException {
+        boolean isDeleted = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.DELETE_NEWS_BY_ID)) {
+            statement.setInt(1, id);
+
+            isDeleted = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            if (!CAN_NOT_DELETE_OR_UPDATE.equals(e.getSQLState())) {
+                throw new DAOException("Delete news error ", e);
+            }
+        }
+        return isDeleted;
     }
 
     @Override
@@ -144,19 +157,21 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
         return newsId;
     }
 
-    public void updateImagePath(NewsEntity entity) throws DAOException {
+    public boolean updateImagePath(NewsEntity entity) throws DAOException {
+        boolean isUpdated;
 
         try (PreparedStatement statement = connection.prepareStatement(UPDATE_IMAGE_PATH_NEWS)) {
 
             statement.setString(1, entity.getImageUrl());
             statement.setInt(2, entity.getId());
 
-            statement.executeUpdate();
+            isUpdated = statement.executeUpdate() == 1;
 
         } catch (SQLException e) {
             throw new DAOException("Update news error ", e);
         }
 
+        return isUpdated;
     }
 
     @Override

@@ -34,6 +34,9 @@ public class DatePresenterTag extends TagSupport {
         JspWriter out = pageContext.getOut();
 
         try {
+            if (date == null) {
+                date = new Date(0);
+            }
             out.write(dateFormat.format(date));
 
         } catch (IOException e) {

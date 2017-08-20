@@ -62,3 +62,5 @@ function changeLanguage(element) {
         complete: function (jqXHR, textStatus) {}
     });
 }
+
+

@@ -27,7 +27,7 @@
             <div class="w3-col s12 w3-container">
                 <div class="w3-card-2 w3-round">
                     <div class="w3-display-container">
-                        <img src="${newsImagePath + news.imageUrl}"
+                        <img src="${pageContext.request.contextPath}${newsImagePath}${attrNews.imageUrl}"
                              alt="${attrNews.title}" style="width: 100%;">
                         <div class="w3-display-topright w3-display-hover">
                             <p class="w3-black w3-padding">${attrNews.dateCreation}</p>

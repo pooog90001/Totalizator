@@ -107,7 +107,7 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
 
         } catch (SQLException e) {
             if (!CAN_NOT_DELETE_OR_UPDATE.equals(e.getSQLState())) {
-                throw new DAOException("Create kind of sport error ", e);
+                throw new DAOException("Delete kind of sport error ", e);
             }
         }
         return isDeleted;

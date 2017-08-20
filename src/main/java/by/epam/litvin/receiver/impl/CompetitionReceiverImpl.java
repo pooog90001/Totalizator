@@ -64,13 +64,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Get live competitions rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Get live competitions rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -107,13 +105,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Filter Live competitions rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Filter Live competitions rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -188,23 +184,20 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             requestContent.getRequestAttributes().put("pastDeactiveCompetitions", pastDeactivatedCompetitions);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback open competition settings error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Rollback open competition settings error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
 
-    private void extractWithStatistic
-            (List<Map<String, Object>> competitions,
-             CompetitorDAOImpl competitorDAO,
-             CommonDAOImpl commonDAO) throws DAOException {
+    private void extractWithStatistic(List<Map<String, Object>> competitions,
+                                      CompetitorDAOImpl competitorDAO,
+                                      CommonDAOImpl commonDAO) throws DAOException {
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
@@ -256,8 +249,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         }
     }
 
-    private void extractWithoutStatistic(
-            List<Map<String, Object>> competitions, CompetitorDAOImpl competitorDAO) throws DAOException {
+    private void extractWithoutStatistic(List<Map<String, Object>> competitions,
+                                         CompetitorDAOImpl competitorDAO) throws DAOException {
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
@@ -315,7 +308,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             competitors[i] = competitor;
         }
 
-
         if (isActive) {
             boolean isValid = true;
 
@@ -336,7 +328,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
                 return;
             }
         }
-
 
         try {
             dStart = formatter.parse(dateStart.concat(" ").concat(timeStart));
@@ -375,10 +366,9 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             competition.setStandoff(standoffCoeff);
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
             boolean transactionAccess = true;
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             manager.beginTransaction(competitionDAO, competitorDAO);
@@ -411,13 +401,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             manager.endTransaction();
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("create competition rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("create competition rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -477,9 +465,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             return;
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             manager.beginTransaction(competitorDAO, competitionDAO);
@@ -508,13 +495,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             content.setAjaxSuccess(transactionSuccess);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback edit upcoming activated competition error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Rollback edit upcoming activated competition error", e);
             }
             throw new ReceiverException(e);
         }
@@ -585,9 +570,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             return;
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             manager.beginTransaction(competitorDAO, competitionDAO);
@@ -620,13 +604,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             content.setAjaxSuccess(transactionSuccess);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Rollback edit upcoming deactivated competition error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Rollback edit upcoming deactivated competition error", e);
             }
             throw new ReceiverException(e);
         }
@@ -644,9 +626,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             return;
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             BetDAOImpl betDAO = new BetDAOImpl();
@@ -674,13 +655,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             content.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Delete unfilled competition rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Delete unfilled competition rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -698,9 +677,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             return;
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             BetDAOImpl betDAO = new BetDAOImpl();
@@ -726,13 +704,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             content.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Delete filled competition rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Delete filled competition rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -754,9 +730,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         }
 
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             BetDAOImpl betDAO = new BetDAOImpl();
             UserDAOImpl userDAO = new UserDAOImpl();
@@ -782,13 +757,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             manager.endTransaction();
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Deactivate competition rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Deactivate competition rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -853,9 +826,8 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             BetDAOImpl betDAO = new BetDAOImpl();
@@ -893,13 +865,11 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Fill results competition rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Fill results competition rollback error", e);
             }
             throw new ReceiverException(e);
         }

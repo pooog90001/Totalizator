@@ -30,6 +30,11 @@ final public class PageConstant {
 // TODO Что делать с путями к страницам? Как вариант сделать ENUM
     private PageConstant() {}
 
+    // relative path to upload file
+    public static final String PATH_TO_UPLOAD_NEWS = "/image/news/";
+    public static final String PATH_TO_UPLOAD_AVATARS = "/image/avatar/";
+
+    //users pages
     private static final String ROOT = "jsp/";
 
     public static final String MAIN = ROOT + "main.jsp";

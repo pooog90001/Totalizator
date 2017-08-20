@@ -28,7 +28,7 @@
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_user_settings">
+            <input type="hidden" name="command" value="OPEN_USER_SETTINGS">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                Пользователи
             </button>
@@ -40,7 +40,7 @@
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_settings_kind_of_sport">
+            <input type="hidden" name="command" value="OPEN_ADMIN_STATISTIC">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                 Статистика
             </button>

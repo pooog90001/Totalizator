@@ -6,7 +6,7 @@ import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
 import by.epam.litvin.command.comment.CreateCommentCommand;
 import by.epam.litvin.command.common.ChangeLocaleCommand;
-import by.epam.litvin.command.common.OpenAdminPanelCommand;
+import by.epam.litvin.command.common.OpenAdminStatisticCommand;
 import by.epam.litvin.command.common.OpenMainCommand;
 import by.epam.litvin.command.competition.*;
 import by.epam.litvin.command.competitiontype.CreateCompetitionTypeCommand;
@@ -17,13 +17,8 @@ import by.epam.litvin.command.kindofsport.CreateKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.DeleteKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.OpenKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.UpdateKindOfSportCommand;
-import by.epam.litvin.command.news.CreateNewsCommand;
-import by.epam.litvin.command.news.OpenAllNewsCommand;
-import by.epam.litvin.command.news.OpenConcreteNewsCommand;
-import by.epam.litvin.command.news.OpenNewsSettingsCommand;
-import by.epam.litvin.command.user.SignInCommand;
-import by.epam.litvin.command.user.SignOutCommand;
-import by.epam.litvin.command.user.SignUpCommand;
+import by.epam.litvin.command.news.*;
+import by.epam.litvin.command.user.*;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.impl.*;
@@ -112,9 +107,9 @@ public enum CommandType {
         }
     },
 
-    OPEN_ADMIN_PANEL(new OpenAdminPanelCommand(new CommonReceiverImpl())) {
+    OPEN_ADMIN_PANEL(new OpenAdminStatisticCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommonReceiverImpl) getCommand().getReceiver()).openMainAdminPage(content);
+            ((CommonReceiverImpl) getCommand().getReceiver()).openAdminStatistic(content);
         }
     },
 
@@ -253,6 +248,36 @@ public enum CommandType {
     CREATE_NEWS(new CreateNewsCommand(new NewsReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((NewsReceiverImpl) getCommand().getReceiver()).createNews(content);
+        }
+    },
+
+    DELETE_NEWS(new DeleteNewsCommand(new NewsReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((NewsReceiverImpl) getCommand().getReceiver()).deleteNews(content);
+        }
+    },
+
+    OPEN_USER_SETTINGS(new OpenUserSettingsCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).openUserSettings(content);
+        }
+    },
+
+    CHANGE_USER_ROLE(new UpdateUserRoleCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changeRole(content);
+        }
+    },
+
+    CHANGE_USER_LOCK(new UpdateUserLockCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changeLock(content);
+        }
+    },
+
+    OPEN_ADMIN_STATISTIC(new OpenAdminStatisticCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).openAdminStatistic(content);
         }
     };
 

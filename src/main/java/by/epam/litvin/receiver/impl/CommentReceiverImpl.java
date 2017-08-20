@@ -38,28 +38,24 @@ public class CommentReceiverImpl implements CommentReceiver {
         }
 
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommentDAOImpl commentDAO = new CommentDAOImpl();
             manager.beginTransaction(commentDAO);
-
             commentDAO.changeLockCommentById(commentId, !isLockedComment);
             manager.commit();
-
             manager.endTransaction();
+
             data.put(NEWS_ID, newsId);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
 
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Change block comment error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Change block comment error", e);
             }
             throw new ReceiverException(e);
         }
@@ -89,9 +85,8 @@ public class CommentReceiverImpl implements CommentReceiver {
         comment.setNewsId(newsId);
         comment.setText(commentText);
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommentDAOImpl commentDAO = new CommentDAOImpl();
             manager.beginTransaction(commentDAO);
             commentDAO.create(comment);
@@ -103,13 +98,11 @@ public class CommentReceiverImpl implements CommentReceiver {
 
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Create comment rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Create comment rollback error", e);
             }
             throw new ReceiverException(e);
         }

@@ -28,16 +28,10 @@ public class OpenUserSettingsCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            Set<String> keys = requestContent.getRequestAttributes().keySet();
 
-            if (keys.contains("wrongData")) {
-                router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageConstant.SIGN_IN);
+            router.setRouteType(RouteType.FORWARD);
+            router.setRoutePath(PageConstant.ADMIN_USER);
 
-            } else {
-                router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageConstant.INDEX);
-            }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);

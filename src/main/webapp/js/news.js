@@ -12,29 +12,35 @@ $( function () {
 
     $("#imgInp").change(function(){
         readURL(this);
+        callImgAreaSelect();
+    });
 
+    $("#blah").load(function(){
+        callImgAreaSelect();
+    });
+
+    window.onresize = function(){
+        callImgAreaSelect();
+    };
+
+    function callImgAreaSelect() {
         $('#blah').imgAreaSelect({
-            aspectRatio: '4:3',
-            x1: 0, y1: 0, x2: 120, y2: 90,
+            aspectRatio: '2:1',
+            x1: 0, y1: 0, x2: 100, y2: 50,
+            imageWidth : $('#blah').width(),
+            imageHeight : $('#blah').height(),
             movable: true,
             resizable: true,
             onSelectEnd: imgCrop,
             onInit: imgCrop,
-            onSelectChange: imgCrop, // после выделения объекта срабатывает ф-ия imgCrop()
+            onSelectChange: imgCrop
         });
-    });
+    }
+
 
 } );
 
-$(document).ready(function () {
-    $('#blah').imgAreaSelect({
-        aspectRatio: '4:3',
-        x1: 0, y1: 0, x2: 120, y2: 90,
-        movable: true,
-        resizable: true,
-        onSelectEnd: imgCrop // после выделения объекта срабатывает ф-ия imgCrop()
-    });
-});
+
 
 
 function imgCrop(img, selection) {
@@ -47,59 +53,90 @@ function imgCrop(img, selection) {
 }
 
 
-function save(e, id, name) {
+ $('#createNews').click(function (e) {
 
-    //get the form data using another method
-    var newName = $("input#countryCode").val();
-    var dataString = "kindOfSportId=" + id + "&newName="+ name + "&command=create_news";
+     $('#form').validate();
+
+    if (!$('#form').valid()) {
+        return;
+    }
+
+    var dataPost = new FormData($('#form')[0]);
+    var $this = $(e);
+
+    $.ajax({
+        type: "POST",
+        url: "/uploadController",
+        data: dataPost,
+        processData: false,
+        contentType: false,
+        cache: false,
+
+        success: function (data, textStatus, jqXHR) {
+            var objData = JSON.parse(data);
+            if (objData.success === false) {
+                document.getElementById("wrong").style.display = 'inherit';
+            } else {
+                window.location.reload();
+            }
+        },
+
+        error: function (jqXHR, textStatus, errorThrown) {
+            console.log("Something really bad happened " + textStatus);
+            document.getElementById("errorResponse").style.display = 'inherit';
+        },
+
+        beforeSend: function (jqXHR, settings) {},
+
+        complete: function (jqXHR, textStatus) {}
+    });
+});
+
+function delNews(e, id, newsImageUrl) {
+
+
+    modal_del_error.style.display = 'none';
+    modal_del_error.style.display = 'none';
+
 
     var $this = $(e);
     var $contanier = $("#" + id);
-    //make the AJAX request, dataType is set to json
-    //meaning we are expecting JSON data in response from the server
+    var dataString = "newsId=" + id + "&newsImageUrl="+ newsImageUrl +"&command=delete_news";
+
     $.ajax({
         type: "POST",
         url: "/ajaxController",
         data: dataString,
         dataType: "json",
 
-        //if received a response from the server
         success: function (data, textStatus, jqXHR) {
-            //our country code was correct so we have some information to display
-            if (data.success === false) {
+            if (data.success === true) {
+                $contanier.css("display","none");
+            } else {
                 console.log("Something really bad happened " + textStatus);
-
-                $contanier.find('.name').each(function () {
-                    $(this).text($this.attr("oldName"));
-                });
-                modal_edit_wrong.style.display = 'block';
+                modal_del_wrong.style.display = 'block';
             }
         },
 
-        //If there was no resonse from the server
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Something really bad happened " + textStatus);
 
-            $contanier.find('.name').each(function () {
-                $(this).text($this.attr("oldName"));
-            });
-            modal_edit_error.style.display = 'block';
+            $contanier.css("display","inherit");
+            modal_del_error.style.display = 'block';
+
         },
-
-        //capture the request before it was sent to server
         beforeSend: function (jqXHR, settings) {},
-
-        //this is called after the response or error functions are finsihed
-        //so that we can take some action
         complete: function (jqXHR, textStatus) {}
     });
 }
+
 
 document.getElementById('create').onclick = function (e) {
     var createField =  document.getElementById('createField');
     var createBtn =  document.getElementById('create');
 
     if (createField.style.display === 'inherit') {
+        $('#blah').imgAreaSelect({hide : true});
         createField.style.display = 'none';
         createBtn.innerHTML = "<i class='fa fa-plus-circle'></i>";
     } else {
@@ -108,3 +145,4 @@ document.getElementById('create').onclick = function (e) {
 
     }
 };
+

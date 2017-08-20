@@ -14,10 +14,10 @@ import org.apache.logging.log4j.Logger;
 
 import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
 
-public class OpenAdminPanelCommand extends AbstractCommand {
+public class OpenAdminStatisticCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenAdminPanelCommand(Receiver receiver) {
+    public OpenAdminStatisticCommand(Receiver receiver) {
         super(receiver);
     }
 

@@ -60,7 +60,7 @@ public class UserEntity extends Entity {
         this.type = type;
     }
 
-    public boolean isConfirm() {
+    public boolean getIsConfirm() {
         return isConfirm;
     }
 
@@ -68,7 +68,7 @@ public class UserEntity extends Entity {
         isConfirm = confirm;
     }
 
-    public boolean isBlocked() {
+    public boolean getIsBlocked() {
         return isBlocked;
     }
 

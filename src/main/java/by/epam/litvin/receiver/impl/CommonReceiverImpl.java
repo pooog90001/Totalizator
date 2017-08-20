@@ -1,10 +1,10 @@
 package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.NewsEntity;
+import by.epam.litvin.constant.PageConstant;
+import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.impl.CompetitionDAOImpl;
-import by.epam.litvin.dao.impl.KindOfSportDAOImpl;
-import by.epam.litvin.dao.impl.NewsDAOImpl;
+import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
@@ -39,8 +39,6 @@ public class CommonReceiverImpl implements CommonReceiver{
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
-            String newsImagePath = "/image/news";
-
 
             handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO);
 
@@ -57,10 +55,6 @@ public class CommonReceiverImpl implements CommonReceiver{
             Packer packer = new Packer();
             NewsFormatter newsFormatter = new NewsFormatter();
 
-            /*List<Map<String, Object>> orderedUpcomingGameList =
-                    packer.orderLiveAndUpcomingGames(upcommingGameList);
-            List<Map<String, Object>> orderedPastGameList =
-                    packer.orderPastGames(pastGameList);*/
             Map<String, Map<String, Integer>> kindOfSportListResult =
                     packer.orderKindsOfSport(kindOfSportList);
 
@@ -70,23 +64,54 @@ public class CommonReceiverImpl implements CommonReceiver{
             /*requestContent.getRequestAttributes().put(UPCOMING_GAMES, orderedUpcomingGameList);
             requestContent.getRequestAttributes().put(PAST_GAMES, orderedPastGameList);*/
             requestContent.getSessionAttributes().put("kindsOfSportLeftBar", kindOfSportListResult);
-            requestContent.getRequestAttributes().put("newsImagePath", newsImagePath);
+            requestContent.getSessionAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
+            requestContent.getSessionAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);
 
         } catch (DAOException e) {
-            if (handler != null) {
-                try {
-                    handler.rollback();
-                    handler.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Open main page tollback error", e);
-                }
+            try {
+                handler.rollback();
+                handler.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open main page rollback error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
+    private void extractCompetitors(List<Map<String, Object>> competitions,
+                                         CompetitorDAOImpl competitorDAO) throws DAOException {
+
+        for (Map<String, Object> competition : competitions) {
+            int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
+            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByCompetitionId(compId);
+            competition.put("competitors", competitors);
+        }
+    }
+
     @Override
-    public void openMainAdminPage(RequestContent requestContent) throws ReceiverException {
+    public void openAdminStatistic(RequestContent requestContent) throws ReceiverException {
+
+        TransactionManager manager = new TransactionManager();
+        try {
+            CommonDAOImpl commonDAO = new CommonDAOImpl();
+            manager.beginTransaction(commonDAO);
+
+            Map<String, Object> statisticMap = commonDAO.findAdminStatistic();
+
+            manager.commit();
+            manager.endTransaction();
+
+            requestContent.getRequestAttributes().put("statisticMap", statisticMap);
+
+        } catch (DAOException e) {
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open admin main page rollback error", e);
+            }
+            throw new ReceiverException(e);
+        }
 
     }
 }

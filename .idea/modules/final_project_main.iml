@@ -40,5 +40,7 @@
     <orderEntry type="library" name="jquery" level="application" />
     <orderEntry type="library" name="hammer" level="application" />
     <orderEntry type="library" name="jquery.mousewheel" level="application" />
+    <orderEntry type="library" name="jquery.validate" level="application" />
+    <orderEntry type="library" name="additional-methods" level="application" />
   </component>
 </module>

@@ -23,18 +23,17 @@
 
         <!-- First Photo Grid-->
         <div class="w3-row-padding">
-            <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_all_news_page">
-                <button type="submit" class="w3-xlarge w3-button w3-hover-none">
+            <div class="w3-container" >
+                <button type="button" class="w3-xlarge w3-button w3-hover-none">
                     Новости
                 </button>
-            </form>
+            </div>
 
             <c:forEach var="news" items="${newsList}">
                 <div class="w3-half w3-container">
                     <div class="w3-card-2 w3-round">
                         <div class="w3-display-container">
-                            <img src="${newsImagePath + news.imageUrl}"
+                            <img src="${newsImagePath}${news.imageUrl}"
                                  alt="${news.title}" style="width: 100%;">
                             <div class="w3-display-topright w3-display-hover">
                                 <p class="w3-black w3-padding">${news.dateCreation}</p>

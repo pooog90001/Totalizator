@@ -10,7 +10,7 @@ class Paginator {
     /**
      * Limit of entities to display on pageNumber.
      */
-    private int limit = 10;
+    private int limit;
 
     /**
      * Total count entities in current table.
@@ -109,7 +109,7 @@ class Paginator {
     public String generate() {
         StringBuilder builder = new StringBuilder();
 
-        final int lastPage = (int) Math.ceil(total / limit);
+        final int lastPage = total / limit + ((total % limit > 0) ? 1 : 0);
         final int startLink = ((pageNumber - countLinks) > 0) ? pageNumber - countLinks : 1;
         final int endLink = ((pageNumber + countLinks) < lastPage) ? pageNumber + countLinks : lastPage;
 
@@ -117,7 +117,8 @@ class Paginator {
         generatePreviousLink(builder);
 
         if (startLink > 1) {
-            builder.append("<li><a href=\"?pageNumber=1\">1</a></li>");
+            builder.append("<li><a href=\"?command=").append(commandName);
+            builder.append("&pageNumber=1\">1</a></li>");
             builder.append("<li class=\"").append(disabledClass).append("\">");
             builder.append("<span>...</span></li>");
         }

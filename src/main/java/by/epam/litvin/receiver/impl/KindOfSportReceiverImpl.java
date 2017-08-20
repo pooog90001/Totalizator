@@ -155,34 +155,28 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
     @Override
     public void deleteKindOfSport(RequestContent requestContent) throws ReceiverException {
         String[] stringId = requestContent.getRequestParameters().get("kindOfSportId");
-        int kindOfSportId =  Integer.valueOf(stringId[0]);
+        int kindOfSportId = Integer.valueOf(stringId[0]);
 
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             manager.beginTransaction(kindOfSportDAO);
 
-            JsonElement element = gson.toJsonTree(kindOfSportDAO.delete(kindOfSportId));
+            requestContent.setAjaxSuccess(kindOfSportDAO.delete(kindOfSportId));
 
             manager.commit();
             manager.endTransaction();
 
-            object.add(SUCCESS, element);
-            requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Delete sport rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Delete sport rollback error", e);
             }
+
             throw new ReceiverException(e);
         }
     }

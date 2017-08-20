@@ -26,7 +26,35 @@
     <div class="w3-col m9">
         <div class="w3-row-padding">
             <div class="w3-container w3-xlarge">
-                    Main admin panel
+                Main admin panel
+            </div>
+        </div>
+        <div class="w3-row-padding w3-container w3-margin-bottom">
+            <div class="w3-col s12 w3-card-2 w3-large">
+                <p>
+                    <i>Count registered people:</i>
+                    <b class="w3-xlarge">${statisticMap.countRegistered}</b>
+                </p>
+                <hr>
+                <p>
+                    <i>Count confirmed people:</i>
+                    <b class="w3-xlarge" >${statisticMap.countConfirmed}</b>
+                </p>
+                <hr>
+                <p>
+                    <i>Count locked people:</i>
+                    <b class="w3-xlarge" >${statisticMap.countLocked}</b>
+                </p>
+                <hr>
+                <p>
+                    <i>Count news:</i>
+                    <b class="w3-xlarge" >${statisticMap.countNews}</b>
+                </p>
+                <hr>
+                <p>
+                    <i>Count kinds of sport:</i>
+                    <b class="w3-xlarge" >${statisticMap.countSports}</b>
+                </p>
             </div>
         </div>
     </div>

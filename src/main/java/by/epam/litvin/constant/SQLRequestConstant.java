@@ -15,6 +15,31 @@ final public class SQLRequestConstant {
                     "FROM user " +
                     "WHERE user_email = ? AND user_password = ?;";
 
+    public static final String  FIND_LIMIT_USERS =
+            "SELECT user_id, user_name , user_email, user_password, user_avatar_url, user_type, " +
+                    "user_confirm_url, user_is_blocked, user_blocked_text, user_is_confirm, user_cash " +
+                    "FROM user " +
+                    "ORDER BY user_id DESC " +
+                    "LIMIT ?, ?;";
+
+    public static final String FIND_USERS_COUNT =
+            "SELECT  " +
+                    "    COUNT(user_id) AS count " +
+                    "FROM " +
+                    "    user;";
+
+    public static final String UPDATE_USER_ROLE =
+                    "UPDATE user " +
+                    "SET user_type = ? " +
+                    "WHERE user_id = ?;";
+
+    public static final String UPDATE_USER_LOCK =
+                    "UPDATE user " +
+                    "SET user_is_blocked = ?, " +
+                    " user_blocked_text = ? " +
+                    "WHERE user_id = ?;";
+
+
     public static final String FIND_LIMIT_NEWS =
                     "SELECT news_id, news_title, news_image_url, news_text, news_date_creation " +
                     "FROM news " +
@@ -32,10 +57,15 @@ final public class SQLRequestConstant {
                     "WHERE news_id = ? ;";
     
     public static final String FIND_NEWS_COUNT =
-                    "SELECT  " +
+            "SELECT  " +
                     "    COUNT(news_id) AS count " +
                     "FROM " +
                     "    news;";
+
+    public static final String DELETE_NEWS_BY_ID =
+                    "DELETE " +
+                    "FROM news  " +
+                    "WHERE news_id = ?; ";
 
     public static final String CREATE_NEWS =
             "INSERT INTO news  (news_title, news_text, news_date_creation)" +
@@ -406,6 +436,11 @@ final public class SQLRequestConstant {
                     "SET comment_is_blocked = ? " +
                     "WHERE comment_id = ?;";
 
+    public static final String DELETE_COMMENT_BY_NEWS_ID =
+            "DELETE FROM comment  " +
+                    "WHERE " +
+                    "    news_id = ?;";
+
     public static final String FIND_ALL_COMPETITION_TYPES =
             "SELECT competition_type_id, " +
                     "competition_type_name " +
@@ -486,6 +521,15 @@ final public class SQLRequestConstant {
                     "    bet.competitor_id = ? " +
                     "        AND competitor.competitor_id = bet.competitor_id " +
                     "        AND competitor.command_id != 0;";
+
+
+    public static final String SELECT_ADMIN_STATISTIC =
+                    "SELECT " +
+                    "(SELECT COUNT(user_id) FROM user) AS countRegistered, " +
+                    "(SELECT COUNT(user_id) FROM user WHERE user_is_confirm = 0) AS countConfirmed, " +
+                    "(SELECT COUNT(user_id) FROM user WHERE user_is_blocked) AS countLocked, " +
+                    "(SELECT COUNT(news_id) FROM news) AS countNews, " +
+                    "(SELECT COUNT(kind_of_sport_id) FROM kind_of_sport) AS countSports; ";
 
     public static final String INSERT_COMPETITION =
             "INSERT INTO `totalizatorr`.`competition` " +

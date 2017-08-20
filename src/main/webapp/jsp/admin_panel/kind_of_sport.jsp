@@ -91,15 +91,15 @@
                 <div id="ajaxResponse">
                     <c:forEach var="kindOfSport" items="${kindOfSportList}">
                         <div id="${kindOfSport.id}" class="w3-col s12 w3-container w3-padding-small">
-                            <div class="w3-row w3-hover-light-grey">
-                                <div class="w3-card-2 w3-white w3-round w3-small">
+                            <div class="w3-row w3-hover-light-grey w3-card-2">
+                                <div class="w3-white w3-round w3-small">
                                     <div class="w3-col s4 w3-padding-small w3-center">
-                                        <div class="name">
+                                        <div class="name w3-padding-small">
                                                 ${kindOfSport.name}
                                         </div>
                                     </div>
                                     <div class="w3-col s3 w3-padding-small w3-center">
-                                        <div class="count">
+                                        <div class="count w3-padding-small">
                                                 ${kindOfSport.competitorCount}
                                         </div>
                                     </div>

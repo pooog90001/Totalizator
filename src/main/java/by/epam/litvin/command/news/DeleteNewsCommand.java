@@ -1,7 +1,6 @@
 package by.epam.litvin.command.news;
 
 import by.epam.litvin.command.AbstractCommand;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.Receiver;
@@ -11,11 +10,11 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class CreateNewsCommand extends AbstractCommand {
+public class DeleteNewsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
 
-    public CreateNewsCommand(Receiver receiver) {
+    public DeleteNewsCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -27,7 +26,7 @@ public class CreateNewsCommand extends AbstractCommand {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Create news receiver error", e);
+            LOGGER.log(Level.ERROR, "Delete news receiver error", e);
         }
 
         return router;

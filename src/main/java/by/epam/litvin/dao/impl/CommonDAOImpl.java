@@ -9,7 +9,9 @@ import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static by.epam.litvin.constant.SQLRequestConstant.*;
 
@@ -110,4 +112,27 @@ public class CommonDAOImpl extends DAO {
         }
         return amountOfMoney;
     }
+
+    public Map<String, Object> findAdminStatistic() {
+        Map<String, Object> statisticMap = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(SELECT_ADMIN_STATISTIC)) {
+            ResultSet resultSet = statement.executeQuery();
+            statisticMap = new HashMap<>();
+
+            if (resultSet.next()) {
+                statisticMap.put("countRegistered", resultSet.getInt("countRegistered"));
+                statisticMap.put("countConfirmed", resultSet.getInt("countConfirmed"));
+                statisticMap.put("countLocked", resultSet.getInt("countLocked"));
+                statisticMap.put("countNews", resultSet.getInt("countNews"));
+                statisticMap.put("countSports", resultSet.getInt("countSports"));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return statisticMap;
+    }
+
+
 }

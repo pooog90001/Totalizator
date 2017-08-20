@@ -34,9 +34,8 @@ public class CommandReceiverImpl implements CommandReceiver {
             }
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(kindOfSportDAO, commandDAO);
@@ -49,13 +48,11 @@ public class CommandReceiverImpl implements CommandReceiver {
             requestContent.getRequestAttributes().put("commands", commandList);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Open command setting rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open command setting rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -77,9 +74,8 @@ public class CommandReceiverImpl implements CommandReceiver {
             return;
         }
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
@@ -89,14 +85,13 @@ public class CommandReceiverImpl implements CommandReceiver {
             manager.endTransaction();
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Update command rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Update command rollback error", e);
             }
+
             throw new ReceiverException(e);
         }
     }
@@ -122,9 +117,8 @@ public class CommandReceiverImpl implements CommandReceiver {
         command.setName(commandName);
         command.setKindOfSportId(kindOfSportId);
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
@@ -139,13 +133,11 @@ public class CommandReceiverImpl implements CommandReceiver {
             }
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Create command rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Create command rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -154,14 +146,13 @@ public class CommandReceiverImpl implements CommandReceiver {
     @Override
     public void deleteCommand(RequestContent requestContent) throws ReceiverException {
         String[] stringId = requestContent.getRequestParameters().get(COMMAND_ID);
-        int commandId =  Integer.valueOf(stringId[0]);
+        int commandId = Integer.valueOf(stringId[0]);
 
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
@@ -174,13 +165,11 @@ public class CommandReceiverImpl implements CommandReceiver {
             requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Delete command rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Delete command rollback error", e);
             }
             throw new ReceiverException(e);
         }
@@ -189,14 +178,13 @@ public class CommandReceiverImpl implements CommandReceiver {
     @Override
     public void findCommand(RequestContent requestContent) throws ReceiverException {
         String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
-        int sportId =  Integer.valueOf(stringId[0]);
+        int sportId = Integer.valueOf(stringId[0]);
 
         Gson gson = new Gson();
         JsonObject object = new JsonObject();
 
-        TransactionManager manager = null;
+        TransactionManager manager = new TransactionManager();
         try {
-            manager = new TransactionManager();
             CommandDAOImpl commandDAO = new CommandDAOImpl();
             manager.beginTransaction(commandDAO);
 
@@ -209,13 +197,11 @@ public class CommandReceiverImpl implements CommandReceiver {
             requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
-            if (manager != null) {
-                try {
-                    manager.rollback();
-                    manager.endTransaction();
-                } catch (DAOException e1) {
-                    throw new ReceiverException("Find command rollback error", e);
-                }
+            try {
+                manager.rollback();
+                manager.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Find command rollback error", e);
             }
             throw new ReceiverException(e);
         }

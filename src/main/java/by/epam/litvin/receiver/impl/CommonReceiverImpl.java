@@ -4,6 +4,7 @@ import by.epam.litvin.bean.NewsEntity;
 import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.content.RequestContent;
+import by.epam.litvin.dao.CompetitorDAO;
 import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
@@ -13,7 +14,6 @@ import by.epam.litvin.util.NewsFormatter;
 import by.epam.litvin.util.Packer;
 import com.google.gson.JsonObject;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -33,27 +33,31 @@ public class CommonReceiverImpl implements CommonReceiver{
 
     @Override
     public void openMainPage(RequestContent requestContent) throws ReceiverException {
-        TransactionManager handler = null;
+        Packer packer = new Packer();
+        NewsFormatter newsFormatter = new NewsFormatter();
+
+        TransactionManager handler = new TransactionManager();
         try {
-            handler = new TransactionManager();
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
+            CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
+            handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO, competitorDAO);
 
-            handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO);
-
-            List<NewsEntity> newsList = newsDAO.find(0, COUNT_NEWS_ON_MAIN_PAGE);
-            List<Map<String, Object>> upcommingGameList =
-                    competitionDAO.findUpcomingCompetitions(0, COUNT_COMPETITIONS_ON_MAIN_PAGE);
-            List<Map<String, Object>> pastGameList =
-                    competitionDAO.findPastCompetitions(0, COUNT_COMPETITIONS_ON_MAIN_PAGE);
             List<Map<String, Object>> kindOfSportList = kindOfSportDAO.findUsingKindsOfSport();
+            List<NewsEntity> newsList = newsDAO.find(0, COUNT_NEWS_ON_MAIN_PAGE);
+
+            List<Map<String, Object>> upcomingGames = competitionDAO.findLimitUpcomingGames(0,
+                    COUNT_COMPETITIONS_ON_MAIN_PAGE, true);
+
+            List<Map<String, Object>> pastGames = competitionDAO.findLimitPastGames(0,
+                            COUNT_COMPETITIONS_ON_MAIN_PAGE, true, true);
+
+            extractCompetitors(upcomingGames, competitorDAO);
+            extractCompetitors(pastGames, competitorDAO);
 
             handler.commit();
             handler.endTransaction();
-
-            Packer packer = new Packer();
-            NewsFormatter newsFormatter = new NewsFormatter();
 
             Map<String, Map<String, Integer>> kindOfSportListResult =
                     packer.orderKindsOfSport(kindOfSportList);
@@ -61,8 +65,8 @@ public class CommonReceiverImpl implements CommonReceiver{
             newsFormatter.formatNewsforPreview(newsList);
 
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            /*requestContent.getRequestAttributes().put(UPCOMING_GAMES, orderedUpcomingGameList);
-            requestContent.getRequestAttributes().put(PAST_GAMES, orderedPastGameList);*/
+            requestContent.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
+            requestContent.getRequestAttributes().put(PAST_GAMES, pastGames);
             requestContent.getSessionAttributes().put("kindsOfSportLeftBar", kindOfSportListResult);
             requestContent.getSessionAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
             requestContent.getSessionAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);

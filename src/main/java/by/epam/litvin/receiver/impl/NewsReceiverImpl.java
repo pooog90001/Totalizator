@@ -76,13 +76,13 @@ public class NewsReceiverImpl implements NewsReceiver {
     public void openNewsSettings(RequestContent requestContent) throws ReceiverException {
         String[] page = requestContent.getRequestParameters().get("pageNumber");
         int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
-        startIndex = (startIndex - 1) * 10;
+        startIndex = (startIndex - 1) * COUNT_NEWS_ON_PAGE;
 
         TransactionManager handler = new TransactionManager();
         try {
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             handler.beginTransaction(newsDAO);
-            List<NewsEntity> newsList = newsDAO.find(startIndex, 10);
+            List<NewsEntity> newsList = newsDAO.find(startIndex, COUNT_NEWS_ON_PAGE);
             int newsCount = newsDAO.findNewsCount();
             handler.commit();
             handler.endTransaction();
@@ -92,7 +92,7 @@ public class NewsReceiverImpl implements NewsReceiver {
 
 
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            requestContent.getRequestAttributes().put("limit", 10);
+            requestContent.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
             requestContent.getRequestAttributes().put("newsCount", newsCount);
             requestContent.getRequestAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
 

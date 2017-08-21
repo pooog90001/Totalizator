@@ -43,10 +43,11 @@ final public class GeneralConstant {
 
     public static final int COUNT_NEWS_ON_PAGE = 10;
     public static final int COUNT_USERS_ON_PAGE = 10;
+    public static final int COUNT_COMPETITIONS_ON_PAGE = 10;
 
 
     public static final int COUNT_NEWS_ON_MAIN_PAGE = 3;
-    public static final int COUNT_COMPETITIONS_ON_MAIN_PAGE = 20;
+    public static final int COUNT_COMPETITIONS_ON_MAIN_PAGE = 5;
 
     public static final class DataBase {
         public static final String DRIVER = "driver";

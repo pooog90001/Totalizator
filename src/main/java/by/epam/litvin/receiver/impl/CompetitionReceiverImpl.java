@@ -32,90 +32,6 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
-    public void getLiveCompetitions(RequestContent requestContent) throws ReceiverException {
-        String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
-
-        int kindOfSportId = (stringId != null) ? Integer.valueOf(stringId[0]) : 0;
-
-        TransactionManager manager = null;
-        try {
-            manager = new TransactionManager();
-            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
-            KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
-            manager.beginTransaction(competitionDAO, kindOfSportDAO);
-
-            List<Map<String, Object>> liveGameList = (kindOfSportId != 0) ?
-                    competitionDAO.findFilteredLiveCompetitions(kindOfSportId) :
-                    competitionDAO.findAllLiveCompetitions();
-
-            List<KindOfSportEntity> kindOfSportList = kindOfSportDAO.findLiveGamesKindsOfSport();
-
-            manager.commit();
-            manager.endTransaction();
-
-            Packer packer = new Packer();
-
-
-            List<Map<String, Object>> orderedLiveGameList = packer.orderLiveAndUpcomingGames(liveGameList);
-
-            requestContent.getRequestAttributes().put(LIVE_GAMES, orderedLiveGameList);
-            requestContent.getRequestAttributes().put(KINDS_OF_SPORT_LIST, kindOfSportList);
-            requestContent.getRequestAttributes().put(CURRENT_ID, kindOfSportId);
-
-
-        } catch (DAOException e) {
-            try {
-                manager.rollback();
-                manager.endTransaction();
-            } catch (DAOException e1) {
-                throw new ReceiverException("Get live competitions rollback error", e);
-            }
-            throw new ReceiverException(e);
-        }
-    }
-
-    public void filterLiveCompetitions(RequestContent requestContent) throws ReceiverException {
-        String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
-
-        int kindOfSportId = (stringId != null) ? Integer.valueOf(stringId[0]) : 0;
-        Gson gson = new Gson();
-        JsonObject object = new JsonObject();
-
-        TransactionManager manager = null;
-        try {
-            manager = new TransactionManager();
-            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
-
-            manager.beginTransaction(competitionDAO);
-
-            List<Map<String, Object>> liveGameList = (kindOfSportId != 0) ?
-                    competitionDAO.findFilteredLiveCompetitions(kindOfSportId) :
-                    competitionDAO.findAllLiveCompetitions();
-
-
-            manager.commit();
-            manager.endTransaction();
-
-            Packer packer = new Packer();
-
-            List<Map<String, Object>> orderedLiveGameList = packer.orderLiveAndUpcomingGames(liveGameList);
-
-            JsonElement element = gson.toJsonTree(orderedLiveGameList);
-            object.add(LIVE_GAMES, element);
-            requestContent.setAjaxResult(object);
-
-        } catch (DAOException e) {
-            try {
-                manager.rollback();
-                manager.endTransaction();
-            } catch (DAOException e1) {
-                throw new ReceiverException("Filter Live competitions rollback error", e);
-            }
-            throw new ReceiverException(e);
-        }
-    }
-
-    @Override
     public void openCompetitionSettings(RequestContent requestContent) throws ReceiverException {
 
         String[] errorNames = {"wrongName", "wrongDate", "wrongDateFormat",
@@ -143,31 +59,31 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             List<CompetitionTypeEntity> competitionTypes = typeDAO.findAll();
 
             List<Map<String, Object>> upcomingActiveCompetitions =
-                    competitionDAO.findSettingUpcomingCompetitions(true);
+                    competitionDAO.findAllUpcomingGames(true);
             extractWithStatistic(upcomingActiveCompetitions, competitorDAO, commonDAO);
 
             List<Map<String, Object>> upcomingDeactiveCompetitions =
-                    competitionDAO.findSettingUpcomingCompetitions(false);
+                    competitionDAO.findAllUpcomingGames(false);
             extractWithoutStatistic(upcomingDeactiveCompetitions, competitorDAO);
 
             List<Map<String, Object>> nowActiveCompetitions =
-                    competitionDAO.findSettingNowCompetitions(true);
+                    competitionDAO.findAllNowGames(true);
             extractWithStatistic(nowActiveCompetitions, competitorDAO, commonDAO);
 
             List<Map<String, Object>> nowDeactiveCompetitions =
-                    competitionDAO.findSettingNowCompetitions(false);
+                    competitionDAO.findAllNowGames(false);
             extractWithoutStatistic(nowDeactiveCompetitions, competitorDAO);
 
             List<Map<String, Object>> pastDeactivatedCompetitions =
-                    competitionDAO.findSettingPastCompetitions(false, false);
+                    competitionDAO.findAllPastGames(false, false);
             extractWithoutStatistic(pastDeactivatedCompetitions, competitorDAO);
 
             List<Map<String, Object>> pastUnfilledCompetitions =
-                    competitionDAO.findSettingPastCompetitions(false, true);
+                    competitionDAO.findAllPastGames(false, true);
             extractWithStatistic(pastUnfilledCompetitions, competitorDAO, commonDAO);
 
             List<Map<String, Object>> pastFilledCompetitions =
-                    competitionDAO.findSettingPastCompetitions(true, true);
+                    competitionDAO.findAllPastGames(true, true);
             extractWithStatistic(pastFilledCompetitions, competitorDAO, commonDAO);
 
             manager.commit();
@@ -741,7 +657,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             userDAO.returnMoneyForBets(competitionId);
             betDAO.deleteByCompetitionId(competitionId);
 
-            if (!competitionDAO.changeActiveState(competitionId, state)) {
+            if (!competitionDAO.updateActiveState(competitionId, state)) {
                 transactionSuccess = false;
             }
 
@@ -850,7 +766,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
             if (isTransactionSuccess) {
                 isTransactionSuccess =
-                        competitionDAO.changeResultFillState(competitionId, true);
+                        competitionDAO.updateResultFillState(competitionId, true);
             }
             if (!isTransactionSuccess) {
                 data.put("fillError", true);
@@ -878,12 +794,75 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
 
     @Override
-    public void getUpcomingCompetition(RequestContent requestContent) {
+    public void getUpcomingGamesPage(RequestContent requestContent) throws ReceiverException {
+        String[] page = requestContent.getRequestParameters().get("pageNumber");
+        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
+        startIndex = (startIndex - 1) * COUNT_COMPETITIONS_ON_PAGE;
+        List<Map<String, Object>> upcomingGames;
+        TransactionManager handler = new TransactionManager();
+        try {
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            handler.beginTransaction(competitionDAO);
 
+            upcomingGames = competitionDAO.findLimitUpcomingGames(
+                    startIndex, COUNT_COMPETITIONS_ON_PAGE, true);
+
+            int gamesCount = competitionDAO.findUpcomingGamesCount(true);
+
+            handler.commit();
+            handler.endTransaction();
+
+            requestContent.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
+            requestContent.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
+            requestContent.getRequestAttributes().put("gamesCount", gamesCount);
+
+        } catch (DAOException e) {
+            try {
+                handler.rollback();
+                handler.endTransaction();
+
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open all upcoming games rollback error", e);
+            }
+
+            throw new ReceiverException(e);
+        }
     }
 
     @Override
-    public void getPastCompetition(RequestContent requestContent) {
+    public void getPastGamesPage(RequestContent requestContent) throws ReceiverException {
+        String[] page = requestContent.getRequestParameters().get("pageNumber");
+        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
+        startIndex = (startIndex - 1) * COUNT_COMPETITIONS_ON_PAGE;
+        List<Map<String, Object>> pastGames;
+        TransactionManager handler = new TransactionManager();
+        try {
+            CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
+            handler.beginTransaction(competitionDAO);
 
+            pastGames = competitionDAO.findLimitPastGames(startIndex,
+                    COUNT_COMPETITIONS_ON_PAGE, true, true );
+
+            int gamesCount = competitionDAO
+                    .findPastGamesCount(true, true);
+
+            handler.commit();
+            handler.endTransaction();
+
+            requestContent.getRequestAttributes().put(PAST_GAMES, pastGames);
+            requestContent.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
+            requestContent.getRequestAttributes().put("gamesCount", gamesCount);
+
+        } catch (DAOException e) {
+            try {
+                handler.rollback();
+                handler.endTransaction();
+
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open all past games rollback error", e);
+            }
+
+            throw new ReceiverException(e);
+        }
     }
 }

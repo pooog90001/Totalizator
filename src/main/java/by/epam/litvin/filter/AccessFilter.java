@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static by.epam.litvin.constant.GeneralConstant.USER;
 
-@WebFilter(urlPatterns = "/jsp/admin_panel/*",
+@WebFilter(urlPatterns = {"/jsp/admin_panel/*", "/jsp/*"},
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class AccessFilter implements Filter {
     public void init(FilterConfig fConfig) throws ServletException {
@@ -20,15 +20,15 @@ public class AccessFilter implements Filter {
 
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
-        String codeRequest = request.getCharacterEncoding();
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        HttpServletResponse httpResponce = (HttpServletResponse) response;
+        HttpServletResponse httpResponse = (HttpServletResponse) response;
         UserValidatorImpl validator = new UserValidatorImpl();
         UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
 
-        if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {
-            httpResponce.sendRedirect(PageConstant.INDEX);
+        if ( httpRequest.getSession().isNew() ||
+                (!validator.isAdmin(user) && !validator.isBookmaker(user))) {
+            httpResponse.sendRedirect(PageConstant.INDEX);
         }
 
         chain.doFilter(request, response);

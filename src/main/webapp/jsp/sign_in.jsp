@@ -28,7 +28,7 @@
             <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password">
 
             <c:if test="${requestScope.containsKey('wrongData')}">
-                <span>${wrongData}</span>
+                <span class="w3-text-red">${wrongData}</span>
             </c:if>
 
             <p>

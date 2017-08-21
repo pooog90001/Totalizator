@@ -275,27 +275,7 @@ final public class SQLRequestConstant {
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = ? ";
 
-
-    public static final String FIND_UPCOMING_GAMES_COUNT =
-                    "SELECT " +
-                    "    COUNT(DISTINCT competition.competition_id) as count  " +
-                    "FROM  " +
-                    "    competition,  " +
-                    "    competition_type,  " +
-                    "    competitor,  " +
-                    "    command,  " +
-                    "    kind_of_sport  " +
-                    "WHERE  " +
-                    "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
-                    "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
-                    "        AND competition_date_start > NOW()  " +
-                    "        AND competition_is_active = ? ";
-
-
-
-    public static final String FIND_ALL_NOW_GAMES =
+    public static final String FIND_NOW_GAMES_FOR_SETTINGS =
             "SELECT  DISTINCT " +
                     "    competition.competition_id,  " +
                     "    competition_type_name,  " +
@@ -322,26 +302,8 @@ final public class SQLRequestConstant {
                     "        AND competition_date_finish > NOW()  " +
                     "        AND competition_is_active = ?; ";
 
-    public static final String FIND_PAST_GAMES_COUNT =
-                    "SELECT   " +
-                    "    COUNT(DISTINCT competition.competition_id) as count  " +
-                    "FROM  " +
-                    "    competition,  " +
-                    "    competition_type,  " +
-                    "    competitor,  " +
-                    "    command,  " +
-                    "    kind_of_sport  " +
-                    "WHERE  " +
-                    "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
-                    "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
-                    "        AND competition_date_finish < NOW()  " +
-                    "        AND competition_is_result_filled = ?  " +
-                    "        AND competition_is_active = ?; ";
-
     public static final String FIND_ALL_PAST_GAMES =
-            "SELECT  DISTINCT " +
+                    "SELECT  DISTINCT " +
                     "    competition.competition_id,  " +
                     "    competition_type_name,  " +
                     "    kind_of_sport_name,  " +

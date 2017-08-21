@@ -83,18 +83,29 @@ public enum CommandType {
         }
     },
 
+    OPEN_ALL_LIVE_COMPETITIONS(new OpenLiveCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).getLiveCompetitions(content);
+        }
+    },
+
     OPEN_ALL_UPCOMING_COMPETITIONS(new OpenUpcomingCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).getUpcomingGamesPage(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).getUpcomingCompetition(content);
         }
     },
 
     OPEN_ALL_PAST_COMPETITIONS(new OpenPastCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).getPastGamesPage(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).getPastCompetition(content);
         }
     },
 
+    FILTER_LIVE_COMPETITIONS(new FilterLiveCompetitionCommand(new CompetitionReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).filterLiveCompetitions(content);
+        }
+    },
 
     OPEN_ADMIN_PANEL(new OpenAdminStatisticCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {

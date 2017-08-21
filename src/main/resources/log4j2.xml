@@ -7,7 +7,7 @@
         <Routing name="File">
             <Routes pattern="$${ctx:ROUTINGKEY}">
                 <Route key="$${ctx:ROUTINGKEY}">
-                    <RollingFile name="Rolling-default" fileName="/logs/fresh.log"
+                    <RollingFile name="Rolling-default" fileName="logs/fresh.log"
                                  filePattern="./logs/${date:yyyy-MM}/logs-%d{yyyy-MM-dd}-%i.log">
                         <PatternLayout>
                             <pattern>%d{ISO8601} [%t] %p %c{3} - %m%n</pattern>

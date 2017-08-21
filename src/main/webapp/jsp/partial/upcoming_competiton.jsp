@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:forEach var="competition" items="${upcomingGames}">
-    <form onclick="upcomingClick(this)">
+    <form>
 
         <div id="upcomingGame${competition['competition_id']}"
              class="w3-container w3-card-2  w3-margin-top w3-small w3-display-container w3-hover-light-grey">
@@ -79,6 +79,6 @@
                 </div>
             </c:forEach>
         </div>
+
     </form>
 </c:forEach>
-<script src="${pageContext.request.contextPath}/js/competition_upcoming.js"></script>

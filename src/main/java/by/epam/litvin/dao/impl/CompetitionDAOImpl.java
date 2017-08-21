@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.litvin.constant.GeneralConstant.COUNT;
 import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
@@ -82,7 +81,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
      * @param startIndex
      * @param limit
      * @param isActivated
-     * @return List with upcoming games
+     * @return List {Map {String, Object}} with upcoming games
      * @throws DAOException
      */
     public List<Map<String, Object>> findLimitUpcomingGames(int startIndex,
@@ -106,9 +105,9 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
     /**
      * Find all upcoming competitions, activated or deactivated
      *
-     * @param isActivated Bets are accepted for this competition or not
-     * @return List with upcoming games and competition type
-     * @throws DAOException if database error.
+     * @param isActivated
+     * @return List {Map {String, Object}} with upcoming games, activated or deactivated
+     * @throws DAOException
      */
     public List<Map<String, Object>> findAllUpcomingGames(boolean isActivated) throws DAOException {
         List<Map<String, Object>> upcomingGamesList;
@@ -124,47 +123,10 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return upcomingGamesList;
     }
 
-    public int findUpcomingGamesCount(boolean isActivated) throws DAOException {
-        int count = 0;
-
-        try (PreparedStatement statement = connection.prepareStatement(FIND_UPCOMING_GAMES_COUNT)) {
-            statement.setBoolean(1, isActivated);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                count = resultSet.getInt(COUNT);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("find upcoming games count error", e);
-        }
-
-        return count;
-    }
-
-    public int findPastGamesCount(boolean isResultFilled, boolean isActivated) throws DAOException {
-        int count = 0;
-
-        try (PreparedStatement statement = connection.prepareStatement(FIND_PAST_GAMES_COUNT)) {
-            statement.setBoolean(1, isResultFilled);
-            statement.setBoolean(2, isActivated);
-            ResultSet resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                count = resultSet.getInt(COUNT);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("find upcoming games count error", e);
-        }
-
-        return count;
-    }
-
     public List<Map<String, Object>> findAllNowGames(boolean isActivated) throws DAOException {
         List<Map<String, Object>> nowGamesList;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_NOW_GAMES)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_NOW_GAMES_FOR_SETTINGS)) {
             statement.setBoolean(1, isActivated);
             ResultSet resultSet = statement.executeQuery();
             nowGamesList = extractGames(resultSet);
@@ -333,7 +295,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return isUpdated;
     }
 
-    public boolean updateActiveState(int competitionId, boolean state) throws DAOException {
+    public boolean changeActiveState(int competitionId, boolean state) throws DAOException {
         boolean isChanged;
 
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_ACTIVE_STATE)) {
@@ -349,7 +311,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return isChanged;
     }
 
-    public boolean updateResultFillState(int competitionId, boolean state) throws DAOException {
+    public boolean changeResultFillState(int competitionId, boolean state) throws DAOException {
         boolean isChanged;
 
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_RESULT_FILL_STATE)) {
@@ -392,8 +354,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
             game.put(SQLFieldConstant.Competition.NAME,
                     resultSet.getString(SQLFieldConstant.Competition.NAME));
             gamesList.add(game);
-//TODO посмотреть, вывод сообщений при удалении пользователя
-//TODO завалидировать все входные параметры новостей и пользователей (админка)
+
         }
 
         return gamesList;

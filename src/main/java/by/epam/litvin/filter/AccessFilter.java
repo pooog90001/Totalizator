@@ -12,7 +12,7 @@ import java.io.IOException;
 
 import static by.epam.litvin.constant.GeneralConstant.USER;
 
-@WebFilter(urlPatterns = {"/jsp/admin_panel/*", "/jsp/*"},
+@WebFilter(urlPatterns = "/jsp/admin_panel/*",
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class AccessFilter implements Filter {
     public void init(FilterConfig fConfig) throws ServletException {
@@ -26,8 +26,7 @@ public class AccessFilter implements Filter {
         UserValidatorImpl validator = new UserValidatorImpl();
         UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
 
-        if ( httpRequest.getSession().isNew() ||
-                (!validator.isAdmin(user) && !validator.isBookmaker(user))) {
+        if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {
             httpResponse.sendRedirect(PageConstant.INDEX);
         }
 

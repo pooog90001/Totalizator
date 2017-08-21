@@ -12,27 +12,23 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class OpenUpcomingCompetitionCommand extends AbstractCommand {
+public class FilterLiveCompetitionCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenUpcomingCompetitionCommand(Receiver receiver) {
+    public FilterLiveCompetitionCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent){
+    public Router execute(RequestContent requestContent) {
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageConstant.ALL_LIVE_COMPETITIONS);
-            router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageConstant.ERROR_RUNTIME);
-            router.setRouteType(RouteType.REDIRECT);
         }
 
         return router;

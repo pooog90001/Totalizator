@@ -5,8 +5,10 @@ import by.epam.litvin.exception.ReceiverException;
 import sun.misc.Request;
 
 public interface CompetitionReceiver extends Receiver {
-    void getUpcomingGamesPage(RequestContent requestContent) throws ReceiverException;
-    void getPastGamesPage(RequestContent requestContent) throws ReceiverException;
+    void getLiveCompetitions(RequestContent requestContent) throws ReceiverException;
+    void getUpcomingCompetition(RequestContent requestContent);
+    void getPastCompetition(RequestContent requestContent);
+    void filterLiveCompetitions(RequestContent requestContent) throws ReceiverException;
     void openCompetitionSettings(RequestContent requestContent) throws ReceiverException;
     void createCompetition(RequestContent requestContent) throws ReceiverException;
     void editUpcomingActivated(RequestContent requestContent) throws ReceiverException;

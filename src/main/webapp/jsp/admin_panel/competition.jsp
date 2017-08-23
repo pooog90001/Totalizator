@@ -181,10 +181,10 @@
                     </div>
 
                     <%--Activated competitions--%>
-                    <%@include file="competition_part/upcoming_activated.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/upcoming_activated.jsp" %>
 
                     <%--Deactivated competitions--%>
-                    <%@include file="competition_part/upcoming_deactivated.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/upcoming_deactivated.jsp" %>
 
                 </div>
 
@@ -205,13 +205,13 @@
                     </div>
 
                     <%--Filled competitions--%>
-                    <%@include file="competition_part/past_filled.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/past_filled.jsp" %>
 
                     <%--Unfilled competitions--%>
-                    <%@include file="competition_part/past_unfilled.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/past_unfilled.jsp" %>
 
                     <%--Deactivated competitions--%>
-                    <%@include file="competition_part/past_deactivated.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/past_deactivated.jsp" %>
                 </div>
 
                 <div id="Now" class="general" style="display:none">
@@ -227,10 +227,10 @@
                     </div>
 
                     <%--Activated competitions--%>
-                    <%@include file="competition_part/now_activated.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/now_activated.jsp" %>
 
                     <%--Deactivated competitions--%>
-                    <%@include file="competition_part/now_deactivated.jsp" %>
+                    <%@include file="/jsp/admin_panel/competition_part/now_deactivated.jsp" %>
                 </div>
             </div>
         </div>

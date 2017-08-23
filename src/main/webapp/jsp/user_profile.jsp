@@ -11,10 +11,10 @@
 
 <body>
 <div class="w3-row-padding">
-    <div class="w3-third">
+    <div class="w3-col l2 m1">
         <div class="w3-container"></div>
     </div>
-    <div class="w3-third">
+    <div class="w3-col l8 m10">
         <h1>${authorization}</h1>
 
         <form class="w3-container w3-card-2" name="form" action="${pageContext.request.contextPath}/generalController" method="post">
@@ -39,7 +39,7 @@
             </p>
         </form>
     </div>
-    <div class="w3-third">
+    <div class="w3-col l2 m1">
         <div class="w3-container"></div>
     </div>
 </div>

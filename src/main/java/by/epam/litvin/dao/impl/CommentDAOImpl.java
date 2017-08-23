@@ -27,7 +27,7 @@ public class CommentDAOImpl extends DAO<CommentEntity> {
 
     }
 
-    public List<Map<String, Object>> findNewsComments(int newsId) throws DAOException {
+    public List<Map<String, Object>> findCommentsByNewsId(int newsId) throws DAOException {
         List<Map<String, Object>> newsCommentList = new ArrayList<>();
 
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_NEWS_COMMENTS)) {

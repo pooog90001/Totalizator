@@ -88,7 +88,7 @@
                         extension.
                     </div>
                     <div id="errorResponse" class="w3-row w3-text-red" style="display: none">
-                        Error of creation.
+                        Database or upload image error :(
                     </div>
 
                 </div>
@@ -198,15 +198,15 @@
 </body>
 <script src="${pageContext.request.contextPath}/js/news.js"></script>
 <link rel="stylesheet" type="text/css"
-      href="${pageContext.request.contextPath}/js/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
+      href="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
 <script type="text/javascript"
-        src="${pageContext.request.contextPath}/js/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <%@include file="../partial/footer.jsp" %>

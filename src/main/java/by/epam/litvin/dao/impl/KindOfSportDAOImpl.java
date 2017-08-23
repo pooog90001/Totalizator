@@ -16,9 +16,7 @@ import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
-import static by.epam.litvin.constant.SQLRequestConstant.FIND_ALL_KINDS_OF_SPORT;
-import static by.epam.litvin.constant.SQLRequestConstant.FIND_LIVE_GAMES_KINDS_OF_SPORT;
-import static by.epam.litvin.constant.SQLRequestConstant.FIND_USING_KINDS_OF_SPORT;
+import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
 
@@ -34,6 +32,8 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
                 Map<String, Object> kindOfSport = new HashMap<>();
                 kindOfSport.put(SQLFieldConstant.KindOfSport.NAME,
                         resultSet.getString(SQLFieldConstant.KindOfSport.NAME));
+                kindOfSport.put(SQLFieldConstant.KindOfSport.ID,
+                        resultSet.getInt(SQLFieldConstant.KindOfSport.ID));
                 kindOfSport.put(SQLFieldConstant.CompetitionType.ID,
                         resultSet.getInt(SQLFieldConstant.CompetitionType.ID));
                 kindOfSport.put(SQLFieldConstant.CompetitionType.NAME,
@@ -44,21 +44,6 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
         } catch (SQLException e) {
             throw new DAOException("find using kinds of sport error", e);
         }
-        return kindOfSportList;
-    }
-
-
-    public List<KindOfSportEntity> findLiveGamesKindsOfSport() throws DAOException {
-        List<KindOfSportEntity> kindOfSportList;
-
-        try (PreparedStatement statement = connection.prepareStatement(FIND_LIVE_GAMES_KINDS_OF_SPORT)) {
-            ResultSet resultSet = statement.executeQuery();
-            kindOfSportList = extractKindsOfSport(resultSet);
-
-        } catch (SQLException e) {
-            throw new DAOException("find live games kinds of sport error", e);
-        }
-
         return kindOfSportList;
     }
 
@@ -93,7 +78,25 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
 
     @Override
     public KindOfSportEntity findEntityById(int id) throws DAOException {
-        throw new UnsupportedOperationException();
+        KindOfSportEntity sport = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_KIND_OF_SPORT_BY_ID)) {
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                sport = new KindOfSportEntity();
+                sport.setId(resultSet.getInt(SQLFieldConstant.KindOfSport.ID));
+                sport.setCompetitorCount(resultSet.getInt(SQLFieldConstant.KindOfSport.COMPETITOR_COUNT));
+                sport.setName(resultSet.getString(SQLFieldConstant.KindOfSport.NAME));
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Find kind of sport error ", e);
+        }
+
+        return sport;
     }
 
     @Override

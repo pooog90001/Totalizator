@@ -8,13 +8,20 @@ public class BetEntity extends Entity {
 
     public BetEntity() {}
 
+    public BetEntity(int userId, BigDecimal cash, int competitorId, ExpectResultType expectedResult) {
+        this.userId = userId;
+        this.cash = cash;
+        CompetitorId = competitorId;
+        this.expectedResult = expectedResult;
+    }
+
     private int id;
     private int userId;
     private BigDecimal cash;
     private Boolean isWin;
     private Boolean isActive;
     private int CompetitorId;
-    private ExpectResultType total;
+    private ExpectResultType expectedResult;
 
 
 
@@ -66,12 +73,12 @@ public class BetEntity extends Entity {
         this.CompetitorId = competitorId;
     }
 
-    public ExpectResultType getTotal() {
-        return total;
+    public ExpectResultType getExpectedResult() {
+        return expectedResult;
     }
 
-    public void setTotal(ExpectResultType total) {
-        this.total = total;
+    public void setExpectedResult(ExpectResultType expectedResult) {
+        this.expectedResult = expectedResult;
     }
 
 
@@ -88,7 +95,7 @@ public class BetEntity extends Entity {
         if (cash != null ? !cash.equals(betEntity.cash) : betEntity.cash != null) return false;
         if (isWin != null ? !isWin.equals(betEntity.isWin) : betEntity.isWin != null) return false;
         if (isActive != null ? !isActive.equals(betEntity.isActive) : betEntity.isActive != null) return false;
-        return total == betEntity.total;
+        return expectedResult == betEntity.expectedResult;
     }
 
     @Override
@@ -99,7 +106,7 @@ public class BetEntity extends Entity {
         result = 31 * result + (isWin != null ? isWin.hashCode() : 0);
         result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
         result = 31 * result + CompetitorId;
-        result = 31 * result + (total != null ? total.hashCode() : 0);
+        result = 31 * result + (expectedResult != null ? expectedResult.hashCode() : 0);
         return result;
     }
 }

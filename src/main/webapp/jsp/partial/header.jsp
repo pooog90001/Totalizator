@@ -25,6 +25,7 @@
 
 <html>
 <head>
+    <link rel="icon" href="${pageContext.request.contextPath}/image/favicon.png">
     <title>${totalizator}</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -78,7 +79,7 @@
                             <a href="#" class="w3-bar-item w3-button">${profile} </a>
                             <a href="#" class="w3-bar-item w3-button">${settings}</a>
                             <form action="${pageContext.request.contextPath}/generalController">
-                                <input type="hidden" name="command" value="${signOut}">
+                                <input type="hidden" name="command" value="SIGN_OUT">
                                 <input type="submit" class="w3-bar-item w3-button" value="Sign out"/>
                             </form>
                         </div>
@@ -109,12 +110,12 @@
                            value="${news}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value= "open_all_news">
+                    <input type="hidden" name="command" value= "OPEN_ALL_UPCOMING_COMPETITIONS">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${upcoming}">
                 </form>
                 <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                    <input type="hidden" name="command" value= "open_all_news">
+                    <input type="hidden" name="command" value= "OPEN_ALL_PAST_COMPETITIONS">
                     <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
                            value="${results}">
                 </form>
@@ -187,8 +188,20 @@
         </form>
 
         <a href="#" class="w3-bar-item w3-button w3-padding">${live}</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">${upcoming}</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">${results}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">
+            <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
+            <input type="hidden" name="command" value= "OPEN_ALL_UPCOMING_COMPETITIONS">
+            <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                   value="${upcoming}">
+        </form>
+        </a>
+        <a href="#" class="w3-bar-item w3-button w3-padding">
+            <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
+                <input type="hidden" name="command" value= "OPEN_ALL_PAST_COMPETITIONS">
+                <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
+                       value="${results}">
+            </form>
+        </a>
         <a href="#" class="w3-bar-item w3-button w3-padding">${aboutCompany}</a>
         <a href="#" class="w3-bar-item w3-button w3-padding">${rules}</a>
         <a href="#" class="w3-bar-item w3-button w3-padding">${help}</a>

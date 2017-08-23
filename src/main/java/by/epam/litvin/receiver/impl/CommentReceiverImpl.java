@@ -68,15 +68,12 @@ public class CommentReceiverImpl implements CommentReceiver {
         String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
         String commentText = requestContent.getRequestParameters().get(TEXT)[0].trim();
         int newsId = Integer.valueOf(newsIdString[0]);
-        Map<String, Object> data = new HashMap<>();
 
         if (user == null) {
-            requestContent.getRequestAttributes().put(ACCESS_DENIED, true);
             return;
         }
         if (!commentValidator.isCommentTextValid(commentText)) {
-            data.put(INVALID_TEXT, true);
-            requestContent.getSessionAttributes().put(TEMPORARY, data);
+            requestContent.setAjaxSuccess(false);
             return;
         }
 
@@ -92,8 +89,7 @@ public class CommentReceiverImpl implements CommentReceiver {
             commentDAO.create(comment);
             manager.commit();
             manager.endTransaction();
-            data.put(NEWS_ID, newsId);
-            requestContent.getSessionAttributes().put(TEMPORARY, data);
+            requestContent.setAjaxSuccess(true);
 
 
 

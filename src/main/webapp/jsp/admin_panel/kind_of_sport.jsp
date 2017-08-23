@@ -156,7 +156,7 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_del_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Delete error. try again</p>
+            <p>Server error. Try again</p>
             <input type="button" class="w3-button" value="Ok" onclick="(modal_del_error).style.display='none'">
         </div>
     </div>
@@ -177,7 +177,7 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_edit_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Edit error. Try again</p>
+            <p>Server error. Try again</p>
             <input type="button" class="w3-button" value="Ok" onclick="(modal_edit_error).style.display='none'">
         </div>
     </div>

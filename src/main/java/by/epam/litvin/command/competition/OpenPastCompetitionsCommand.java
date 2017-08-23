@@ -1,4 +1,4 @@
-package by.epam.litvin.command.comment;
+package by.epam.litvin.command.competition;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.constant.PageConstant;
@@ -12,24 +12,27 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
-
-public class CreateCommentCommand extends AbstractCommand {
+public class OpenPastCompetitionsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public CreateCommentCommand(Receiver receiver) {
+    public OpenPastCompetitionsCommand(Receiver receiver) {
         super(receiver);
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent requestContent){
         Router router = new Router();
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
+            router.setRoutePath(PageConstant.ALL_PAST_COMPETITIONS);
+            router.setRouteType(RouteType.FORWARD);
+
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Open past competitions receiver error", e);
+            router.setRoutePath(PageConstant.ERROR_RUNTIME);
+            router.setRouteType(RouteType.REDIRECT);
         }
 
         return router;

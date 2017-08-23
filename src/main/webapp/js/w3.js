@@ -1,6 +1,6 @@
 closeSidebar();
 
-function myFunction(className) {
+function dropDown(className) {
     var x = document.getElementsByClassName(className);
     for (var i = 0; i < x.length; i++) {
 

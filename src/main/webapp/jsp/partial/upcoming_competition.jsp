@@ -1,9 +1,17 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <c:forEach var="competition" items="${upcomingGames}">
-    <form>
-
+    <c:choose>
+        <c:when test="${user != null}">
+            <form action="${pageContext.request.contextPath}/generalController" method="post" onclick="callSubmit(this)">
+        </c:when>
+        <c:otherwise>
+            <form>
+        </c:otherwise>
+    </c:choose>
+        <input type="hidden" name="command" value="OPEN_CONCRETE_COMPETITION"/>
+        <input type="hidden" name="competitionId" value="${competition['competition_id']}"/>
         <div id="upcomingGame${competition['competition_id']}"
-             class="w3-container w3-card-2  w3-margin-top w3-small w3-display-container w3-hover-light-grey">
+             class="w3-container w3-card-2  w3-margin-bottom w3-small w3-display-container w3-hover-light-grey">
             <div class="w3-center w3-row w3-small w3-padding">
                 <div class="w3-display-topleft w3-tiny w3-theme w3-padding-small">
                     № ${competition['competition_id']}
@@ -79,6 +87,6 @@
                 </div>
             </c:forEach>
         </div>
-
     </form>
 </c:forEach>
+<script src="${pageContext.request.contextPath}/js/competition_upcoming.js"></script>

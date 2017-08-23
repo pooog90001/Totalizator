@@ -3,30 +3,22 @@ package by.epam.litvin.receiver.impl;
 import by.epam.litvin.bean.NewsEntity;
 import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.NewsDAO;
 import by.epam.litvin.dao.impl.CommentDAOImpl;
 import by.epam.litvin.dao.impl.NewsDAOImpl;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.NewsReceiver;
-import by.epam.litvin.type.ImageFormatType;
-import by.epam.litvin.util.NewsFormatter;
+import by.epam.litvin.util.Formatter;
+import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.NewsValidatorImpl;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
+import org.apache.commons.io.FilenameUtils;
 
 import javax.imageio.ImageIO;
-import javax.imageio.ImageReader;
-import javax.imageio.stream.ImageInputStream;
 import javax.servlet.http.Part;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -50,8 +42,8 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.commit();
             handler.endTransaction();
 
-            NewsFormatter newsFormatter = new NewsFormatter();
-            newsFormatter.formatNewsforPreview(newsList);
+            Formatter newsFormatter = new Formatter();
+            newsFormatter.formatNewsForPreview(newsList);
 
 
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
@@ -87,8 +79,8 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.commit();
             handler.endTransaction();
 
-            NewsFormatter newsFormatter = new NewsFormatter();
-            newsFormatter.formatNewsforPreview(newsList);
+            Formatter newsFormatter = new Formatter();
+            newsFormatter.formatNewsForPreview(newsList);
 
 
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
@@ -111,6 +103,10 @@ public class NewsReceiverImpl implements NewsReceiver {
 
     @Override
     public void createNews(RequestContent content) throws ReceiverException {
+        NewsValidatorImpl newsValidator = new NewsValidatorImpl();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        Formatter formatter = new Formatter();
+
         int pointX1 = Integer.valueOf(content.getRequestParameters().get("x1")[0]);
         int pointX2 = Integer.valueOf(content.getRequestParameters().get("x2")[0]);
         int pointY1 = Integer.valueOf(content.getRequestParameters().get("y1")[0]);
@@ -121,56 +117,39 @@ public class NewsReceiverImpl implements NewsReceiver {
         String title = content.getRequestParameters().get("title")[0].trim();
         Part imagePart = content.getRequestParts().get(IMAGE);
         File uploadPath = new File(content.getRealPath(), PageConstant.PATH_TO_UPLOAD_NEWS);
+        String imageExtension = FilenameUtils.getExtension(imagePart.getSubmittedFileName());
 
-        ImageFormatType formatImage;
-
-
-        NewsValidatorImpl newsValidator = new NewsValidatorImpl();
-
-        if (!newsValidator.isTitleValid(title) ||
-                !newsValidator.isTextValid(text) ||
+        if (!newsValidator.isTitleValid(title) || !newsValidator.isTextValid(text) ||
+                !commonValidator.isImageExtensionValid(imageExtension) ||
                 pointX1 == pointX2 || pointY1 == pointY2) {
+
             content.setAjaxSuccess(false);
             return;
-        }
-
-        String[] extension = imagePart.getSubmittedFileName().split("[.]");
-        try {
-            formatImage = ImageFormatType.valueOf(extension[extension.length - 1].toUpperCase());
-        } catch (IllegalArgumentException e) {
-            throw new ReceiverException("Illegal image format error", e);
         }
 
         NewsEntity news = new NewsEntity();
         news.setTitle(title);
         news.setText(text);
 
-
         TransactionManager manager = new TransactionManager();
         try {
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             manager.beginTransaction(newsDAO);
             news.setId(newsDAO.createAndGetId(news));
-            news.setImageUrl(news.getId() + _NEWS_DOT + formatImage);
+            news.setImageUrl(news.getId() + _NEWS_DOT + imageExtension);
 
             try {
+                ImageIO.setUseCache(false);
                 BufferedImage image = ImageIO.read(imagePart.getInputStream());
+                image = formatter.formatImage(image, pointX1, pointX2, pointY1, pointY2, height, width);
 
                 if (image == null) {
                     content.setAjaxSuccess(false);
                     return;
                 }
 
-                float scale = (float) (image.getHeight()-1)  / (float) height;
-                pointX1 = (int) (pointX1 * scale);
-                pointX2 = (int) (pointX2 * scale);
-                pointY1 = (int) (pointY1 * scale);
-                pointY2 = (int) (pointY2 * scale);
-                image = image.getSubimage(pointX1, pointY1, pointX2 - pointX1, pointY2 - pointY1);
-
-
                 File path = new File(uploadPath, news.getImageUrl());
-                ImageIO.write(image, formatImage.toString(), path);
+                ImageIO.write(image, imageExtension, path);
 
             } catch (IOException e) {
                 manager.rollback();
@@ -190,7 +169,6 @@ public class NewsReceiverImpl implements NewsReceiver {
             } catch (DAOException e1) {
                 throw new ReceiverException("Create news rollback error", e1);
             }
-
             throw new ReceiverException(e);
         }
     }
@@ -244,13 +222,14 @@ public class NewsReceiverImpl implements NewsReceiver {
 
     @Override
     public void openConcreteNewsPage(RequestContent requestContent) throws ReceiverException {
-        String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
         String[] invalidText = requestContent.getRequestParameters().get(INVALID_TEXT);
+        String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
         int newsId = Integer.valueOf(newsIdString[0]);
 
         if (invalidText != null && !invalidText[0].isEmpty()) {
             requestContent.getRequestAttributes().put(INVALID_TEXT, invalidText[0]);
         }
+
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -266,7 +245,7 @@ public class NewsReceiverImpl implements NewsReceiver {
                 return;
             }
 
-            List<Map<String, Object>> newsCommentList = commentDAO.findNewsComments(newsId);
+            List<Map<String, Object>> newsCommentList = commentDAO.findCommentsByNewsId(newsId);
             handler.commit();
             handler.endTransaction();
 

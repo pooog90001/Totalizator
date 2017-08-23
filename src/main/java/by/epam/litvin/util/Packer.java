@@ -1,5 +1,7 @@
 package by.epam.litvin.util;
 
+import by.epam.litvin.bean.CompetitionTypeEntity;
+import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.constant.SQLFieldConstant;
 
 import java.math.BigDecimal;
@@ -11,33 +13,34 @@ import java.util.Map;
 public class Packer {
 
 
-    public  Map<String,Map<String, Integer>> orderKindsOfSport(List<Map<String, Object>> kindOfSportList) {
-        Map<String, Map<String, Integer>> kindOfSportListResult = new HashMap<>();
+    public  Map<KindOfSportEntity, List<CompetitionTypeEntity>>
+    orderKindsOfSport(List<Map<String, Object>> kindOfSportList) {
+
+        Map<KindOfSportEntity, List<CompetitionTypeEntity>> kindsOfSport = new HashMap<>();
 
 
-        for (Map<String,Object> kind :  kindOfSportList) {
-            String kindOfSportName = (String) kind.get(SQLFieldConstant.KindOfSport.NAME);
-            boolean hasCoincidence = false;
+        for (Map<String, Object> map :  kindOfSportList) {
+            String sportName = (String) map.get(SQLFieldConstant.KindOfSport.NAME);
+            int sportId = (int) map.get(SQLFieldConstant.KindOfSport.ID);
+            String typeName = (String) map.get(SQLFieldConstant.CompetitionType.NAME);
+            int typeId = (int) map.get(SQLFieldConstant.CompetitionType.ID);
 
-            for (String s : kindOfSportListResult.keySet()) {
-                if (s.equals(kindOfSportName)) {
-                    String competitionType = (String) kind.get(SQLFieldConstant.CompetitionType.NAME);
-                    Integer competition_type_id = (Integer) kind.get(SQLFieldConstant.CompetitionType.ID);
-                    kindOfSportListResult.get(kindOfSportName).put(competitionType, competition_type_id);
-                    hasCoincidence = true;
-                    break;
-                }
+            KindOfSportEntity sport = new KindOfSportEntity() {{
+                setName(sportName);
+                setId(sportId);
+            }};
+            CompetitionTypeEntity type = new CompetitionTypeEntity() {{
+                setName(typeName);
+                setId(typeId);
+            }};
+
+            if (!kindsOfSport.containsKey(sport)) {
+                kindsOfSport.put(sport, new ArrayList<>());
             }
 
-            if (!hasCoincidence) {
-                String competitionTypeName = (String) kind.get(SQLFieldConstant.CompetitionType.NAME);
-                Integer competitionTypeId = (Integer) kind.get(SQLFieldConstant.CompetitionType.ID);
-                HashMap<String, Integer> competitionTypeMap = new HashMap<>();
-                competitionTypeMap.put(competitionTypeName, competitionTypeId);
-                kindOfSportListResult.put(kindOfSportName, competitionTypeMap);
-            }
+            kindsOfSport.get(sport).add(type);
         }
 
-        return kindOfSportListResult;
+        return kindsOfSport;
     }
 }

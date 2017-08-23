@@ -2,7 +2,6 @@ package by.epam.litvin.dao.impl;
 
 import by.epam.litvin.bean.CompetitorEntity;
 import by.epam.litvin.constant.SQLFieldConstant;
-import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.DAOException;
 
@@ -23,9 +22,10 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
         throw new UnsupportedOperationException();
     }
 
-    public List<Map<String, Object>> findWithCommandByCompetitionId(int competitionId) throws DAOException {
+    public List<Map<String, Object>> findWithCommandByGameId(int competitionId) throws DAOException {
         List<Map<String, Object>> competitorList;
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMPETITORS_WITH_COMMAND_BY_COMPETITION_ID)) {
+        try (PreparedStatement statement =
+                     connection.prepareStatement(FIND_ALL_COMPETITORS_WITH_COMMAND_BY_GAME_ID)) {
             statement.setInt(1, competitionId);
             ResultSet resultSet = statement.executeQuery();
             competitorList = new ArrayList<>();
@@ -42,6 +42,29 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
                         resultSet.getInt(SQLFieldConstant.Competitor.RESULT));
                 competitor.put(SQLFieldConstant.Competitor.IS_WIN,
                         resultSet.getBoolean(SQLFieldConstant.Competitor.IS_WIN));
+                competitorList.add(competitor);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("find all competitors whith command error", e);
+        }
+        return competitorList;
+    }
+
+    public List<CompetitorEntity> findByGameId(int competitionId) throws DAOException {
+        List<CompetitorEntity> competitorList;
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_COMPETITORS_GAME_ID)) {
+            statement.setInt(1, competitionId);
+            ResultSet resultSet = statement.executeQuery();
+            competitorList = new ArrayList<>();
+
+            while (resultSet.next()) {
+                CompetitorEntity competitor = new CompetitorEntity();
+                competitor.setId(resultSet.getInt(SQLFieldConstant.Competitor.ID));
+                competitor.setCommandId(resultSet.getInt(SQLFieldConstant.Command.ID));
+                competitor.setCompetitionId(resultSet.getInt(SQLFieldConstant.Competition.ID));
+                competitor.setWinCoeff(resultSet.getBigDecimal(SQLFieldConstant.Competitor.WIN_COEFF));
+                competitor.setResult(resultSet.getInt(SQLFieldConstant.Competitor.RESULT));
+                competitor.setWin(resultSet.getBoolean(SQLFieldConstant.Competitor.IS_WIN));
                 competitorList.add(competitor);
             }
         } catch (SQLException e) {

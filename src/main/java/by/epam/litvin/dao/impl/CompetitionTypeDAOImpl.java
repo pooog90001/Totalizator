@@ -1,6 +1,7 @@
 package by.epam.litvin.dao.impl;
 
 import by.epam.litvin.bean.CompetitionTypeEntity;
+import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.dao.DAO;
@@ -15,6 +16,8 @@ import java.util.List;
 import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
 import static by.epam.litvin.constant.SQLRequestConstant.FIND_ALL_COMPETITION_TYPES;
+import static by.epam.litvin.constant.SQLRequestConstant.FIND_COMPETITION_TYPE_BY_ID;
+import static by.epam.litvin.constant.SQLRequestConstant.FIND_KIND_OF_SPORT_BY_ID;
 
 public class CompetitionTypeDAOImpl extends DAO<CompetitionTypeEntity> {
     @Override
@@ -41,7 +44,24 @@ public class CompetitionTypeDAOImpl extends DAO<CompetitionTypeEntity> {
 
     @Override
     public CompetitionTypeEntity findEntityById(int id) throws DAOException {
-        throw new UnsupportedOperationException();
+        CompetitionTypeEntity type = null;
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_COMPETITION_TYPE_BY_ID)) {
+            statement.setInt(1, id);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                type = new CompetitionTypeEntity();
+                type.setId(resultSet.getInt(SQLFieldConstant.CompetitionType.ID));
+                type.setName(resultSet.getString(SQLFieldConstant.CompetitionType.NAME));
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Find type of competition error ", e);
+        }
+
+        return type;
     }
 
     @Override

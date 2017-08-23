@@ -36,7 +36,9 @@
                             <img src="${newsImagePath}${news.imageUrl}"
                                  alt="${news.title}" style="width: 100%;">
                             <div class="w3-display-topright w3-display-hover">
-                                <p class="w3-black w3-padding">${news.dateCreation}</p>
+                                <p class="w3-black w3-padding w3-small">
+                                        <ctg:date-presenter date="${news.dateCreation}"/>
+                                </p>
                             </div>
                         </div>
                         <form action="${pageContext.request.contextPath}/generalController">

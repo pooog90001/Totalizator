@@ -45,6 +45,8 @@ final public class PageConstant {
     public static final String ALL_LIVE_COMPETITIONS = ROOT + "all_live_competitions.jsp";
     public static final String ALL_UPCOMING_COMPETITIONS = ROOT + "all_upcoming_competitions.jsp";
     public static final String ALL_PAST_COMPETITIONS = ROOT + "all_past_competitions.jsp";
+    public static final String COMPETITIONS_BY_TYPE = ROOT + "competitions_by_type.jsp";
+    public static final String CONCRETE_COMPETITION = ROOT + "concrete_competition.jsp";
     public static final String CONCRETE_NEWS = ROOT + "concrete_news.jsp";
     public static final String CONCRETE_NEWS_ADD = ROOT + "concrete_news_add.jsp";
     public static final String INDEX = "index.jsp";

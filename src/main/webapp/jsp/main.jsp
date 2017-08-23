@@ -69,17 +69,17 @@
 <%--Start upcoming comeptitions section--%>
         <div class="w3-row-padding">
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_upcoming_competition_page">
+                <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
                 <button type="submit" class="w3-xlarge w3-button w3-hover-none w3-padding-small">
                     ${upcoming}
                 </button>
             </form>
             <div class=" w3-container w3-padding-small w3-center">
                 <%--Import upcoming competitions part--%>
-                <%@include file="partial/upcoming_competiton.jsp"%>
+                <%@include file="partial/upcoming_competition.jsp"%>
             </div>
             <form class="w3-container w3-margin-bottom" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_all_upcoming_competition_page">
+                <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
                 <button type="submit" class="w3-right w3-button w3-small">
                     Все ${upcoming}
                 </button>
@@ -90,7 +90,7 @@
         <%--Start past comeptitions section--%>
         <div class="w3-row-padding">
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
-                <input type="hidden" name="command" value="open_upcoming_competition_page">
+                <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                 <button type="submit" class="w3-xlarge w3-button w3-hover-none">
                     ${past}
                 </button>
@@ -102,7 +102,7 @@
 
                     <form class="w3-container w3-margin-bottom"
                       action="${pageContext.request.contextPath}/generalController">
-                    <input type="hidden" name="command" value="open_all_upcoming_competition_page">
+                    <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                     <button type="submit" class="w3-right w3-button w3-small">
                         Все ${past}
                     </button>

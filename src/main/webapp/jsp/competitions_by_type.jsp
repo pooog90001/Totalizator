@@ -23,21 +23,36 @@
 
         <div class="w3-row-padding">
             <div class="w3-container w3-xlarge">
-                Results
+                ${kindOfSport.name} ${competitionType.name}
             </div>
             <div class="w3-container">
-                <%@include file="partial/past_competition.jsp"%>
-            </div>
-            <div class="pagination  w3-margin-top w3-padding-small">
-                <ctg:pagination total="${gamesCount}" limit="${limit}" command="OPEN_ALL_PAST_COMPETITIONS"/>
+                <div class="w3-bar w3-black w3-card-2 w3-margin-bottom">
+                    <button class="w3-bar-item w3-button generalLink w3-white"
+                            onclick="openTab(event,'Upcoming', 'general', 'generalLink')">
+                        Upcoming
+                    </button>
+                    <button class="w3-bar-item w3-button generalLink"
+                            onclick="openTab(event,'Past', 'general', 'generalLink')">
+                        Results
+                    </button>
+
+                </div>
+
+                <div id="Upcoming" class="general">
+                    <%@include file="/jsp/partial/upcoming_competition.jsp" %>
+                </div>
+
+                <div id="Past" class="general" style="display:none">
+                    <%@include file="/jsp/partial/past_competition.jsp" %>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 </body>
+<script src="${pageContext.request.contextPath}/js/competitions_by_type.js"></script>
 
 <%@include file="partial/footer.jsp" %>
-
 
 

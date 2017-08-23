@@ -80,24 +80,18 @@ function imgCrop(img, selection) {
                 window.location.reload();
             }
         },
-
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Something really bad happened " + textStatus);
             document.getElementById("errorResponse").style.display = 'inherit';
         },
-
         beforeSend: function (jqXHR, settings) {},
-
         complete: function (jqXHR, textStatus) {}
     });
 });
 
 function delNews(e, id, newsImageUrl) {
-
-
     modal_del_error.style.display = 'none';
     modal_del_error.style.display = 'none';
-
 
     var $this = $(e);
     var $contanier = $("#" + id);

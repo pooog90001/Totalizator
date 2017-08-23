@@ -15,6 +15,7 @@ import java.util.List;
 
 import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
+import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 
 public class UserDAOImpl extends DAO<UserEntity> {
@@ -25,33 +26,49 @@ public class UserDAOImpl extends DAO<UserEntity> {
     }
 
     @Override
-    public UserEntity findEntityById(int id) {
-        throw new UnsupportedOperationException();
+    public UserEntity findEntityById(int id) throws DAOException {
+        UserEntity foundUser;
+
+        try (PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_ID)) {
+            statement.setInt(1, id);
+            ResultSet result = statement.executeQuery();
+            foundUser = extractUser(result);
+
+        } catch (SQLException e) {
+            throw new DAOException("Find user error ", e);
+        }
+
+        return foundUser;
+    }
+
+    private UserEntity extractUser(ResultSet result) throws SQLException {
+        UserEntity foundUser = null;
+        if (result.next()) {
+            foundUser = new UserEntity();
+            foundUser.setId(result.getInt(SQLFieldConstant.User.ID));
+            foundUser.setName(result.getString(SQLFieldConstant.User.NAME));
+            foundUser.setEmail(result.getString(SQLFieldConstant.User.EMAIL));
+            foundUser.setPassword(result.getString(SQLFieldConstant.User.PASSWORD));
+            foundUser.setConfirmUrl(result.getString(SQLFieldConstant.User.CONFIRM_URL));
+            foundUser.setConfirm(result.getBoolean(SQLFieldConstant.User.IS_CONFIRM));
+            foundUser.setBlocked(result.getBoolean(SQLFieldConstant.User.IS_BLOCKED));
+            foundUser.setBlockedText(result.getString(SQLFieldConstant.User.BLOCKED_TEXT));
+            foundUser.setCash(result.getBigDecimal(SQLFieldConstant.User.CASH));
+            foundUser.setAvatarURL(result.getString(SQLFieldConstant.User.AVATAR_URL));
+            String userType = result.getString(SQLFieldConstant.User.TYPE);
+            foundUser.setType(UserType.valueOf(userType));
+        }
+        return foundUser;
     }
 
     public UserEntity findUser(UserEntity user) throws DAOException {
-        UserEntity foundUser = null;
+        UserEntity foundUser;
 
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_USER_BY_EMAIL_AND_PASSWORD)) {
             statement.setString(1, user.getEmail());
             statement.setString(2, user.getPassword());
             ResultSet result = statement.executeQuery();
-
-            if (result.next()) {
-                foundUser = new UserEntity();
-                foundUser.setId(result.getInt(SQLFieldConstant.User.ID));
-                foundUser.setName(result.getString(SQLFieldConstant.User.NAME));
-                foundUser.setEmail(result.getString(SQLFieldConstant.User.EMAIL));
-                foundUser.setPassword(result.getString(SQLFieldConstant.User.PASSWORD));
-                foundUser.setConfirmUrl(result.getString(SQLFieldConstant.User.CONFIRM_URL));
-                foundUser.setConfirm(result.getBoolean(SQLFieldConstant.User.IS_CONFIRM));
-                foundUser.setBlocked(result.getBoolean(SQLFieldConstant.User.IS_BLOCKED));
-                foundUser.setBlockedText(result.getString(SQLFieldConstant.User.BLOCKED_TEXT));
-                foundUser.setCash(result.getBigDecimal(SQLFieldConstant.User.CASH));
-                foundUser.setAvatarURL(result.getString(SQLFieldConstant.User.AVATAR_URL));
-                String userType = result.getString(SQLFieldConstant.User.TYPE);
-                foundUser.setType(UserType.valueOf(userType));
-            }
+            foundUser = extractUser(result);
 
         } catch (SQLException e) {
             throw new DAOException("Find user error ", e);
@@ -190,13 +207,27 @@ public class UserDAOImpl extends DAO<UserEntity> {
 
 
     public void returnMoneyForBets(int competitionId) throws DAOException {
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.RETURN_MONEY_FOR_BETS)) {
+        try (PreparedStatement statement = connection.prepareStatement(RETURN_MONEY_FOR_BETS)) {
             statement.setInt(1, competitionId);
             statement.execute();
 
         } catch (SQLException e) {
-            throw new DAOException("Ruturn money for bets error ", e);
+            throw new DAOException("Return money for bets error ", e);
         }
+    }
+
+    public boolean updateCash(UserEntity entity) throws DAOException {
+        boolean isUpdated;
+
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_USER_CASH)) {
+            statement.setBigDecimal(1, entity.getCash());
+            statement.setInt(2, entity.getId());
+            isUpdated = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DAOException("Update cash error ", e);
+        }
+
+        return isUpdated;
     }
 }

@@ -1,14 +1,13 @@
 package by.epam.litvin.dao.impl;
 
 import by.epam.litvin.bean.BetEntity;
-import by.epam.litvin.bean.Entity;
 import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.dao.BetDAO;
-import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.DAOException;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.List;
 
 import static by.epam.litvin.constant.SQLRequestConstant.*;
@@ -38,7 +37,25 @@ public class BetDAOImpl extends BetDAO {
 
     @Override
     public boolean create(BetEntity entity) throws DAOException {
-        throw new UnsupportedOperationException();
+        boolean isCreated;
+
+        try(PreparedStatement statement = connection.prepareStatement(CREATE_BET)) {
+            statement.setInt(1, entity.getUserId());
+            statement.setBigDecimal(2, entity.getCash());
+            statement.setInt(3, entity.getCompetitorId());
+
+            if (entity.getExpectedResult() != null) {
+                statement.setString(4, entity.getExpectedResult().toString());
+            } else {
+                statement.setNull(4, Types.VARCHAR);
+            }
+
+            isCreated = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DAOException("Create bets error", e);
+        }
+        return isCreated;
     }
 
     @Override
@@ -68,7 +85,7 @@ public class BetDAOImpl extends BetDAO {
         }
     }
 
-    public void updateCompetitionResultAndPayMoney
+    public void updateGameResultAndPayMoney
             (int competitionId, int competitorResult1, int competitorResult2) throws DAOException {
 
 
@@ -88,7 +105,7 @@ public class BetDAOImpl extends BetDAO {
             throw new DAOException("Set second competitor result variable  error", e);
         }
 
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_COMPETITION_RESULT_AND_PAY_MONEY)) {
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_BET_RESULT_AND_PAY_MONEY)) {
             statement.setInt(1, competitionId);
             statement.execute();
 

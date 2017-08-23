@@ -1,16 +1,18 @@
 package by.epam.litvin.receiver.impl;
 
+import by.epam.litvin.bean.CompetitionTypeEntity;
+import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.bean.NewsEntity;
+import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CompetitorDAO;
 import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommonReceiver;
-import by.epam.litvin.util.NewsFormatter;
+import by.epam.litvin.util.Formatter;
 import by.epam.litvin.util.Packer;
 import com.google.gson.JsonObject;
 
@@ -32,9 +34,10 @@ public class CommonReceiverImpl implements CommonReceiver{
 
 
     @Override
-    public void openMainPage(RequestContent requestContent) throws ReceiverException {
+    public void openMainPage(RequestContent content) throws ReceiverException {
         Packer packer = new Packer();
-        NewsFormatter newsFormatter = new NewsFormatter();
+        Formatter newsFormatter = new Formatter();
+        UserEntity user = (UserEntity)  content.getSessionAttributes().get(USER);
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -42,7 +45,9 @@ public class CommonReceiverImpl implements CommonReceiver{
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
             CompetitorDAOImpl competitorDAO = new CompetitorDAOImpl();
-            handler.beginTransaction(newsDAO, competitionDAO, kindOfSportDAO, competitorDAO);
+            UserDAOImpl userDAO = new UserDAOImpl();
+            handler.beginTransaction(newsDAO, competitionDAO,
+                    kindOfSportDAO, competitorDAO, userDAO);
 
             List<Map<String, Object>> kindOfSportList = kindOfSportDAO.findUsingKindsOfSport();
             List<NewsEntity> newsList = newsDAO.find(0, COUNT_NEWS_ON_MAIN_PAGE);
@@ -56,20 +61,24 @@ public class CommonReceiverImpl implements CommonReceiver{
             extractCompetitors(upcomingGames, competitorDAO);
             extractCompetitors(pastGames, competitorDAO);
 
+            if (user != null) {
+                user = userDAO.findEntityById(user.getId());
+            }
             handler.commit();
             handler.endTransaction();
 
-            Map<String, Map<String, Integer>> kindOfSportListResult =
+            Map<KindOfSportEntity, List<CompetitionTypeEntity>> kindsOfSportResult =
                     packer.orderKindsOfSport(kindOfSportList);
 
-            newsFormatter.formatNewsforPreview(newsList);
+            newsFormatter.formatNewsForPreview(newsList);
 
-            requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            requestContent.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
-            requestContent.getRequestAttributes().put(PAST_GAMES, pastGames);
-            requestContent.getSessionAttributes().put("kindsOfSportLeftBar", kindOfSportListResult);
-            requestContent.getSessionAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
-            requestContent.getSessionAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);
+            content.getRequestAttributes().put(NEWS_LIST, newsList);
+            content.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
+            content.getRequestAttributes().put(PAST_GAMES, pastGames);
+            content.getSessionAttributes().put("kindsOfSportLeftBar", kindsOfSportResult);
+            content.getSessionAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
+            content.getSessionAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);
+            content.getSessionAttributes().put(USER, user);
 
         } catch (DAOException e) {
             try {
@@ -87,7 +96,7 @@ public class CommonReceiverImpl implements CommonReceiver{
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByCompetitionId(compId);
+            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
             competition.put("competitors", competitors);
         }
     }

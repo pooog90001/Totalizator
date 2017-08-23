@@ -2,13 +2,6 @@
  * imgAreaSelect jQuery plugin
  * version 0.9.10
  *
- * Copyright (c) 2008-2013 Michal Wojciechowski (odyniec.net)
- *
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
- *
- * http://odyniec.net/projects/imgareaselect/
- *
  */
 
 (function($) {

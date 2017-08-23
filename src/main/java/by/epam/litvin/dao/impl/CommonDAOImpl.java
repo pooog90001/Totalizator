@@ -4,6 +4,7 @@ import by.epam.litvin.bean.Entity;
 import by.epam.litvin.constant.GeneralConstant;
 import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.DAOException;
+import by.epam.litvin.type.ExpectResultType;
 
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
@@ -47,11 +48,11 @@ public class CommonDAOImpl extends DAO {
         return false;
     }
 
-    public int findCountBetsOnCompetition(int competitionId, String result) throws DAOException {
+    public int findCountBetsOnCompetition(int competitionId, ExpectResultType expectResult) throws DAOException {
         int count = 0;
         try (PreparedStatement statement =  connection.prepareStatement(COUNT_BETS_ON_COMPETITION)) {
             statement.setInt(1, competitionId);
-            statement.setString(2, result.toUpperCase());
+            statement.setString(2, expectResult.toString());
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()){
@@ -96,11 +97,11 @@ public class CommonDAOImpl extends DAO {
         return amountOfMoney;
     }
 
-    public BigDecimal findAmountOfMoneyOnCompetition (int competitionId, String result) throws DAOException {
+    public BigDecimal findAmountOfMoneyOnCompetition (int competitionId, ExpectResultType expectResult) throws DAOException {
         BigDecimal amountOfMoney = null;
         try (PreparedStatement statement =  connection.prepareStatement(AMOUNT_OF_MONEY_ON_COMPETITION)) {
             statement.setInt(1, competitionId);
-            statement.setString(2, result.toUpperCase());
+            statement.setString(2, expectResult.toString());
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()){

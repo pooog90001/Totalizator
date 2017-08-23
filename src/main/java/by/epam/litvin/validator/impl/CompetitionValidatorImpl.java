@@ -1,8 +1,10 @@
 package by.epam.litvin.validator.impl;
 
+import by.epam.litvin.bean.CompetitionEntity;
 import by.epam.litvin.validator.CompetitionValidator;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 public class CompetitionValidatorImpl implements CompetitionValidator {
 
@@ -70,6 +72,21 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
         }
 
         return number;
+    }
+
+    @Override
+    public boolean isValidForBet(CompetitionEntity competition) {
+        boolean isValid = true;
+
+        if (competition.getDateStart().before(new Date())) {
+            isValid = false;
+        }
+
+        if (!competition.getActive()) {
+            isValid = false;
+        }
+
+        return isValid;
     }
 
 }

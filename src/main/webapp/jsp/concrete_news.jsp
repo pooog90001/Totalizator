@@ -21,7 +21,13 @@
     </div>
     <div class="w3-col m9">
         <div class="w3-row-padding">
-            <div class="w3-col s12 w3-container">
+            <div class="w3-col s12 w3-container w3-display-container">
+                <div class="w3-display-topright">
+                    <button type="button" class="w3-button w3-card-4 w3-circle w3-theme-l3"
+                            style="padding: 15px 17px;" onclick="history.back(); return false;">
+                        <i class='fa fa-long-arrow-left'></i>
+                    </button>
+                </div>
                 <h2>${attrNews.title}</h2>
             </div>
             <div class="w3-col s12 w3-container">
@@ -48,24 +54,26 @@
                         <div class="w3-card-2">
                             <div class="w3-row">
                                 <div class=" w3-col s2 w3-padding-large">
-                                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
+                                    <img src="${userImagePath}${user.avatarURL}"
                                          alt="${attrNews.title}" style="width: 60px;" class="w3-circle">
                                 </div>
                                 <div class="w3-col s10 w3-padding-large">
                                     <div class="w3-container">
-                                        <form action="${pageContext.request.contextPath}/generalController"
-                                              method="post">
+                                        <form id="createForm" method="post">
                                             <input type="hidden" name="command" value="create_comment"/>
                                             <input type="hidden" name="newsId" value="${attrNews.id}"/>
-                                            <textarea name="text" class="w3-input w3-border" required
-                                                      maxlength="300" placeholder="Оставьте ваш комментарий"></textarea>
-                                            <button type="submit"
+                                            <input type="text" name="text" class="w3-input w3-border" required
+                                                      maxlength="300" placeholder="Оставьте ваш комментарий"/>
+                                            <button type="button" onclick="createCommentt(this, 'createForm');"
                                                     class="w3-padding-small w3-button w3-theme w3-right w3-margin-top">
                                                 post comment
                                             </button>
-                                            <c:if test="${requestScope['invalidText'] != null}">
-                                                <div class=" w3-row w3-text-red">Must be 1-300 symbols</div>
-                                            </c:if>
+                                             <div id="createWarn" style="display: none;" class="w3-row w3-text-red">
+                                                 Must be 1-300 symbols
+                                             </div>
+                                             <div id="createError" style="display: none;" class="w3-row w3-text-red">
+                                                 Server error or you haven't access
+                                             </div>
                                         </form>
                                     </div>
                                 </div>
@@ -122,7 +130,7 @@
 
                         <div class="w3-row">
                             <div class="w3-col s2 w3-padding-large">
-                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSphHHzJNUkLhSlHBDw2EUiPOmwedQt44L5GQ8d0yFjA4_BGPTm"
+                                <img src="${userImagePath}${comment.user_avatar_url}"
                                      class="w3-circle" style="width: 60px;">
                             </div>
                             <div class="w3-col s10">
@@ -137,6 +145,7 @@
                                                 ${comment.comment_post_date}
                                         </div>
                                     </div>
+                                    <hr style="margin: 5px">
                                         <%--Check for blocked comment--%>
                                     <c:choose>
                                         <c:when test="${comment['comment_is_blocked']}">
@@ -156,7 +165,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="w3-col s12">
-                                                <p class="w3-small">${comment.comment_text} </p>
+                                                <span>${comment.comment_text} </span>
                                             </div>
                                         </c:otherwise>
                                     </c:choose>
@@ -171,7 +180,19 @@
     </div>
 </div>
 </body>
-
+<script src="${pageContext.request.contextPath}/js/comment.js"></script>
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <%@include file="partial/footer.jsp" %>
 
 

@@ -12,10 +12,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class OpenLiveCompetitionCommand extends AbstractCommand {
+public class OpenUpcomingCompetitionsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenLiveCompetitionCommand(Receiver receiver) {
+    public OpenUpcomingCompetitionsCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -26,7 +26,7 @@ public class OpenLiveCompetitionCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageConstant.ALL_LIVE_COMPETITIONS);
+            router.setRoutePath(PageConstant.ALL_UPCOMING_COMPETITIONS);
             router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {

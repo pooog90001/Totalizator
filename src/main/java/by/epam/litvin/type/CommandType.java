@@ -2,6 +2,7 @@ package by.epam.litvin.type;
 
 
 import by.epam.litvin.command.*;
+import by.epam.litvin.command.bet.CreateBetCommand;
 import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
 import by.epam.litvin.command.comment.CreateCommentCommand;
@@ -59,6 +60,12 @@ public enum CommandType {
         }
     },
 
+    CREATE_BET(new CreateBetCommand(new BetReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((BetReceiverImpl) getCommand().getReceiver()).createBet(content);
+        }
+    },
+
     OPEN_CONCRETE_NEWS(new OpenConcreteNewsCommand(new NewsReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((NewsReceiverImpl) getCommand().getReceiver()).openConcreteNewsPage(content);
@@ -83,29 +90,31 @@ public enum CommandType {
         }
     },
 
-    OPEN_ALL_LIVE_COMPETITIONS(new OpenLiveCompetitionCommand(new CompetitionReceiverImpl())) {
+
+    OPEN_ALL_UPCOMING_COMPETITIONS(new OpenUpcomingCompetitionsCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).getLiveCompetitions(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).openUpcomingCompetition(content);
         }
     },
 
-    OPEN_ALL_UPCOMING_COMPETITIONS(new OpenUpcomingCompetitionCommand(new CompetitionReceiverImpl())) {
+    OPEN_CONCRETE_COMPETITION(new OpenConcreteCompetitionCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).getUpcomingCompetition(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).openConcreteCompetition(content);
         }
     },
 
-    OPEN_ALL_PAST_COMPETITIONS(new OpenPastCompetitionCommand(new CompetitionReceiverImpl())) {
+    OPEN_ALL_PAST_COMPETITIONS(new OpenPastCompetitionsCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).getPastCompetition(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).openPastCompetition(content);
         }
     },
 
-    FILTER_LIVE_COMPETITIONS(new FilterLiveCompetitionCommand(new CompetitionReceiverImpl())) {
+    OPEN_COMPETITIONS_BY_TYPE(new OpenCompetitionsByTypeCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).filterLiveCompetitions(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).openCompetitionsByType(content);
         }
     },
+
 
     OPEN_ADMIN_PANEL(new OpenAdminStatisticCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
@@ -205,13 +214,13 @@ public enum CommandType {
 
     EDIT_UPCOMING_ACTIVATED_COMPETITION(new UpdateUpcomingActivatedCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingActivated(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).updateUpcomingActivated(content);
         }
     },
 
     EDIT_UPCOMING_DEACTIVATED_COMPETITION(new UpdateUpcomingDeactivatedCommand(new CompetitionReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CompetitionReceiverImpl) getCommand().getReceiver()).editUpcomingDeactivated(content);
+            ((CompetitionReceiverImpl) getCommand().getReceiver()).updateUpcomingDeactivated(content);
         }
     },
 

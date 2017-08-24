@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@include file="partial/header.jsp" %>
+<%@include file="/jsp/partial/header.jsp" %>
 
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;" >
@@ -9,7 +9,7 @@
         </span>
         <br>
     </div>
-    <%@include file="bar/left_bar.jsp" %>
+    <%@include file="/jsp/bar/left_bar.jsp" %>
 </nav>
 
 <body>
@@ -17,7 +17,7 @@
 <div class="w3-container w3-content main-container">
     <div class="w3-col m3 w3-hide-small">
         <!-- Accordion -->
-        <%@include file="bar/left_bar.jsp" %>
+        <%@include file="/jsp/bar/left_bar.jsp" %>
         <!-- End Left Column -->
     </div>
     <div class="w3-container w3-left w3-content w3-hide-large w3-hide-medium">
@@ -76,7 +76,7 @@
             </form>
             <div class=" w3-container w3-padding-small w3-center">
                 <%--Import upcoming competitions part--%>
-                <%@include file="partial/upcoming_competition.jsp"%>
+                <%@include file="/jsp/competition/part/upcoming_competition.jsp"%>
             </div>
             <form class="w3-container w3-margin-bottom" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
@@ -98,7 +98,7 @@
             <div class=" w3-container w3-padding-small w3-center">
 
                 <%--Import past ompetition part--%>
-                <%@include file="partial/past_competition.jsp"%>
+                <%@include file="/jsp/competition/part/past_competition.jsp"%>
 
                     <form class="w3-container w3-margin-bottom"
                       action="${pageContext.request.contextPath}/generalController">
@@ -114,4 +114,4 @@
 </div>
 </body>
 
-<%@include file="partial/footer.jsp" %>
+<%@include file="/jsp/partial/footer.jsp" %>

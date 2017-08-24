@@ -4,7 +4,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
-<fmt:setBundle basename="text" var="rb"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
 <c:set var="user" value="${sessionScope.get('user')}"/>
 
 <fmt:message bundle="${rb}" key="lbl.SignIn" var="signIn"/>
@@ -88,11 +88,11 @@
                 <%--Present if user not signed--%>
                 <c:otherwise>
                     <div class="w3-bar-item w3-hide-small w3-right w3-padding-16 w3-small">
-                        <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp" class="w3-hover-text-yellow">
+                        <a href="${pageContext.request.contextPath}/jsp/user/sign_up.jsp" class="w3-hover-text-yellow">
                                 ${signUp}
                         </a>
                         <fmt:message key="lbl.or" bundle="${rb}"/>
-                        <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp" class="w3-hover-text-yellow">
+                        <a href="${pageContext.request.contextPath}/jsp/user/sign_in.jsp" class="w3-hover-text-yellow">
                                 ${signIn}
                         </a>
                     </div>
@@ -166,13 +166,13 @@
                     <%--Present if user not signed--%>
                     <c:otherwise>
                         <div class="w3-half">
-                            <a href="${pageContext.request.contextPath}/jsp/sign_in.jsp"
+                            <a href="${pageContext.request.contextPath}/jsp/user/sign_in.jsp"
                                class="w3-bar-item w3-hover-text-yellow w3-center">
                                 <p class="w3-center">${signIn}</p>
                             </a>
                         </div>
                         <div class="w3-half">
-                            <a href="${pageContext.request.contextPath}/jsp/sign_up.jsp"
+                            <a href="${pageContext.request.contextPath}/jsp/user/sign_up.jsp"
                                class="w3-bar-item w3-hover-text-yellow w3-center">
                                 <p class="w3-center">${signUp}</p>
                             </a>

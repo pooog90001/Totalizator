@@ -2,7 +2,6 @@ package by.epam.litvin.receiver.impl;
 
 
 import by.epam.litvin.bean.UserEntity;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.constant.RequestNameConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.dao.TransactionManager;
@@ -10,6 +9,7 @@ import by.epam.litvin.dao.impl.UserDAOImpl;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.UserReceiver;
+import by.epam.litvin.type.UploadType;
 import by.epam.litvin.type.UserType;
 import by.epam.litvin.util.StringEncoder;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
@@ -18,8 +18,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.litvin.constant.GeneralConstant.COUNT_USERS_ON_PAGE;
-import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
+import static by.epam.litvin.constant.GeneralConstant.*;
+import static by.epam.litvin.constant.GeneralConstant.USER;
 import static by.epam.litvin.constant.RequestNameConstant.*;
 
 public class UserReceiverImpl implements UserReceiver {
@@ -133,12 +133,11 @@ public class UserReceiverImpl implements UserReceiver {
 
             if (foundUser != null) {
                 if (foundUser.getIsBlocked()) {
-                    data.put("blockedText", foundUser.getBlockedText());
-                    requestContent.getSessionAttributes().put(TEMPORARY, data);
-                    requestContent.getRequestAttributes().put("isBlocked", true);
+                    requestContent.getSessionAttributes().put(TEXT, foundUser.getBlockedText());
+                    requestContent.getRequestAttributes().put(IS_BLOCKED, true);
 
                 } else if (!foundUser.getIsConfirm()) {
-                    requestContent.getRequestAttributes().put("isNotConfirmed", true);
+                    requestContent.getRequestAttributes().put(IS_NOT_CONFIRMED, true);
 
                 } else {
                     requestContent.getSessionAttributes().put(USER, foundUser);
@@ -170,24 +169,60 @@ public class UserReceiverImpl implements UserReceiver {
         int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
         startIndex = (startIndex - 1) * COUNT_USERS_ON_PAGE;
 
-        TransactionManager handler = new TransactionManager();
+        TransactionManager manager = new TransactionManager();
         try {
             UserDAOImpl userDAO = new UserDAOImpl();
-            handler.beginTransaction(userDAO);
+            manager.beginTransaction(userDAO);
             List<UserEntity> userList = userDAO.findLimit(startIndex, COUNT_USERS_ON_PAGE);
             int usersCount = userDAO.findUsersCount();
-            handler.commit();
-            handler.endTransaction();
+            manager.commit();
+            manager.endTransaction();
 
             requestContent.getRequestAttributes().put("userList", userList);
             requestContent.getRequestAttributes().put("limit", COUNT_USERS_ON_PAGE);
             requestContent.getRequestAttributes().put("usersCount", usersCount);
-            requestContent.getRequestAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);
+            requestContent.getRequestAttributes().put("userImagePath", UploadType.AVATARS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
-                handler.rollback();
-                handler.endTransaction();
+                manager.rollback();
+                manager.endTransaction();
+
+            } catch (DAOException e1) {
+                throw new ReceiverException("Open users setting rollback error", e);
+            }
+
+            throw new ReceiverException(e);
+        }
+    }
+
+    @Override
+    public void openUserProfile(RequestContent content) throws ReceiverException {
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
+
+        TransactionManager manager = new TransactionManager();
+        try {
+            UserDAOImpl userDAO = new UserDAOImpl();
+            manager.beginTransaction(userDAO);
+            UserEntity actualUser = userDAO.findEntityById(user.getId());
+
+            manager.commit();
+            manager.endTransaction();
+
+            if (!actualUser.getIsBlocked()) {
+                content.getSessionAttributes().put(USER, actualUser);
+
+            } else {
+                content.getRequestAttributes().put(IS_BLOCKED, true);
+                content.getSessionAttributes().put(TEXT, user.getBlockedText());
+                content.getSessionAttributes().remove(USER);
+            }
+
+
+        } catch (DAOException e) {
+            try {
+                manager.rollback();
+                manager.endTransaction();
 
             } catch (DAOException e1) {
                 throw new ReceiverException("Open users setting rollback error", e);

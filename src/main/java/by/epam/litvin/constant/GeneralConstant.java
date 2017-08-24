@@ -9,9 +9,9 @@ final public class GeneralConstant {
     public static final String _NEWS_DOT = "_news.";
     public static final String NEWS = "news";
 
-    public static final String PATH_TO_DB_PROPERTIES = "database";
-    public static final String PATH_TO_PAGE_PATH_PROPERTIES = "pages";
-
+    public static final String DB_PROPERTIES = "config/database";
+    public static final String PAGE_PATH_PROPERTIES = "config/pages";
+    public static final String UPLOAD_PROPERTIES = "config/upload";
 
     public static final String SALT = "totalizator";
     public static final String DUPLICATE_UNIQUE_INDEX = "23000";
@@ -26,6 +26,7 @@ final public class GeneralConstant {
     public static final String LOCALE = "locale";
     public static final String COMMENT_ID = "commentId";
     public static final String IS_BLOCKED = "isBlocked";
+    public static final String IS_NOT_CONFIRMED = "isNotConfirmed";
     public static final String TEXT = "text";
     public static final String INVALID_TEXT = "invalidText";
     public static final String KIND_OF_SPORT_ID = "kindOfSportId";

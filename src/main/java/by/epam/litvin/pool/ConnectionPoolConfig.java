@@ -10,7 +10,7 @@ import java.util.ResourceBundle;
 
 import static by.epam.litvin.constant.GeneralConstant.ConnectionPool.CAPACITY;
 import static by.epam.litvin.constant.GeneralConstant.DataBase.*;
-import static by.epam.litvin.constant.GeneralConstant.PATH_TO_DB_PROPERTIES;
+import static by.epam.litvin.constant.GeneralConstant.DB_PROPERTIES;
 
 
 class ConnectionPoolConfig {
@@ -21,7 +21,7 @@ class ConnectionPoolConfig {
 
     ConnectionPoolConfig() {
         try {
-            ResourceBundle resourceBundle = ResourceBundle.getBundle(PATH_TO_DB_PROPERTIES);
+            ResourceBundle resourceBundle = ResourceBundle.getBundle(DB_PROPERTIES);
             properties = new Properties();
             Class.forName(resourceBundle.getString(DRIVER));
             url = resourceBundle.getString(URL);

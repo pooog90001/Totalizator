@@ -10,6 +10,7 @@ import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommentReceiver;
 import by.epam.litvin.validator.impl.CommentValidatorImpl;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
+import com.google.gson.Gson;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,23 +21,20 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 public class CommentReceiverImpl implements CommentReceiver {
 
     @Override
-    public void changeLockComment(RequestContent requestContent) throws ReceiverException {
+    public void changeLockComment(RequestContent content) throws ReceiverException {
         UserValidatorImpl userValidator = new UserValidatorImpl();
-        UserEntity user = (UserEntity) requestContent.getSessionAttributes().get(USER);
-        String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
-        String[] commentIdString = requestContent.getRequestParameters().get(COMMENT_ID);
-        String[] isLockedCommentString = requestContent.getRequestParameters().get(IS_BLOCKED);
-        int newsId = Integer.valueOf(newsIdString[0]);
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
+        String[] commentIdString = content.getRequestParameters().get(COMMENT_ID);
+        String[] isLockedCommentString = content.getRequestParameters().get(IS_BLOCKED);
+
         int commentId = Integer.valueOf(commentIdString[0]);
         boolean isLockedComment = Boolean.valueOf(isLockedCommentString[0]);
-        Map<String, Object> data = new HashMap<>();
 
-        if (userValidator.isUser(user)) {
-            data.put(ACCESS_DENIED, true);
-            requestContent.getSessionAttributes().put(TEMPORARY, data);
+        if (!userValidator.isAdmin(user) && !userValidator.isBookmaker(user)) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(ACCESS_DENIED, new Gson().toJsonTree(true));
             return;
         }
-
 
         TransactionManager manager = new TransactionManager();
         try {
@@ -46,9 +44,7 @@ public class CommentReceiverImpl implements CommentReceiver {
             manager.commit();
             manager.endTransaction();
 
-            data.put(NEWS_ID, newsId);
-            requestContent.getSessionAttributes().put(TEMPORARY, data);
-
+            content.setAjaxSuccess(true);
 
         } catch (DAOException e) {
             try {
@@ -62,18 +58,21 @@ public class CommentReceiverImpl implements CommentReceiver {
     }
 
     @Override
-    public void createComment(RequestContent requestContent) throws ReceiverException {
+    public void createComment(RequestContent content) throws ReceiverException {
         CommentValidatorImpl commentValidator = new CommentValidatorImpl();
-        UserEntity user = (UserEntity) requestContent.getSessionAttributes().get(USER);
-        String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
-        String commentText = requestContent.getRequestParameters().get(TEXT)[0].trim();
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
+        String[] newsIdString = content.getRequestParameters().get(NEWS_ID);
+        String commentText = content.getRequestParameters().get(TEXT)[0].trim();
         int newsId = Integer.valueOf(newsIdString[0]);
 
         if (user == null) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(ACCESS_DENIED, new Gson().toJsonTree(true));
             return;
         }
+
         if (!commentValidator.isCommentTextValid(commentText)) {
-            requestContent.setAjaxSuccess(false);
+            content.setAjaxSuccess(false);
             return;
         }
 
@@ -89,9 +88,7 @@ public class CommentReceiverImpl implements CommentReceiver {
             commentDAO.create(comment);
             manager.commit();
             manager.endTransaction();
-            requestContent.setAjaxSuccess(true);
-
-
+            content.setAjaxSuccess(true);
 
         } catch (DAOException e) {
             try {

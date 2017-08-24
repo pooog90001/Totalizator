@@ -1,7 +1,7 @@
 package by.epam.litvin.filter;
 
 import by.epam.litvin.bean.UserEntity;
-import by.epam.litvin.constant.PageConstant;
+import by.epam.litvin.type.PageType;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
 
 import javax.servlet.*;
@@ -27,7 +27,7 @@ public class AccessFilter implements Filter {
         UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
 
         if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {
-            httpResponse.sendRedirect(PageConstant.INDEX);
+            httpResponse.sendRedirect(PageType.INDEX.getPath());
         }
 
         chain.doFilter(request, response);

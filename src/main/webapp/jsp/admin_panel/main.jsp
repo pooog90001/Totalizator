@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<%@include file="../partial/header.jsp" %>
+<%@include file="/jsp/partial/header.jsp" %>
 
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar">
@@ -9,7 +9,7 @@
         </span>
         <br>
     </div>
-    <%@include file="../bar/admin_left_bar.jsp" %>
+    <%@include file="/jsp/bar/admin_left_bar.jsp" %>
 </nav>
 
 <body>
@@ -17,7 +17,7 @@
 <div class="w3-container w3-content main-container">
     <div class="w3-col m3 w3-hide-small">
         <!-- Accordion -->
-        <%@include file="../bar/admin_left_bar.jsp" %>
+        <%@include file="/jsp/bar/admin_left_bar.jsp" %>
         <!-- End Left Column -->
     </div>
     <div class="w3-container w3-left w3-content w3-hide-large w3-hide-medium">
@@ -61,4 +61,4 @@
 </div>
 </body>
 
-<%@include file="../partial/footer.jsp" %>
+<%@include file="/jsp/partial/footer.jsp" %>

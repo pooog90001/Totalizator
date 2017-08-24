@@ -1,7 +1,6 @@
 package by.epam.litvin.command.news;
 
 import by.epam.litvin.command.AbstractCommand;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.Receiver;

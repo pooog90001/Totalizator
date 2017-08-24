@@ -1,14 +1,14 @@
 package by.epam.litvin.receiver.impl;
 
 import by.epam.litvin.bean.NewsEntity;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
+import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.dao.impl.CommentDAOImpl;
 import by.epam.litvin.dao.impl.NewsDAOImpl;
-import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.NewsReceiver;
+import by.epam.litvin.type.UploadType;
 import by.epam.litvin.util.Formatter;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.NewsValidatorImpl;
@@ -28,7 +28,6 @@ public class NewsReceiverImpl implements NewsReceiver {
 
     @Override
     public void openAllNewsPage(RequestContent requestContent) throws ReceiverException {
-
         String[] page = requestContent.getRequestParameters().get("pageNumber");
         int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
         startIndex = (startIndex - 1) * COUNT_NEWS_ON_PAGE;
@@ -45,11 +44,10 @@ public class NewsReceiverImpl implements NewsReceiver {
             Formatter newsFormatter = new Formatter();
             newsFormatter.formatNewsForPreview(newsList);
 
-
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
             requestContent.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
             requestContent.getRequestAttributes().put("newsCount", newsCount);
-            requestContent.getRequestAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
+            requestContent.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -59,7 +57,6 @@ public class NewsReceiverImpl implements NewsReceiver {
             } catch (DAOException e1) {
                 throw new ReceiverException("Open all news rollback error", e);
             }
-
             throw new ReceiverException(e);
         }
     }
@@ -82,11 +79,10 @@ public class NewsReceiverImpl implements NewsReceiver {
             Formatter newsFormatter = new Formatter();
             newsFormatter.formatNewsForPreview(newsList);
 
-
             requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
             requestContent.getRequestAttributes().put("limit", 10);
             requestContent.getRequestAttributes().put("newsCount", newsCount);
-            requestContent.getRequestAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
+            requestContent.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -116,7 +112,7 @@ public class NewsReceiverImpl implements NewsReceiver {
         String text = content.getRequestParameters().get("text")[0].trim();
         String title = content.getRequestParameters().get("title")[0].trim();
         Part imagePart = content.getRequestParts().get(IMAGE);
-        File uploadPath = new File(content.getRealPath(), PageConstant.PATH_TO_UPLOAD_NEWS);
+        File uploadPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
         String imageExtension = FilenameUtils.getExtension(imagePart.getSubmittedFileName());
 
         if (!newsValidator.isTitleValid(title) || !newsValidator.isTextValid(text) ||
@@ -178,7 +174,7 @@ public class NewsReceiverImpl implements NewsReceiver {
         int newsId = Integer.valueOf(content.getRequestParameters().get("newsId")[0]);
         String newsImageUrl = content.getRequestParameters().get("newsImageUrl")[0];
 
-        File directoryPath = new File(content.getRealPath(), PageConstant.PATH_TO_UPLOAD_NEWS);
+        File directoryPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
         File file = new File(directoryPath, newsImageUrl);
 
 
@@ -214,7 +210,6 @@ public class NewsReceiverImpl implements NewsReceiver {
             } catch (DAOException e1) {
                 throw new ReceiverException("Delete news rollback error", e);
             }
-
             throw new ReceiverException(e);
         }
 
@@ -229,7 +224,6 @@ public class NewsReceiverImpl implements NewsReceiver {
         if (invalidText != null && !invalidText[0].isEmpty()) {
             requestContent.getRequestAttributes().put(INVALID_TEXT, invalidText[0]);
         }
-
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -251,7 +245,6 @@ public class NewsReceiverImpl implements NewsReceiver {
 
             requestContent.getRequestAttributes().put("newsCommentList", newsCommentList);
             requestContent.getRequestAttributes().put("attrNews", news);
-
 
         } catch (DAOException e) {
             try {

@@ -4,14 +4,14 @@ import by.epam.litvin.bean.CompetitionTypeEntity;
 import by.epam.litvin.bean.KindOfSportEntity;
 import by.epam.litvin.bean.NewsEntity;
 import by.epam.litvin.bean.UserEntity;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.dao.TransactionManager;
+import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CommonReceiver;
+import by.epam.litvin.type.UploadType;
 import by.epam.litvin.util.Formatter;
 import by.epam.litvin.util.Packer;
 import com.google.gson.JsonObject;
@@ -76,8 +76,8 @@ public class CommonReceiverImpl implements CommonReceiver{
             content.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
             content.getRequestAttributes().put(PAST_GAMES, pastGames);
             content.getSessionAttributes().put("kindsOfSportLeftBar", kindsOfSportResult);
-            content.getSessionAttributes().put("newsImagePath", PageConstant.PATH_TO_UPLOAD_NEWS);
-            content.getSessionAttributes().put("userImagePath", PageConstant.PATH_TO_UPLOAD_AVATARS);
+            content.getSessionAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
+            content.getSessionAttributes().put("userImagePath", UploadType.AVATARS.getUploadFolder());
             content.getSessionAttributes().put(USER, user);
 
         } catch (DAOException e) {

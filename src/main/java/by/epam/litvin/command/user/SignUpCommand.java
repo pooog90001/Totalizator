@@ -1,11 +1,11 @@
 package by.epam.litvin.command.user;
 
 import by.epam.litvin.command.AbstractCommand;
-import by.epam.litvin.constant.PageConstant;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.Receiver;
 import by.epam.litvin.type.CommandType;
+import by.epam.litvin.type.PageType;
 import by.epam.litvin.type.RouteType;
 import by.epam.litvin.util.Router;
 import org.apache.logging.log4j.Level;
@@ -35,17 +35,17 @@ public class SignUpCommand extends AbstractCommand {
                     keys.contains("wrongRepeatPassword") ||
                     keys.contains("emailExists")) {
                 router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageConstant.SIGN_UP);
+                router.setRoutePath(PageType.SIGN_UP.getPath());
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageConstant.CONFIRM);
+                router.setRoutePath(PageType.CONFIRM.getPath());
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageConstant.ERROR_RUNTIME);
+            router.setRoutePath(PageType.ERROR_SERVER.getPath());
         }
 
         return router;

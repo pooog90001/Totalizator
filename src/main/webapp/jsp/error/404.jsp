@@ -1,7 +1,7 @@
 <%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%--<%@include file="../partial/header.jsp" %>--%>
 
-<jsp:include page="../partial/header.jsp"/>
+<jsp:include page="/jsp/partial/header.jsp"/>
 <body>
 <div class="w3-row">
     <div class="w3-third">
@@ -18,4 +18,4 @@
     </div>
 </div>
 </body>
-<jsp:include page="../partial/footer.jsp"/>
+<jsp:include page="/jsp/partial/footer.jsp"/>

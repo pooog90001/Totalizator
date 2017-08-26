@@ -80,4 +80,8 @@ public class UserValidatorImpl implements UserValidator {
         return isUser;
     }
 
+    public boolean isIsCashValid(int i) {
+        return (i > 0 && i < 1000);
+    }
+
 }

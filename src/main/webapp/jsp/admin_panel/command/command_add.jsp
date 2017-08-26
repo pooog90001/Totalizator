@@ -2,7 +2,7 @@
 
 <jsp:forward page="/generalController">
     <jsp:param name="command" value="open_command_settings"/>
-    <jsp:param name="wrongName" value="${temporary['wrongName']}"/>
+    <jsp:param name="wrongData" value="${temporary['wrongData']}"/>
     <jsp:param name="duplicateName" value="${temporary['duplicateName']}"/>
 </jsp:forward>
 

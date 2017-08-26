@@ -88,7 +88,7 @@
                         extension.
                     </div>
                     <div id="errorResponse" class="w3-row w3-text-red" style="display: none">
-                        Database or upload image error :(
+                        Database or upload image error. Max image size 10 MB.
                     </div>
 
                 </div>

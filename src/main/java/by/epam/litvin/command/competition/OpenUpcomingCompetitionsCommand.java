@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static by.epam.litvin.constant.GeneralConstant.PAGE_NOT_FOUND;
+
 public class OpenUpcomingCompetitionsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -20,18 +22,24 @@ public class OpenUpcomingCompetitionsCommand extends AbstractCommand {
     }
 
     @Override
-    public Router execute(RequestContent requestContent){
+    public Router execute(RequestContent content) {
         Router router = new Router();
 
         try {
-            receiver.action(CommandType.takeCommandType(this), requestContent);
+            receiver.action(CommandType.takeCommandType(this), content);
 
-            router.setRoutePath(PageType.ALL_UPCOMING_COMPETITIONS.getPath());
-            router.setRouteType(RouteType.FORWARD);
+            if (!content.getRequestAttributes().containsKey(PAGE_NOT_FOUND)) {
+                router.setRoutePath(PageType.ALL_UPCOMING_COMPETITIONS.getPage());
+                router.setRouteType(RouteType.FORWARD);
+
+            } else {
+                router.setRoutePath(PageType.ERROR_404.getPage());
+                router.setRouteType(RouteType.REDIRECT);
+            }
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            LOGGER.log(Level.ERROR, "Open upcoming competitions receiver error", e);
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

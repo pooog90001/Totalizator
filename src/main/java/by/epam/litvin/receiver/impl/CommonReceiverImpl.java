@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.*;
+import static javax.servlet.jsp.PageContext.SESSION;
 
 public class CommonReceiverImpl implements CommonReceiver{
 
@@ -71,7 +72,7 @@ public class CommonReceiverImpl implements CommonReceiver{
                     packer.orderKindsOfSport(kindOfSportList);
 
             newsFormatter.formatNewsForPreview(newsList);
-
+            content.getSessionAttributes().put(SESSION, true);
             content.getRequestAttributes().put(NEWS_LIST, newsList);
             content.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
             content.getRequestAttributes().put(PAST_GAMES, pastGames);
@@ -102,6 +103,10 @@ public class CommonReceiverImpl implements CommonReceiver{
     }
 
     @Override
+    public void openNotFoundPage(RequestContent requestContent) throws ReceiverException {
+    }
+
+    @Override
     public void openAdminStatistic(RequestContent requestContent) throws ReceiverException {
 
         TransactionManager manager = new TransactionManager();
@@ -125,6 +130,7 @@ public class CommonReceiverImpl implements CommonReceiver{
             }
             throw new ReceiverException(e);
         }
+
 
     }
 }

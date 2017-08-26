@@ -45,9 +45,9 @@
                             <input type="hidden" name="command" value= "open_concrete_news">
                             <input type="hidden" name="newsId" value="${news.id}">
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
-                                <b> ${news.title} </b>
+                                <b> <c:out value="${news.title}"/> </b>
                             </button>
-                            <p class="w3-small">${news.text}</p>
+                            <p class="w3-small"><c:out value="${news.text}"/></p>
                         </form>
                     </div>
                 </div>

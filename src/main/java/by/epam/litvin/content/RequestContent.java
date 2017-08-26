@@ -9,7 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.Part;
 import java.io.IOException;
-import java.util.*;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static by.epam.litvin.constant.GeneralConstant.SUCCESS;
@@ -56,6 +58,7 @@ public class RequestContent {
                     .collect(Collectors.toMap(Part::getName, x -> x));
         }
 
+        ajaxResult = new JsonObject();
         contextPath = request.getContextPath();
         realPath = request.getServletContext().getRealPath("");
     }
@@ -104,7 +107,13 @@ public class RequestContent {
         JsonObject jsonObject = new JsonObject();
         JsonElement element = new Gson().toJsonTree(isSuccess);
         jsonObject.add(SUCCESS, element);
-        this.ajaxResult = jsonObject;
+
+        if (this.ajaxResult == null) {
+            this.ajaxResult = jsonObject;
+
+        } else {
+            ajaxResult.add(SUCCESS, element);
+        }
     }
 
     public Map<String, Part> getRequestParts() {

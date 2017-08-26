@@ -9,6 +9,7 @@ import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.CompetitionReceiver;
 import by.epam.litvin.type.ExpectResultType;
+import by.epam.litvin.util.Formatter;
 import by.epam.litvin.validator.CommonValidator;
 import by.epam.litvin.validator.CompetitorValidator;
 import by.epam.litvin.validator.UserValidator;
@@ -16,13 +17,8 @@ import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.CompetitionValidatorImpl;
 import by.epam.litvin.validator.impl.CompetitorValidatorImpl;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.math.BigDecimal;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +32,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     @Override
     public void openCompetitionSettings(RequestContent requestContent) throws ReceiverException {
         CommonValidator commonValidator = new CommonValidatorImpl();
-        String[] errorNames = {"wrongName", "wrongDate", "wrongDateFormat",
+        String[] errorNames = {"wrongName", "wrongDate", "wrongCompetitors", "wrongType",
                 "wrongActive", "createError", "deactivateError", "fillError", "wrongNumberFormat"};
 
         for (String name : errorNames) {
@@ -122,8 +118,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             for (Map<String, Object> competitor : competitors) {
                 int competitorId = (int) competitor.get("competitor_id");
                 int betsCount = commonDAO.findCountBetsOnCompetitor(competitorId);
-                BigDecimal amountOfMoney = betsCount == 0 ?
-                        new BigDecimal("0") :
+                BigDecimal amountOfMoney = betsCount == 0 ? new BigDecimal("0") :
                         commonDAO.findAmountOfMoneyOnCompetitor(competitorId);
 
                 competitor.put("betsCount", betsCount);
@@ -169,15 +164,46 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         }
     }
 
+    private CompetitorEntity[] insertParamToCompetitorsArr(String[] commandsId, String[] competitorsCoeff) {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
+        CompetitorEntity[] competitors = null;
+        boolean isSuccess = true;
+
+        if (commandsId == null || competitorsCoeff == null ||
+                commandsId.length != competitorsCoeff.length) {
+            isSuccess = false;
+        }
+
+        if (isSuccess) {
+            competitors = new CompetitorEntity[commandsId.length];
+
+            for (int i = 0; i < competitors.length; i++) {
+                if (commonValidator.isInteger(commandsId[i]) &&
+                        competitionValidator.isCoeff(competitorsCoeff[i])) {
+                    CompetitorEntity competitor = new CompetitorEntity();
+                    competitor.setCommandId(Integer.valueOf(commandsId[i]));
+                    competitor.setWinCoeff(competitionValidator.checkStringCoeff(competitorsCoeff[i]));
+                    competitors[i] = competitor;
+
+                } else {
+                    isSuccess = false;
+                }
+            }
+        }
+
+        return isSuccess ? competitors : null;
+    }
+
     @Override
     public void createCompetition(RequestContent content) throws ReceiverException {
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        String competitionName = content.getRequestParameters().get("competitionName")[0].trim();
-        int typeId = Integer.valueOf(content.getRequestParameters().get("typeId")[0]);
-        String dateStart = content.getRequestParameters().get("dateStart")[0];
-        String timeStart = content.getRequestParameters().get("timeStart")[0];
-        String dateFinish = content.getRequestParameters().get("dateFinish")[0];
-        String timeFinish = content.getRequestParameters().get("timeFinish")[0];
+        String[] gameNameArr = content.getRequestParameters().get("competitionName");
+        String[] stringTypeId = content.getRequestParameters().get("typeId");
+        String[] stringDateStart = content.getRequestParameters().get("dateStart");
+        String[] stringTimeStart = content.getRequestParameters().get("timeStart");
+        String[] stringDateFinish = content.getRequestParameters().get("dateFinish");
+        String[] stringTimeFinish = content.getRequestParameters().get("timeFinish");
         String[] stringIsActive = content.getRequestParameters().get("isActive");
         String[] commandsId = content.getRequestParameters().get("commandId");
         String[] competitorsCoeff = content.getRequestParameters().get("competitorCoeff");
@@ -186,17 +212,26 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringLessTotalCoeff = content.getRequestParameters().get("less_total_coeff");
         String[] stringMoreTotalCoeff = content.getRequestParameters().get("more_total_coeff");
         String[] stringStandoffCoeff = content.getRequestParameters().get("standoff_coeff");
-        CompetitorEntity[] competitors = new CompetitorEntity[commandsId.length];
         CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
         UserValidatorImpl userValidator = new UserValidatorImpl();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        Formatter formatter = new Formatter();
         Map<String, Object> data = new HashMap<>();
-        Date dStart;
-        Date dFinish;
+        Date dStart = null;
+        Date dFinish = null;
         content.getSessionAttributes().remove(TEMPORARY);
 
         if (!userValidator.isBookmaker(user) && isActive) {
             content.getRequestAttributes().put(ACCESS_DENIED, true);
+            return;
+        }
+
+        CompetitorEntity[] competitors =
+                insertParamToCompetitorsArr(commandsId, competitorsCoeff);
+
+        if (competitors == null) {
+            data.put("wrongCompetitors", true);
+            content.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
 
@@ -209,26 +244,12 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         BigDecimal standoffCoeff = stringStandoffCoeff == null ? null :
                 competitionValidator.checkStringCoeff(stringStandoffCoeff[0]);
 
-
-        for (int i = 0; i < competitors.length; i++) {
-            CompetitorEntity competitor = new CompetitorEntity();
-            competitor.setCommandId(Integer.valueOf(commandsId[i]));
-            competitor.setWinCoeff(competitorsCoeff == null ? null :
-                    competitionValidator.checkStringCoeff(competitorsCoeff[i]));
-            competitors[i] = competitor;
-        }
-
         if (isActive) {
             boolean isValid = true;
 
             if (commandsId.length == 2) {
                 if (total == null || lessTotalCoeff == null ||
                         moreTotalCoeff == null || standoffCoeff == null) {
-                    isValid = false;
-                }
-            }
-            for (CompetitorEntity competitor : competitors) {
-                if (competitor == null) {
                     isValid = false;
                 }
             }
@@ -239,35 +260,36 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
         }
 
-        try {
-            dStart = formatter.parse(dateStart.concat(" ").concat(timeStart));
-            dFinish = formatter.parse(dateFinish.concat(" ").concat(timeFinish));
-
-        } catch (ParseException e) {
-            data.put("wrongDateFormat", true);
-            content.getSessionAttributes().put(TEMPORARY, data);
-            return;
+        boolean isDateFormatValid = false;
+        if (commonValidator.isVarExist(stringDateStart) &&
+                commonValidator.isVarExist(stringTimeStart) &&
+                commonValidator.isVarExist(stringDateFinish) &&
+                commonValidator.isVarExist(stringTimeFinish)) {
+            dStart = formatter.formatToDate(stringDateStart[0], stringTimeStart[0]);
+            dFinish = formatter.formatToDate(stringDateFinish[0], stringTimeFinish[0]);
+            isDateFormatValid = (dStart != null && dFinish != null);
         }
-
-        Date now = new Date();
-        if (dStart.before(now) || dStart.after(dFinish)) {
+        if (!isDateFormatValid || dStart.before(new Date()) || dStart.after(dFinish)) {
             data.put("wrongDate", true);
             content.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
-
-        if (!competitionValidator.isNameValid(competitionName)) {
+        if (!commonValidator.isVarExist(gameNameArr) ||
+                !competitionValidator.isNameValid(gameNameArr[0])) {
             data.put("wrongName", true);
             content.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
+        if (!commonValidator.isVarExist(stringTypeId) ||
+                !commonValidator.isInteger(stringTypeId[0])) {
+            data.put("wrongType", true);
+            content.getSessionAttributes().put(TEMPORARY, data);
+            return;
+        }
 
-        CompetitionEntity competition = new CompetitionEntity();
-        competition.setDateStart(dStart);
-        competition.setDateFinish(dFinish);
-        competition.setActive(isActive);
-        competition.setName(competitionName);
-        competition.setTypeId(typeId);
+        int typeId = Integer.valueOf(stringTypeId[0]);
+        CompetitionEntity competition =
+                new CompetitionEntity(gameNameArr[0], dStart, dFinish, isActive, typeId);
 
         if (competitors.length == 2) {
             competition.setTotal(total);
@@ -301,13 +323,12 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
             if (transactionAccess) {
                 manager.commit();
+
             } else {
                 manager.rollback();
                 data.put("createError", true);
                 content.getSessionAttributes().put(TEMPORARY, data);
-                return;
             }
-
             manager.endTransaction();
 
         } catch (DAOException e) {
@@ -337,6 +358,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         boolean isDataValid = true;
 
         if (!userValidator.isBookmaker(user)) {
+            content.setAjaxSuccess(false);
             return;
         }
 
@@ -355,7 +377,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             competitor.setWinCoeff(competitionValidator.checkStringCoeff(stringCompetitorCoeff[i]));
             competitors[i] = competitor;
         }
-
 
         for (CompetitorEntity competitor : competitors) {
             if (competitor.getWinCoeff() == null) {
@@ -418,6 +439,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
     public void updateUpcomingDeactivated(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         String[] stringTotal = content.getRequestParameters().get("total");
         String[] stringLessTotalCoeff = content.getRequestParameters().get("lessTotalCoeff");
@@ -427,13 +449,18 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringCompetitorId = content.getRequestParameters().get("competitorId");
         String[] stringCompetitionId = content.getRequestParameters().get("competitionId");
         String[] stringCompetitionName = content.getRequestParameters().get("competitionName");
-        CompetitorEntity[] competitors = new CompetitorEntity[stringCompetitorCoeff.length];
 
         CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
         UserValidatorImpl userValidator = new UserValidatorImpl();
         boolean isDataValid = true;
 
-        if (!userValidator.isBookmaker(user)) {
+        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringCompetitionName) ||
+                !competitionValidator.isNameValid(stringCompetitionName[0]) ||
+                !commonValidator.isVarExist(stringCompetitionName) ||
+                !commonValidator.isVarExist(stringCompetitorId) ||
+                !commonValidator.isVarExist(stringCompetitorCoeff) ||
+                stringCompetitorCoeff.length != stringCompetitorId.length) {
+            content.setAjaxSuccess(false);
             return;
         }
 
@@ -450,11 +477,18 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         competition.setName(stringCompetitionName[0]);
 
 
+        CompetitorEntity[] competitors = new CompetitorEntity[stringCompetitorCoeff.length];
         for (int i = 0; i < competitors.length; i++) {
-            CompetitorEntity competitor = new CompetitorEntity();
-            competitor.setId(Integer.valueOf(stringCompetitorId[i]));
-            competitor.setWinCoeff(competitionValidator.checkStringCoeff(stringCompetitorCoeff[i]));
-            competitors[i] = competitor;
+            if (commonValidator.isInteger(stringCompetitorId[i]) &&
+                    competitionValidator.isCoeff(stringCompetitorCoeff[i])) {
+                CompetitorEntity competitor = new CompetitorEntity();
+                competitor.setId(Integer.valueOf(stringCompetitorId[i]));
+                competitor.setWinCoeff(competitionValidator.checkStringCoeff(stringCompetitorCoeff[i]));
+                competitors[i] = competitor;
+
+            } else {
+                isDataValid = false;
+            }
         }
 
         for (CompetitorEntity competitor : competitors) {
@@ -469,10 +503,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
                     competition.getStandoff() == null || competition.getTotal() == null) {
                 isDataValid = false;
             }
-        }
-
-        if (!competitionValidator.isNameValid(competition.getName())) {
-            isDataValid = false;
         }
 
         if (!isDataValid) {
@@ -527,14 +557,17 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
     public void deleteUnfilledCompetition(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
+        String[] stringGameId = content.getRequestParameters().get("competitionId");
         UserValidatorImpl userValidator = new UserValidatorImpl();
-        JsonObject object = new JsonObject();
 
-        if (!userValidator.isBookmaker(user)) {
+        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringGameId) ||
+                commonValidator.isInteger(stringGameId[0])) {
+            content.setAjaxSuccess(false);
             return;
         }
+        int gameId = Integer.valueOf(stringGameId[0]);
 
         TransactionManager manager = new TransactionManager();
         try {
@@ -544,12 +577,19 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             UserDAOImpl userDAO = new UserDAOImpl();
             manager.beginTransaction(competitorDAO, competitionDAO, betDAO, userDAO);
             boolean transactionSuccess = true;
+            CompetitionEntity competition = competitionDAO.findEntityById(gameId);
 
-            userDAO.returnMoneyForBets(competitionId);
-            betDAO.deleteByCompetitionId(competitionId);
-            competitorDAO.deleteByCompetitionId(competitionId);
+            if (competition.getResultFilled()) {
+                manager.rollback();
+                manager.endTransaction();
+                content.setAjaxSuccess(false);
+            }
 
-            if (!competitionDAO.delete(competitionId)) {
+            userDAO.returnMoneyForBets(gameId);
+            betDAO.deleteByCompetitionId(gameId);
+            competitorDAO.deleteByCompetitionId(gameId);
+
+            if (!competitionDAO.delete(gameId)) {
                 transactionSuccess = false;
             }
 
@@ -560,9 +600,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
 
             manager.endTransaction();
-            JsonElement element = new Gson().toJsonTree(transactionSuccess);
-            object.add(SUCCESS, element);
-            content.setAjaxResult(object);
+            content.setAjaxSuccess(transactionSuccess);
 
         } catch (DAOException e) {
             try {
@@ -578,14 +616,18 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
     public void deleteFilledCompetition(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
+        String[] stringGameId = content.getRequestParameters().get("competitionId");
         UserValidatorImpl userValidator = new UserValidatorImpl();
-        JsonObject object = new JsonObject();
 
-        if (!userValidator.isBookmaker(user)) {
+
+        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringGameId) ||
+                commonValidator.isInteger(stringGameId[0])) {
+            content.setAjaxSuccess(false);
             return;
         }
+        int gameId = Integer.valueOf(stringGameId[0]);
 
         TransactionManager manager = new TransactionManager();
         try {
@@ -595,10 +637,10 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             manager.beginTransaction(competitorDAO, competitionDAO, betDAO);
             boolean transactionSuccess = true;
 
-            betDAO.deleteByCompetitionId(competitionId);
-            competitorDAO.deleteByCompetitionId(competitionId);
+            betDAO.deleteByCompetitionId(gameId);
+            competitorDAO.deleteByCompetitionId(gameId);
 
-            if (!competitionDAO.delete(competitionId)) {
+            if (!competitionDAO.delete(gameId)) {
                 transactionSuccess = false;
             }
 
@@ -609,9 +651,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
 
             manager.endTransaction();
-            JsonElement element = new Gson().toJsonTree(transactionSuccess);
-            object.add(SUCCESS, element);
-            content.setAjaxResult(object);
+            content.setAjaxSuccess(transactionSuccess);
 
         } catch (DAOException e) {
             try {
@@ -627,18 +667,22 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
     public void updateStateCompetition(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
-        boolean state = Boolean.valueOf(content.getRequestParameters().get("state")[0]);
+        String[] stringGameId = content.getRequestParameters().get("competitionId");
+        String[] stringState = content.getRequestParameters().get("state");
         UserValidatorImpl userValidator = new UserValidatorImpl();
         content.getSessionAttributes().remove(TEMPORARY);
         Map<String, Object> data = new HashMap<>();
 
 
-        if (!userValidator.isBookmaker(user)) {
+        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringGameId) ||
+                !commonValidator.isInteger(stringGameId[0]) || !commonValidator.isVarExist(stringState)) {
+            content.setAjaxSuccess(false);
             return;
         }
-
+        int gameId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
+        boolean state = Boolean.valueOf(stringState[0]);
 
         TransactionManager manager = new TransactionManager();
         try {
@@ -648,10 +692,10 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             manager.beginTransaction(competitionDAO, betDAO, userDAO);
             boolean transactionSuccess = true;
 
-            userDAO.returnMoneyForBets(competitionId);
-            betDAO.deleteByCompetitionId(competitionId);
+            userDAO.returnMoneyForBets(gameId);
+            betDAO.deleteByCompetitionId(gameId);
 
-            if (!competitionDAO.updateActiveState(competitionId, state)) {
+            if (!competitionDAO.updateActiveState(gameId, state)) {
                 transactionSuccess = false;
             }
 
@@ -682,6 +726,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     public void updateResultsCompetition(RequestContent content) throws ReceiverException {
         UserValidator userValidator = new UserValidatorImpl();
         CompetitorValidator competitorValidator = new CompetitorValidatorImpl();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         String[] stringCompetitorResult = content.getRequestParameters().get("competitorResult");
         String[] stringCompetitorId = content.getRequestParameters().get("competitorId");
@@ -694,10 +739,16 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             content.getRequestAttributes().put(ACCESS_DENIED, true);
         }
 
-        for (String result : stringCompetitorResult) {
-            if (result.trim().isEmpty()) {
-                isValid = false;
-                break;
+        if (stringCompetitorId.length != stringCompetitorResult.length) {
+            isValid = false;
+        }
+        if (isValid) {
+            for (int i = 0; i < stringCompetitorId.length; i++) {
+                if (!commonValidator.isInteger(stringCompetitorId[0]) ||
+                        !commonValidator.isInteger(stringCompetitorResult[0])) {
+                    isValid = false;
+                    break;
+                }
             }
         }
 
@@ -788,11 +839,24 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
 
     @Override
-    public void openUpcomingCompetition(RequestContent requestContent) throws ReceiverException {
-        String[] page = requestContent.getRequestParameters().get("pageNumber");
-        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
-        startIndex = (startIndex - 1) * COUNT_COMPETITIONS_ON_PAGE;
+    public void openUpcomingCompetition(RequestContent content) throws ReceiverException {
+        Formatter formatter = new Formatter();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
+        int page = 1;
+
+        if (commonValidator.isVarExist(stringPage)) {
+            if (commonValidator.isPageNumber(stringPage[0])) {
+                page = Integer.valueOf(stringPage[0]);
+            } else {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+        }
+
+        int startIndex = formatter.formatToStartIndex(page, COUNT_COMPETITIONS_ON_PAGE);
         List<Map<String, Object>> upcomingGames;
+
         TransactionManager handler = new TransactionManager();
         try {
             CompetitionDAOImpl competitionDAO = new CompetitionDAOImpl();
@@ -803,6 +867,13 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             upcomingGames = competitionDAO.findLimitUpcomingGames(
                     startIndex, COUNT_COMPETITIONS_ON_PAGE, true);
 
+            if (upcomingGames.isEmpty() && page != 1) {
+                handler.rollback();
+                handler.endTransaction();
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+
             extractWithoutStatistic(upcomingGames, competitorDAO);
 
             int gamesCount = competitionDAO.findUpcomingGamesCount(true);
@@ -810,9 +881,9 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             handler.commit();
             handler.endTransaction();
 
-            requestContent.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
-            requestContent.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
-            requestContent.getRequestAttributes().put("gamesCount", gamesCount);
+            content.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
+            content.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
+            content.getRequestAttributes().put("gamesCount", gamesCount);
 
         } catch (DAOException e) {
             try {
@@ -828,10 +899,22 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     }
 
     @Override
-    public void openPastCompetition(RequestContent requestContent) throws ReceiverException {
-        String[] page = requestContent.getRequestParameters().get("pageNumber");
-        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
-        startIndex = (startIndex - 1) * COUNT_COMPETITIONS_ON_PAGE;
+    public void openPastCompetition(RequestContent content) throws ReceiverException {
+        Formatter formatter = new Formatter();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
+        int page = 1;
+
+        if (commonValidator.isVarExist(stringPage)) {
+            if (commonValidator.isPageNumber(stringPage[0])) {
+                page = Integer.valueOf(stringPage[0]);
+            } else {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+        }
+
+        int startIndex = formatter.formatToStartIndex(page, COUNT_COMPETITIONS_ON_PAGE);
         List<Map<String, Object>> pastGames;
         TransactionManager handler = new TransactionManager();
         try {
@@ -840,7 +923,14 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             handler.beginTransaction(competitionDAO, competitorDAO);
 
             pastGames = competitionDAO.findLimitPastGames(startIndex,
-                    COUNT_COMPETITIONS_ON_PAGE, true, true );
+                    COUNT_COMPETITIONS_ON_PAGE, true, true);
+
+            if (pastGames.isEmpty() && page != 1) {
+                handler.rollback();
+                handler.endTransaction();
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
 
             extractWithoutStatistic(pastGames, competitorDAO);
 
@@ -850,9 +940,9 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             handler.commit();
             handler.endTransaction();
 
-            requestContent.getRequestAttributes().put(PAST_GAMES, pastGames);
-            requestContent.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
-            requestContent.getRequestAttributes().put("gamesCount", gamesCount);
+            content.getRequestAttributes().put(PAST_GAMES, pastGames);
+            content.getRequestAttributes().put("limit", COUNT_COMPETITIONS_ON_PAGE);
+            content.getRequestAttributes().put("gamesCount", gamesCount);
 
         } catch (DAOException e) {
             try {
@@ -862,7 +952,6 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             } catch (DAOException e1) {
                 throw new ReceiverException("Open all past games rollback error", e);
             }
-
             throw new ReceiverException(e);
         }
     }
@@ -915,7 +1004,15 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
     @Override
     public void openConcreteCompetition(RequestContent content) throws ReceiverException {
-        int competitionId = Integer.valueOf(content.getRequestParameters().get("competitionId")[0]);
+        CommonValidator commonValidator = new CommonValidatorImpl();
+        String[] stringGameId = content.getRequestParameters().get("competitionId");
+
+        if (!commonValidator.isVarExist(stringGameId) ||
+                !commonValidator.isInteger(stringGameId[0])) {
+            content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+            return;
+        }
+        int gameId = Integer.valueOf(stringGameId[0]);
 
         TransactionManager manager = new TransactionManager();
         try {
@@ -924,14 +1021,18 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             manager.beginTransaction(competitionDAO, competitorDAO);
 
             Map<String, Object> competition =
-                    competitionDAO.findActiveUpcomingGameById(competitionId);
+                    competitionDAO.findActiveUpcomingGameById(gameId);
 
-            if (competition != null) {
-                int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-                List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
-                competition.put("competitors", competitors);
+            if (competition.isEmpty()) {
+                manager.rollback();
+                manager.endTransaction();
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
             }
 
+            int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
+            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
+            competition.put("competitors", competitors);
             manager.commit();
             manager.endTransaction();
 

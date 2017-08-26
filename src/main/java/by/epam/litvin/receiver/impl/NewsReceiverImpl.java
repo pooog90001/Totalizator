@@ -27,10 +27,23 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 public class NewsReceiverImpl implements NewsReceiver {
 
     @Override
-    public void openAllNewsPage(RequestContent requestContent) throws ReceiverException {
-        String[] page = requestContent.getRequestParameters().get("pageNumber");
-        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
-        startIndex = (startIndex - 1) * COUNT_NEWS_ON_PAGE;
+    public void openAllNewsPage(RequestContent content) throws ReceiverException {
+        Formatter formatter = new Formatter();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
+        int page = 1;
+
+        if (commonValidator.isVarExist(stringPage)) {
+            if (commonValidator.isPageNumber(stringPage[0])) {
+                page = Integer.valueOf(stringPage[0]);
+
+            } else {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+        }
+
+        int startIndex = formatter.formatToStartIndex(page, COUNT_NEWS_ON_PAGE);
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -41,13 +54,16 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.commit();
             handler.endTransaction();
 
-            Formatter newsFormatter = new Formatter();
-            newsFormatter.formatNewsForPreview(newsList);
+            if (newsList.isEmpty() && page != 1) {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
 
-            requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            requestContent.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
-            requestContent.getRequestAttributes().put("newsCount", newsCount);
-            requestContent.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
+            formatter.formatNewsForPreview(newsList);
+            content.getRequestAttributes().put(NEWS_LIST, newsList);
+            content.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
+            content.getRequestAttributes().put("newsCount", newsCount);
+            content.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -62,27 +78,43 @@ public class NewsReceiverImpl implements NewsReceiver {
     }
 
     @Override
-    public void openNewsSettings(RequestContent requestContent) throws ReceiverException {
-        String[] page = requestContent.getRequestParameters().get("pageNumber");
-        int startIndex = (page != null) ? Integer.valueOf(page[0]) : 1;
-        startIndex = (startIndex - 1) * 10;
+    public void openNewsSettings(RequestContent content) throws ReceiverException {
+        Formatter formatter = new Formatter();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
+        int page = 1;
+
+        if (commonValidator.isVarExist(stringPage)) {
+            if (commonValidator.isPageNumber(stringPage[0])) {
+                page = Integer.valueOf(stringPage[0]);
+            } else {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+        }
+
+        int startIndex = formatter.formatToStartIndex(page, COUNT_NEWS_ON_PAGE);
 
         TransactionManager handler = new TransactionManager();
         try {
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             handler.beginTransaction(newsDAO);
-            List<NewsEntity> newsList = newsDAO.find(startIndex, 10);
+            List<NewsEntity> newsList = newsDAO.find(startIndex, COUNT_NEWS_ON_PAGE);
             int newsCount = newsDAO.findNewsCount();
             handler.commit();
             handler.endTransaction();
 
-            Formatter newsFormatter = new Formatter();
-            newsFormatter.formatNewsForPreview(newsList);
+            if (newsList.isEmpty() && page != 1) {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
 
-            requestContent.getRequestAttributes().put(NEWS_LIST, newsList);
-            requestContent.getRequestAttributes().put("limit", 10);
-            requestContent.getRequestAttributes().put("newsCount", newsCount);
-            requestContent.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
+
+            formatter.formatNewsForPreview(newsList);
+            content.getRequestAttributes().put(NEWS_LIST, newsList);
+            content.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
+            content.getRequestAttributes().put("newsCount", newsCount);
+            content.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -90,33 +122,52 @@ public class NewsReceiverImpl implements NewsReceiver {
                 handler.endTransaction();
 
             } catch (DAOException e1) {
-                throw new ReceiverException("Open all news rollback error", e);
+                throw new ReceiverException("Open all news setttings rollback error", e);
             }
 
             throw new ReceiverException(e);
         }
     }
 
+
     @Override
     public void createNews(RequestContent content) throws ReceiverException {
         NewsValidatorImpl newsValidator = new NewsValidatorImpl();
-        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        CommonValidatorImpl validator = new CommonValidatorImpl();
         Formatter formatter = new Formatter();
 
-        int pointX1 = Integer.valueOf(content.getRequestParameters().get("x1")[0]);
-        int pointX2 = Integer.valueOf(content.getRequestParameters().get("x2")[0]);
-        int pointY1 = Integer.valueOf(content.getRequestParameters().get("y1")[0]);
-        int pointY2 = Integer.valueOf(content.getRequestParameters().get("y2")[0]);
-        int height = Integer.valueOf(content.getRequestParameters().get("height")[0]);
-        int width = Integer.valueOf(content.getRequestParameters().get("width")[0]);
-        String text = content.getRequestParameters().get("text")[0].trim();
-        String title = content.getRequestParameters().get("title")[0].trim();
+        String[] stringPointX1 = content.getRequestParameters().get("x1");
+        String[] stringPointX2 = content.getRequestParameters().get("x2");
+        String[] stringPointY1 = content.getRequestParameters().get("y1");
+        String[] stringPointY2 = content.getRequestParameters().get("y2");
+        String[] stringHeight = content.getRequestParameters().get("height");
+        String[] stringWidth = content.getRequestParameters().get("width");
+        String[] textArray = content.getRequestParameters().get("text");
+        String[] titleArray = content.getRequestParameters().get("title");
+
+        if (!validator.checkParamsForInteger(stringPointX1, stringPointX2,
+                stringPointY1, stringPointY2, stringHeight, stringWidth) ||
+                !validator.isVarExist(textArray) || !validator.isVarExist(titleArray)) {
+
+            content.setAjaxSuccess(false);
+            return;
+        }
+
+        int pointX1 = Integer.valueOf(stringPointX1[0]);
+        int pointX2 = Integer.valueOf(stringPointX2[0]);
+        int pointY1 = Integer.valueOf(stringPointY1[0]);
+        int pointY2 = Integer.valueOf(stringPointY2[0]);
+        int height = Integer.valueOf(stringHeight[0]);
+        int width = Integer.valueOf(stringWidth[0]);
+        String title = titleArray[0];
+        String text = textArray[0];
         Part imagePart = content.getRequestParts().get(IMAGE);
         File uploadPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
         String imageExtension = FilenameUtils.getExtension(imagePart.getSubmittedFileName());
 
+
         if (!newsValidator.isTitleValid(title) || !newsValidator.isTextValid(text) ||
-                !commonValidator.isImageExtensionValid(imageExtension) ||
+                !validator.isImageExtensionValid(imageExtension) ||
                 pointX1 == pointX2 || pointY1 == pointY2) {
 
             content.setAjaxSuccess(false);
@@ -177,7 +228,6 @@ public class NewsReceiverImpl implements NewsReceiver {
         File directoryPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
         File file = new File(directoryPath, newsImageUrl);
 
-
         TransactionManager manager = new TransactionManager();
         try {
             NewsDAOImpl newsDAO = new NewsDAOImpl();
@@ -216,14 +266,17 @@ public class NewsReceiverImpl implements NewsReceiver {
     }
 
     @Override
-    public void openConcreteNewsPage(RequestContent requestContent) throws ReceiverException {
-        String[] invalidText = requestContent.getRequestParameters().get(INVALID_TEXT);
-        String[] newsIdString = requestContent.getRequestParameters().get(NEWS_ID);
+    public void openConcreteNewsPage(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        String[] newsIdString = content.getRequestParameters().get(NEWS_ID);
+
+        if (!commonValidator.checkParamsForInteger(newsIdString)) {
+            content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+            return;
+        }
+
         int newsId = Integer.valueOf(newsIdString[0]);
 
-        if (invalidText != null && !invalidText[0].isEmpty()) {
-            requestContent.getRequestAttributes().put(INVALID_TEXT, invalidText[0]);
-        }
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -232,9 +285,9 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.beginTransaction(newsDAO, commentDAO);
             NewsEntity news = newsDAO.findEntityById(newsId);
 
-            if (news == null) {
-                requestContent.getRequestAttributes().put(WRONG_NEWS, true);
-                handler.commit();
+            if (news.equals(new NewsEntity())) {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                handler.rollback();
                 handler.endTransaction();
                 return;
             }
@@ -243,8 +296,8 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.commit();
             handler.endTransaction();
 
-            requestContent.getRequestAttributes().put("newsCommentList", newsCommentList);
-            requestContent.getRequestAttributes().put("attrNews", news);
+            content.getRequestAttributes().put("newsCommentList", newsCommentList);
+            content.getRequestAttributes().put("attrNews", news);
 
         } catch (DAOException e) {
             try {

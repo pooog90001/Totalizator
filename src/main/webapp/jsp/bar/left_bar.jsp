@@ -10,7 +10,7 @@
                 </button>
                 <div id="" class="${kind.key.id} w3-hide ">
                     <c:forEach var="type" items="${kind.value}">
-                        <form action="${pageContext.request.contextPath}/generalController">
+                        <form action="${pageContext.request.contextPath}/generalController" method="post">
                             <input type="hidden" name="command" value="OPEN_COMPETITIONS_BY_TYPE">
                             <input type="hidden" name="typeId" value="${type.id}">
                             <input type="hidden" name="sportId" value="${kind.key.id}">

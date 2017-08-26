@@ -35,25 +35,25 @@ public class SignInCommand extends AbstractCommand {
 
             if (keys.contains(WRONG_DATA)) {
                 router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageType.SIGN_IN.getPath());
+                router.setRoutePath(PageType.SIGN_IN.getPage());
 
             } else if (keys.contains(IS_BLOCKED)) {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.BLOCK.getPath());
+                router.setRoutePath(PageType.BLOCK.getPage());
 
             } else if (keys.contains(IS_NOT_CONFIRMED)) {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.CONFIRM.getPath());
+                router.setRoutePath(PageType.CONFIRM.getPage());
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.INDEX.getPath());
+                router.setRoutePath(PageType.INDEX.getPage());
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }
 
         return router;

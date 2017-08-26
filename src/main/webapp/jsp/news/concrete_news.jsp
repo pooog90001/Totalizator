@@ -28,21 +28,24 @@
                         <i class='fa fa-long-arrow-left'></i>
                     </button>
                 </div>
-                <h2>${attrNews.title}</h2>
+                <h2><c:out value="${attrNews.title}"/></h2>
             </div>
             <div class="w3-col s12 w3-container">
                 <div class="w3-card-2 w3-round">
                     <div class="w3-display-container">
                         <img src="${pageContext.request.contextPath}${newsImagePath}${attrNews.imageUrl}"
-                             alt="${attrNews.title}" style="width: 100%;">
+                             alt="<c:out value="${attrNews.title}"/>" style="width: 100%;">
                         <div class="w3-display-topright w3-display-hover">
-                            <p class="w3-black w3-padding">${attrNews.dateCreation}</p>
+                            <p class="w3-black w3-padding">
+                                <ctg:date-presenter date="${attrNews.dateCreation}"/>
+                            </p>
                         </div>
                     </div>
                 </div>
                 <div class="w3-coll s12">
                     <div class="w3-container w3-padding-large">
-                        <p class="w3-small">${attrNews.text}
+                        <p class="w3-small">
+                            <c:out value="${attrNews.text}"/>
 
                         </p>
                     </div>
@@ -55,7 +58,8 @@
                             <div class="w3-row">
                                 <div class=" w3-col s2 w3-padding-large">
                                     <img src="${userImagePath}${user.avatarURL}"
-                                         alt="${attrNews.title}" style="width: 60px;" class="w3-circle">
+                                         alt="<c:out value="${attrNews.title}"/>" style="width: 60px;"
+                                         class="w3-circle">
                                 </div>
                                 <div class="w3-col s10 w3-padding-large">
                                     <div class="w3-container">

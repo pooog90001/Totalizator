@@ -6,7 +6,10 @@ import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.DAOException;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -210,7 +213,7 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
                                                              boolean isActive) throws DAOException {
         List<Map<String, Object>> competitions;
 
-        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_UPCOMING_BY_TYPE_ID)) {
+        try (PreparedStatement statement = connection.prepareStatement(FIND_ALL_UPCOMING_GAMES_BY_TYPE_ID)) {
             statement.setInt(1, typeId);
             statement.setInt(2, sportId);
             statement.setBoolean(3, isActive);
@@ -385,6 +388,24 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return isChanged;
     }
 
+    public List<Map<String, Object>> findGamesByUserId(int userId,
+                                                       boolean isUpcoming) throws DAOException {
+        List<Map<String, Object>> gamesList;
+
+        try (PreparedStatement statement = connection.prepareStatement("s")) {
+            statement.setBoolean(1, isUpcoming);
+            statement.setInt(2, userId);
+            ResultSet resultSet = statement.executeQuery();
+            gamesList = new ArrayList<>();
+
+
+        } catch (SQLException e) {
+            throw new DAOException("Find competitions by user id error", e);
+        }
+
+        return gamesList;
+    }
+
     private List<Map<String, Object>> extractGames(ResultSet resultSet)
             throws SQLException {
         List<Map<String, Object>> gamesList = new ArrayList<>();
@@ -412,8 +433,6 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
             game.put(SQLFieldConstant.Competition.NAME,
                     resultSet.getString(SQLFieldConstant.Competition.NAME));
             gamesList.add(game);
-//TODO посмотреть, вывод сообщений при удалении пользователя
-//TODO завалидировать все входные параметры новостей и пользователей (админка)
         }
 
         return gamesList;

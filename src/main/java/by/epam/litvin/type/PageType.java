@@ -23,7 +23,7 @@ public enum PageType {
     CONCRETE_COMPETITION,
     CONCRETE_NEWS,
     CONCRETE_NEWS_ADD,
-    USER_PROFILE,
+    PROFILE,
     BLOCK,
     INDEX,
 
@@ -48,7 +48,7 @@ public enum PageType {
     private static final Logger LOGGER = LogManager.getLogger();
     private static ResourceBundle jspBundle = ResourceBundle.getBundle(PAGE_PATH_PROPERTIES);
 
-    public String getPath() {
+    public String getPage() {
         try {
             return jspBundle.getString(this.toString());
 

@@ -76,7 +76,10 @@
                                     <input type="submit" class="w3-bar-item w3-button" value="Admin panel"/>
                                 </form>
                             </c:if>
-                            <a href="#" class="w3-bar-item w3-button">${profile} </a>
+                            <form action="${pageContext.request.contextPath}/generalController">
+                                <input type="hidden" name="command" value="OPEN_PROFILE">
+                                <input type="submit" class="w3-bar-item w3-button" value="Profile"/>
+                            </form>
                             <a href="#" class="w3-bar-item w3-button">${settings}</a>
                             <form action="${pageContext.request.contextPath}/generalController">
                                 <input type="hidden" name="command" value="SIGN_OUT">
@@ -88,11 +91,11 @@
                 <%--Present if user not signed--%>
                 <c:otherwise>
                     <div class="w3-bar-item w3-hide-small w3-right w3-padding-16 w3-small">
-                        <a href="${pageContext.request.contextPath}/jsp/user/sign_up.jsp" class="w3-hover-text-yellow">
+                        <a href="/jsp/user/sign_up.jsp" class="w3-hover-text-yellow">
                                 ${signUp}
                         </a>
                         <fmt:message key="lbl.or" bundle="${rb}"/>
-                        <a href="${pageContext.request.contextPath}/jsp/user/sign_in.jsp" class="w3-hover-text-yellow">
+                        <a href="/jsp/user/sign_in.jsp" class="w3-hover-text-yellow">
                                 ${signIn}
                         </a>
                     </div>

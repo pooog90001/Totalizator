@@ -7,7 +7,8 @@ import java.io.IOException;
 
 import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
 
-@WebFilter(urlPatterns = { "/generalController", "/ajaxController" },
+@WebFilter(filterName = "temporaryDataFilter",
+        urlPatterns = {"/generalController", "/ajaxController", "/uploadController"},
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class TemporaryDataFilter implements Filter {
 

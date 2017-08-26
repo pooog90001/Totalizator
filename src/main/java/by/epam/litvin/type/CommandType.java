@@ -1,7 +1,7 @@
 package by.epam.litvin.type;
 
 
-import by.epam.litvin.command.*;
+import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.command.bet.CreateBetCommand;
 import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
@@ -9,6 +9,7 @@ import by.epam.litvin.command.comment.CreateCommentCommand;
 import by.epam.litvin.command.common.ChangeLocaleCommand;
 import by.epam.litvin.command.common.OpenAdminStatisticCommand;
 import by.epam.litvin.command.common.OpenMainCommand;
+import by.epam.litvin.command.common.OpenPageNotFoundCommand;
 import by.epam.litvin.command.competition.*;
 import by.epam.litvin.command.competitiontype.CreateCompetitionTypeCommand;
 import by.epam.litvin.command.competitiontype.DeleteCompetitionTypeCommand;
@@ -30,6 +31,7 @@ import java.util.List;
 
 public enum CommandType {
 
+
     SIGN_IN(new SignInCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).signIn(content);
@@ -45,6 +47,30 @@ public enum CommandType {
     SIGN_OUT(new SignOutCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) {
             ((UserReceiverImpl) getCommand().getReceiver()).signOut(content);
+        }
+    },
+
+    OPEN_PROFILE(new OpenProfileCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).openProfile(content);
+        }
+    },
+
+    WITHDRAW_MONEY(new OpenProfileCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).withdrawMoney(content);
+        }
+    },
+
+    ADD_MONEY(new OpenProfileCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).addMoney(content);
+        }
+    },
+
+    OPEN_PAGE_NOT_FOUND(new OpenPageNotFoundCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).openNotFoundPage(content);
         }
     },
 
@@ -292,9 +318,6 @@ public enum CommandType {
 
 
 
-
-
-
     private AbstractCommand command;
 
     CommandType(AbstractCommand command) {
@@ -302,16 +325,16 @@ public enum CommandType {
 
     }
 
-    public AbstractCommand getCommand() {
-        return command;
-    }
-
-    public abstract void doReceiver(RequestContent content) throws ReceiverException;
-
     public static CommandType takeCommandType(AbstractCommand command) {
         ArrayList<CommandType> result = new ArrayList<>();
         List<CommandType> types = Arrays.asList(CommandType.values());
         types.stream().filter(t -> t.getCommand() == command).forEach(result::add);
         return result.get(0);
     }
+
+    public AbstractCommand getCommand() {
+        return command;
+    }
+
+    public abstract void doReceiver(RequestContent content) throws ReceiverException;
 }

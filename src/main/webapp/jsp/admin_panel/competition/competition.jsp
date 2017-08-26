@@ -122,15 +122,16 @@
                         <div id="errorBox" class="w3-text-red" style="display: none;">All fields must be defined</div>
                     </form>
                     <c:if test="${requestScope.get('wrongName') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Name must be 1-45 symbols</div>
+                        <div id="wrong" class="w3-row w3-text-red">In name field must be 1-45 symbols</div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongDate') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Date start can't be later date finish and earlier
-                            now
+                        <div id="wrong" class="w3-row w3-text-red">Wrong date format. Date start can't be later date
+                            finish and earlier
+                            now.
                         </div>
                     </c:if>
-                    <c:if test="${requestScope.get('wrongDateFormat') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Check Date format</div>
+                    <c:if test="${requestScope.get('wrongCompetitors') != null}">
+                        <div id="wrong" class="w3-row w3-text-red">Competitors data wrong</div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongActive') != null}">
                         <div id="wrong" class="w3-row w3-text-red">For activate competition all fields must be filled
@@ -138,6 +139,9 @@
                     </c:if>
                     <c:if test="${requestScope.get('createError') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Transaction error, check commands for duplicate</div>
+                    </c:if>
+                    <c:if test="${requestScope.get('wrongType') != null}">
+                        <div id="wrong" class="w3-row w3-text-red">Competition type is not correct</div>
                     </c:if>
                     <div id="wrongJS" class="w3-row w3-text-red" style="display: none">All fields must by filled and
                         commands mustn't duplicate

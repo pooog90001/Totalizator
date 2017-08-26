@@ -153,31 +153,34 @@
                                         <div class="w3-col s12 w3-left-align w3-small">
                                            <span>
                                                <i>Name: </i>
-                                               <b> ${userEntity.name} </b>
+                                               <b> <c:out value="${userEntity.name}"/> </b>
                                                <i>Cash: </i>
-                                               <b> <ctg:decimal-presenter number="${userEntity.cash}"/> </b>
-                                           </span> <br>
+                                               <b> <ctg:decimal-presenter number="${userEntity.cash}"/>$ </b>
+                                           </span>
+                                            <br>
                                             <span>
                                                <i>Role: </i>
-                                               <b> ${userEntity.type} </b>
-                                           </span><br>
-
+                                               <b> <c:out value="${userEntity.type}"/>  </b>
+                                           </span>
+                                            <br>
                                             <span>
                                                <i>Email: </i>
-                                               <b> ${userEntity.email} </b>
+                                               <b> <c:out value="${userEntity.email}"/>  </b>
                                            </span><br>
                                             <span>
                                                <i>Confirmed: </i>
-                                               <b> ${userEntity.isConfirm} </b>
-                                           </span><br>
+                                               <b> <c:out value="${userEntity.isConfirm}"/>  </b>
+                                           </span>
+                                            <br>
                                             <span>
                                                <i>Blocked: </i>
-                                               <b> ${userEntity.isBlocked} </b>
-                                           </span><br>
+                                               <b> <c:out value="${userEntity.isBlocked}"/>  </b>
+                                           </span>
+                                            <br>
                                             <c:if test="${userEntity.isBlocked}">
                                                 <span>
                                                <i>Blocked text: </i>
-                                               <b> ${userEntity.blockedText} </b>
+                                               <b> <c:out value="${userEntity.blockedText}"/> </b>
                                            </span>
                                             </c:if>
 

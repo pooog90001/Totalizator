@@ -29,17 +29,17 @@ public class CreateCompetitionCommand extends AbstractCommand {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
             if (requestContent.getRequestAttributes().get(ACCESS_DENIED) == null) {
-                router.setRoutePath(PageType.ADMIN_COMPETITION_ADD.getPath());
+                router.setRoutePath(PageType.ADMIN_COMPETITION_ADD.getPage());
                 router.setRouteType(RouteType.REDIRECT);
 
             } else {
-                router.setRoutePath(PageType.INDEX.getPath());
+                router.setRoutePath(PageType.INDEX.getPage());
                 router.setRouteType(RouteType.REDIRECT);
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

@@ -5,7 +5,6 @@ import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.factory.FactoryCommand;
 import com.google.gson.JsonObject;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -16,7 +15,7 @@ import java.io.IOException;
 
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB
         maxFileSize=1024*1024*10,      // 10MB
-        maxRequestSize=1024*1024*50) // 50MB
+        maxRequestSize = 1024 * 1024 * 15) // 15MB
 @WebServlet(name = "UploadController", urlPatterns = {"/uploadController"})
 public class UploadController extends HttpServlet {
     @Override

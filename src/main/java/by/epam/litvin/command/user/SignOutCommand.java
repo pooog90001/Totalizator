@@ -25,12 +25,12 @@ public class SignOutCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageType.INDEX.getPath());
+            router.setRoutePath(PageType.INDEX.getPage());
             router.setRouteType(RouteType.REDIRECT);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
         return router;

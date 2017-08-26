@@ -12,12 +12,13 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
 import static by.epam.litvin.constant.GeneralConstant.IS_BLOCKED;
 
-public class OpenUserProfileCommand extends AbstractCommand {
+public class OpenProfileCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public OpenUserProfileCommand(Receiver receiver) {
+    public OpenProfileCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -28,19 +29,24 @@ public class OpenUserProfileCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), content);
 
-            if (!content.getRequestAttributes().containsKey(IS_BLOCKED)){
-                router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageType.USER_PROFILE.getPath());
-            } else {
+            if (content.getRequestAttributes().containsKey(IS_BLOCKED)) {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.BLOCK.getPath());
+                router.setRoutePath(PageType.BLOCK.getPage());
+
+            } else if (content.getRequestAttributes().containsKey(ACCESS_DENIED)) {
+                router.setRouteType(RouteType.REDIRECT);
+                router.setRoutePath(PageType.ERROR_404.getPage());
+
+            } else {
+                router.setRouteType(RouteType.FORWARD);
+                router.setRoutePath(PageType.PROFILE.getPage());
             }
 
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Open user profile receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }
 
         return router;

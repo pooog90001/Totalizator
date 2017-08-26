@@ -63,7 +63,7 @@
                             <input type="submit" value="Create" class="w3-button w3-theme w3">
                         </div>
                     </form>
-                    <c:if test="${requestScope.get('wrongName') != null}">
+                    <c:if test="${requestScope.get('wrongData') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Name must be 1-80 symbols</div>
                     </c:if>
                     <c:if test="${requestScope.get('duplicateName') != null}">

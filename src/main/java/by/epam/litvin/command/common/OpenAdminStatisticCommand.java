@@ -29,17 +29,17 @@ public class OpenAdminStatisticCommand extends AbstractCommand {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
             if (requestContent.getRequestAttributes().containsKey(ACCESS_DENIED)) {
-                router.setRoutePath(PageType.ERROR_404.getPath());
+                router.setRoutePath(PageType.ERROR_404.getPage());
                 router.setRouteType(RouteType.REDIRECT);
 
             } else {
-                router.setRoutePath(PageType.ADMIN_MAIN.getPath());
+                router.setRoutePath(PageType.ADMIN_MAIN.getPage());
                 router.setRouteType(RouteType.FORWARD);
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

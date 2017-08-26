@@ -28,13 +28,13 @@ public class OpenUserSettingsCommand extends AbstractCommand {
 
 
             router.setRouteType(RouteType.FORWARD);
-            router.setRoutePath(PageType.ADMIN_USER.getPath());
+            router.setRoutePath(PageType.ADMIN_USER.getPage());
 
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }
 
         return router;

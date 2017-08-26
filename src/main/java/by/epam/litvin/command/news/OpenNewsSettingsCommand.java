@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static by.epam.litvin.constant.GeneralConstant.PAGE_NOT_FOUND;
+
 public class OpenNewsSettingsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -21,19 +23,24 @@ public class OpenNewsSettingsCommand extends AbstractCommand {
     }
 
     @Override
-    public Router execute(RequestContent requestContent) {
+    public Router execute(RequestContent content) {
         Router router = new Router();
 
         try {
-            receiver.action(CommandType.takeCommandType(this), requestContent);
+            receiver.action(CommandType.takeCommandType(this), content);
 
-            router.setRoutePath(PageType.ADMIN_NEWS.getPath());
-            router.setRouteType(RouteType.FORWARD);
+            if (!content.getRequestAttributes().containsKey(PAGE_NOT_FOUND)) {
+                router.setRoutePath(PageType.ADMIN_NEWS.getPage());
+                router.setRouteType(RouteType.FORWARD);
 
+            } else {
+                router.setRoutePath(PageType.ERROR_404.getPage());
+                router.setRouteType(RouteType.REDIRECT);
+            }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

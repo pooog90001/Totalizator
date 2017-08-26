@@ -12,8 +12,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
-
 public class OpenCommandsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -28,12 +26,12 @@ public class OpenCommandsCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageType.ADMIN_COMMAND.getPath());
+            router.setRoutePath(PageType.ADMIN_COMMAND.getPage());
             router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

@@ -12,7 +12,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
     public boolean isNameValid(String name) {
         boolean isValid = true;
 
-        if (name == null || name.isEmpty() || name.length() > 100) {
+        if (name == null || name.trim().isEmpty() || name.length() > 100) {
             isValid = false;
         }
 
@@ -24,6 +24,21 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
         boolean isValid = true;
 
         if (coeff == null || (coeff.compareTo(new BigDecimal("1.00")) == -1)) {
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+    public boolean isCoeff(String coeff) {
+        boolean isValid = true;
+
+        try {
+            if (coeff == null || coeff.isEmpty() ||
+                    (new BigDecimal(coeff).compareTo(new BigDecimal("1.00")) == -1)) {
+                isValid = false;
+            }
+        } catch (NumberFormatException e) {
             isValid = false;
         }
 
@@ -47,12 +62,18 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
         BigDecimal coeff = null;
 
         if (stringCoeff != null && !stringCoeff.isEmpty()) {
-            BigDecimal decimal = new BigDecimal(stringCoeff);
-            decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+            try {
+                BigDecimal decimal = new BigDecimal(stringCoeff);
+                decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            if (isCoeffValid(decimal)) {
-                coeff = decimal;
+                if (isCoeffValid(decimal)) {
+                    coeff = decimal;
+                }
+            } catch (NumberFormatException e) {
+                coeff = null;
             }
+
+
         }
 
         return coeff;
@@ -62,13 +83,17 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
     public BigDecimal checkStringNumber(String stringCoeff) {
         BigDecimal number = null;
 
-        if (stringCoeff != null && !stringCoeff.isEmpty()) {
-            BigDecimal decimal = new BigDecimal(stringCoeff);
-            decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+        try {
+            if (stringCoeff != null && !stringCoeff.isEmpty()) {
+                BigDecimal decimal = new BigDecimal(stringCoeff);
+                decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
 
-            if (isNumberValid(decimal)) {
-                number = decimal;
+                if (isNumberValid(decimal)) {
+                    number = decimal;
+                }
             }
+        } catch (NumberFormatException e) {
+            number = null;
         }
 
         return number;

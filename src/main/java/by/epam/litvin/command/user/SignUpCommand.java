@@ -35,17 +35,17 @@ public class SignUpCommand extends AbstractCommand {
                     keys.contains("wrongRepeatPassword") ||
                     keys.contains("emailExists")) {
                 router.setRouteType(RouteType.FORWARD);
-                router.setRoutePath(PageType.SIGN_UP.getPath());
+                router.setRoutePath(PageType.SIGN_UP.getPage());
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.CONFIRM.getPath());
+                router.setRoutePath(PageType.CONFIRM.getPage());
             }
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }
 
         return router;

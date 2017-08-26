@@ -26,12 +26,12 @@ public class OpenCompetitionsByTypeCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-            router.setRoutePath(PageType.COMPETITIONS_BY_TYPE.getPath());
+            router.setRoutePath(PageType.COMPETITIONS_BY_TYPE.getPage());
             router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Open concrete competition receiver error", e);
-            router.setRoutePath(PageType.ERROR_SERVER.getPath());
+            router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
 

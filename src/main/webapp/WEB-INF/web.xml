@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
 
@@ -22,4 +22,41 @@
     <error-page>
         <location>/jsp/error/runtime.jsp</location>
     </error-page>
+
+    <!--<filter>
+        <filter-name>sessionFilter</filter-name>
+        <filter-class>by.epam.litvin.filter.SessionFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>sessionFilter</filter-name>
+        <url-pattern>/generalController</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>by.epam.litvin.filter.EncodingFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>encodingFilter</filter-name>
+        <url-pattern>/generalController</url-pattern>
+        <url-pattern>/ajaxController</url-pattern>
+        <url-pattern>/uploadController</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>accessFilter</filter-name>
+        <filter-class>by.epam.litvin.filter.AccessFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>accessFilter</filter-name>
+        <url-pattern>/jsp/admin_panel/*</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>temporaryDataFilter</filter-name>
+        <filter-class>by.epam.litvin.filter.TemporaryDataFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>temporaryDataFilter</filter-name>
+        <url-pattern>/generalController</url-pattern>
+        <url-pattern>/ajaxController</url-pattern>
+        <url-pattern>/uploadController</url-pattern>
+    </filter-mapping>-->
 </web-app>

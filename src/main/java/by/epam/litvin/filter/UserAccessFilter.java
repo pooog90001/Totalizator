@@ -1,8 +1,6 @@
 package by.epam.litvin.filter;
 
 import by.epam.litvin.bean.UserEntity;
-import by.epam.litvin.type.PageType;
-import by.epam.litvin.validator.impl.UserValidatorImpl;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -12,9 +10,9 @@ import java.io.IOException;
 
 import static by.epam.litvin.constant.GeneralConstant.USER;
 
-@WebFilter(urlPatterns = "/jsp/admin_panel/*",
+@WebFilter(filterName = "userAccessFilter", urlPatterns = "/jsp/user/profile.jsp",
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
-public class AccessFilter implements Filter {
+public class UserAccessFilter implements Filter {
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
@@ -23,12 +21,7 @@ public class AccessFilter implements Filter {
 
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
-        UserValidatorImpl validator = new UserValidatorImpl();
         UserEntity user = (UserEntity) httpRequest.getSession().getAttribute(USER);
-
-        if (!validator.isAdmin(user) && !validator.isBookmaker(user)) {
-            httpResponse.sendRedirect(PageType.INDEX.getPath());
-        }
 
         chain.doFilter(request, response);
     }

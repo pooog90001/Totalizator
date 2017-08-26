@@ -21,6 +21,14 @@ public class CompetitionEntity extends Entity {
 
     public CompetitionEntity() {}
 
+    public CompetitionEntity(String name, Date dateStart, Date dateFinish, boolean isActive, int typeId) {
+        this.name = name;
+        this.dateStart = dateStart;
+        this.dateFinish = dateFinish;
+        this.isActive = isActive;
+        this.typeId = typeId;
+    }
+
     public int getId() {
         return id;
     }

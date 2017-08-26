@@ -6,24 +6,23 @@ import java.math.BigDecimal;
 
 public class BetEntity extends Entity {
 
-    public BetEntity() {}
-
-    public BetEntity(int userId, BigDecimal cash, int competitorId, ExpectResultType expectedResult) {
-        this.userId = userId;
-        this.cash = cash;
-        CompetitorId = competitorId;
-        this.expectedResult = expectedResult;
-    }
-
     private int id;
     private int userId;
     private BigDecimal cash;
     private Boolean isWin;
     private Boolean isActive;
-    private int CompetitorId;
+    private int competitorId;
     private ExpectResultType expectedResult;
 
+    public BetEntity() {
+    }
 
+    public BetEntity(int userId, BigDecimal cash, int competitorId, ExpectResultType expectedResult) {
+        this.userId = userId;
+        this.cash = cash;
+        this.competitorId = competitorId;
+        this.expectedResult = expectedResult;
+    }
 
     public int getId() {
         return id;
@@ -66,11 +65,11 @@ public class BetEntity extends Entity {
     }
 
     public int getCompetitorId() {
-        return CompetitorId;
+        return competitorId;
     }
 
     public void setCompetitorId(int competitorId) {
-        this.CompetitorId = competitorId;
+        this.competitorId = competitorId;
     }
 
     public ExpectResultType getExpectedResult() {
@@ -91,7 +90,7 @@ public class BetEntity extends Entity {
 
         if (id != betEntity.id) return false;
         if (userId != betEntity.userId) return false;
-        if (CompetitorId != betEntity.CompetitorId) return false;
+        if (competitorId != betEntity.competitorId) return false;
         if (cash != null ? !cash.equals(betEntity.cash) : betEntity.cash != null) return false;
         if (isWin != null ? !isWin.equals(betEntity.isWin) : betEntity.isWin != null) return false;
         if (isActive != null ? !isActive.equals(betEntity.isActive) : betEntity.isActive != null) return false;
@@ -105,7 +104,7 @@ public class BetEntity extends Entity {
         result = 31 * result + (cash != null ? cash.hashCode() : 0);
         result = 31 * result + (isWin != null ? isWin.hashCode() : 0);
         result = 31 * result + (isActive != null ? isActive.hashCode() : 0);
-        result = 31 * result + CompetitorId;
+        result = 31 * result + competitorId;
         result = 31 * result + (expectedResult != null ? expectedResult.hashCode() : 0);
         return result;
     }

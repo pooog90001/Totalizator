@@ -1,16 +1,26 @@
 package by.epam.litvin.util;
 
-import by.epam.litvin.constant.GeneralConstant;
+import org.apache.commons.codec.binary.Hex;
 
-import java.util.Base64;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class StringEncoder {
-    public static String encode(String string) {
-        String encodedString;
-        Base64.Encoder encoder = Base64.getEncoder();
-        byte[] hash = encoder.encode((GeneralConstant.SALT + string).getBytes());
-        encodedString = new String(encoder.encode(string.getBytes()));
-        return encodedString + GeneralConstant.SALT;
+    public static String encode(String password) {
+        byte[] digest;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
 
+            md.update(password.getBytes("UTF-8"));
+            digest = md.digest();
+
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("Encoding algoritm not found", e);
+
+        } catch (UnsupportedEncodingException e) {
+            throw new RuntimeException("Unsupported encoding exception", e);
+        }
+        return Hex.encodeHexString(digest);
     }
 }

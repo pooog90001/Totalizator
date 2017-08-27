@@ -76,18 +76,29 @@
                             </div>
                             <div class="w3-col s8 ">
                                 <textarea name="text" id="text" cols="70" rows="10" required
-                                          placeholder="Fill this field"></textarea>
+                                          style="resize: none;" placeholder="Fill this field">
+
+                                </textarea>
                             </div>
                         </div>
                         <div class="w3-row w3-padding-small w3-margin-top">
                             <input type="button" id="createNews" value="Create" class="w3-button w3-theme w3">
                         </div>
                     </form>
-                    <div id="wrong" class="w3-row w3-text-red" style="display: none">
-                        All field must be filled, and field on image selected. Images only with JPEG, JPG, PNG
+                    <div id="wrongData" class="wrong w3-row w3-text-red" style="display: none">
+                        Please, fill all fields. And select region on image too. Images only with JPEG, JPG, PNG
                         extension.
                     </div>
-                    <div id="errorResponse" class="w3-row w3-text-red" style="display: none">
+                    <div id="wrongDB" class="wrong w3-row w3-text-red" style="display: none">
+                        Data base error;
+                    </div>
+                    <div id="wrongUpload" class="wrong w3-row w3-text-red" style="display: none">
+                        Upload error.
+                    </div>
+                    <div id="accessDenied" class="wrong w3-row w3-text-red" style="display: none">
+                        You session is empty. Reload page, and try again.
+                    </div>
+                    <div id="errorResponse" class="wrong w3-row w3-text-red" style="display: none">
                         Database or upload image error. Max image size 10 MB.
                     </div>
 

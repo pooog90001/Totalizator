@@ -19,14 +19,15 @@ $(function () {
         callImgAreaSelect();
     });
 
+
     window.onresize = function () {
         callImgAreaSelect();
     };
 
     function callImgAreaSelect() {
         $('#blah').imgAreaSelect({
-            aspectRatio: '2:1',
-            x1: 0, y1: 0, x2: 100, y2: 50,
+            aspectRatio: '1:1',
+            x1: 0, y1: 0, x2: 50, y2: 50,
             imageWidth: $('#blah').width(),
             imageHeight: $('#blah').height(),
             movable: true,
@@ -52,6 +53,9 @@ function imgCrop(img, selection) {
 
 
 $('#createNews').click(function (e) {
+    $(".wrong").each(function () {
+        this.style.display = "none";
+    });
 
     $('#form').validate();
 
@@ -73,9 +77,18 @@ $('#createNews').click(function (e) {
         success: function (data, textStatus, jqXHR) {
             var objData = JSON.parse(data);
             if (objData.success === false) {
-                document.getElementById("wrong").style.display = 'inherit';
+                if (objData.wrongData !== undefined) {
+                    document.getElementById("wrongData").style.display = 'inherit';
+                } else if (objData.accessDenied !== undefined) {
+                    document.getElementById("accessDenied").style.display = 'inherit';
+                } else if (objData.wrongUpload !== undefined) {
+                    document.getElementById("wrongUpload").style.display = 'inherit';
+                } else {
+                    document.getElementById("wrongDB").style.display = 'inherit';
+                }
+
             } else {
-                window.location.reload();
+                $("#openProfile").submit();
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {
@@ -89,55 +102,3 @@ $('#createNews').click(function (e) {
     });
 });
 
-function delNews(e, id, newsImageUrl) {
-    modal_del_error.style.display = 'none';
-    modal_del_error.style.display = 'none';
-
-    var $this = $(e);
-    var $contanier = $("#" + id);
-    var dataString = "newsId=" + id + "&newsImageUrl=" + newsImageUrl + "&command=delete_news";
-
-    $.ajax({
-        type: "POST",
-        url: "/ajaxController",
-        data: dataString,
-        dataType: "json",
-
-        success: function (data, textStatus, jqXHR) {
-            if (data.success === true) {
-                $contanier.css("display", "none");
-            } else {
-                console.log("Something really bad happened " + textStatus);
-                modal_del_wrong.style.display = 'block';
-            }
-        },
-
-        error: function (jqXHR, textStatus, errorThrown) {
-            console.log("Something really bad happened " + textStatus);
-
-            $contanier.css("display", "inherit");
-            modal_del_error.style.display = 'block';
-
-        },
-        beforeSend: function (jqXHR, settings) {
-        },
-        complete: function (jqXHR, textStatus) {
-        }
-    });
-}
-
-
-document.getElementById('create').onclick = function (e) {
-    var createField = document.getElementById('createField');
-    var createBtn = document.getElementById('create');
-
-    if (createField.style.display === 'inherit') {
-        $('#blah').imgAreaSelect({hide: true});
-        createField.style.display = 'none';
-        createBtn.innerHTML = "<i class='fa fa-plus-circle'></i>";
-    } else {
-        createField.style.display = 'inherit';
-        createBtn.innerHTML = "<i class='fa fa-times-circle'></i>";
-
-    }
-};

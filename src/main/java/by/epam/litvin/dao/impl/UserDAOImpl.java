@@ -1,8 +1,8 @@
 package by.epam.litvin.dao.impl;
 
 import by.epam.litvin.bean.UserEntity;
-import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.constant.SQLFieldConstant;
+import by.epam.litvin.constant.SQLRequestConstant;
 import by.epam.litvin.dao.DAO;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.type.UserType;
@@ -170,6 +170,26 @@ public class UserDAOImpl extends DAO<UserEntity> {
 
             String type = entity.getType().toString();
             statement.setString(1, type);
+            statement.setInt(2, entity.getId());
+
+            isUpdated = statement.executeUpdate() == 1;
+
+
+        } catch (SQLException e) {
+            if (!CAN_NOT_DELETE_OR_UPDATE.equals(e.getSQLState())) {
+                throw new DAOException("Create user error ", e);
+            }
+        }
+
+        return isUpdated;
+    }
+
+    public boolean updateAvatarPath(UserEntity entity) throws DAOException {
+        boolean isUpdated = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.UPDATE_AVATAR_PATH)) {
+
+            statement.setString(1, entity.getAvatarURL());
             statement.setInt(2, entity.getId());
 
             isUpdated = statement.executeUpdate() == 1;

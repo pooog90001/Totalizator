@@ -52,7 +52,7 @@
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
                                 <b> ${news.title} </b>
                             </button>
-                            <p class="w3-small">${news.text}</p>
+                            <p class="w3-small w3-padding">${news.text}</p>
                         </form>
                     </div>
                 </div>

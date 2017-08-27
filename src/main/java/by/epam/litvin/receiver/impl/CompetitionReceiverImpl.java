@@ -841,17 +841,12 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     @Override
     public void openUpcomingCompetition(RequestContent content) throws ReceiverException {
         Formatter formatter = new Formatter();
-        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
-        int page = 1;
+        int page = formatter.formatToPage(stringPage);
 
-        if (commonValidator.isVarExist(stringPage)) {
-            if (commonValidator.isPageNumber(stringPage[0])) {
-                page = Integer.valueOf(stringPage[0]);
-            } else {
-                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
-                return;
-            }
+        if (page == -1) {
+            content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+            return;
         }
 
         int startIndex = formatter.formatToStartIndex(page, COUNT_COMPETITIONS_ON_PAGE);
@@ -901,17 +896,12 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
     @Override
     public void openPastCompetition(RequestContent content) throws ReceiverException {
         Formatter formatter = new Formatter();
-        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
-        int page = 1;
+        int page = formatter.formatToPage(stringPage);
 
-        if (commonValidator.isVarExist(stringPage)) {
-            if (commonValidator.isPageNumber(stringPage[0])) {
-                page = Integer.valueOf(stringPage[0]);
-            } else {
-                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
-                return;
-            }
+        if (page == -1) {
+            content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+            return;
         }
 
         int startIndex = formatter.formatToStartIndex(page, COUNT_COMPETITIONS_ON_PAGE);

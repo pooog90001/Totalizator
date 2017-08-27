@@ -1,13 +1,18 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
-<script src="${pageContext.request.contextPath}/js/sign_in.js"></script>
+<script src="${pageContext.request.contextPath}/js/change_password.js"></script>
 
-<fmt:message key="lbl.ForgotPassword" bundle="${rb}" var="forgotPassword"/>
-<fmt:message key="lbl.SignIn" bundle="${rb}" var="signIn"/>
-<fmt:message key="lbl.Authorization" bundle="${rb}" var="authorization"/>
-<fmt:message key="lbl.Password" bundle="${rb}" var="password"/>
-<fmt:message key="lbl.Email" bundle="${rb}" var="email"/>
-<fmt:message key="warn.wrongEmailorPassword" bundle="${rb}" var="wrongData"/>
+<fmt:message bundle="${rb}" key="warn.empty" var="emptyFeild"/>
+<fmt:message bundle="${rb}" key="warn.existEmail" var="existEmail"/>
+<fmt:message bundle="${rb}" key="warn.notEqualsPasswords" var="notEqualsPasswords"/>
+<fmt:message bundle="${rb}" key="warn.wrongEmail" var="wrongEmail"/>
+<fmt:message bundle="${rb}" key="warn.wrongPassword" var="wrongPassword"/>
+<fmt:message bundle="${rb}" key="warn.wrongName" var="wrongName"/>
+<fmt:message bundle="${rb}" key="lbl.Registration" var="registration"/>
+<fmt:message bundle="${rb}" key="lbl.Name" var="name"/>
+<fmt:message bundle="${rb}" key="lbl.Email" var="email"/>
+<fmt:message bundle="${rb}" key="lbl.Password" var="password"/>
+<fmt:message bundle="${rb}" key="lbl.RepeatPassword" var="repeatPassword"/>
 
 <body>
 <div class="w3-row-padding">
@@ -15,30 +20,47 @@
         <div class="w3-container"></div>
     </div>
     <div class="w3-third">
-        <h1>Change password</h1>
+        <div class="w3-row">
+            <div class="w3-col s12 w3-display-container">
+                <div class="w3-display-right">
+                    <button type="button" class="w3-button w3-card-4 w3-circle w3-theme-l3"
+                            style="padding: 15px 17px;" onclick="history.back(); return false;">
+                        <i class='fa fa-long-arrow-left'></i>
+                    </button>
+                </div>
+                <h1>Change password</h1>
+            </div>
+        </div>
 
-        <form class="w3-container w3-card-2" name="form" action="${pageContext.request.contextPath}/generalController"
-              method="post">
-            <input type="hidden" name="command" value="Sign_in">
+        <form class="w3-container w3-card-2" name="form" method="post">
+            <input type="hidden" name="command" value="CHANGE_PASSWORD">
 
-            <p>${email}:</p>
-            <input title="${email}" class="w3-input w3-border" type="email" id="email" name="email">
+            <p>${password}:*</p>
+            <input title="${password}" class="w3-input w3-border" type="password" id="oldPassword" name="password"
+                   value="${requestScope.get('password')}">
+            <span class="wrong w3-text-red" id="emptyOldPassword">${emptyFeild}</span>
+            <span class="wrong w3-text-red" id="wrongOldPassword">${wrongPassword}</span>
             <br>
 
-            <p>${password}:</p>
-            <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password">
+            <p>New password:*</p>
+            <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password"
+                   value="${requestScope.get('password')}">
 
-            <c:if test="${requestScope.containsKey('wrongData')}">
-                <span class="w3-text-red">${wrongData}</span>
-            </c:if>
+            <span class="wrong w3-text-red" id="wrongPassword">${wrongPassword}</span>
+            <span class="wrong w3-text-red" id="emptyPassword">${emptyFeild}</span>
+            <br>
 
-            <p>
-                <input class="w3-button w3-black" type="submit" id="submit" value="${signIn}">
-                <a href="#"
-                   class="w3-margin-left w3-small w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-black">
-                    ${forgotPassword}?
-                </a>
-            </p>
+            <p>Repeat new password:*</p>
+            <input title="${repeatPassword}" class="w3-input w3-border" type="password" id="repeatPassword"
+                   name="repeatPassword"
+                   value="${requestScope.get('repeatPassword')}">
+
+            <span class="wrong w3-text-red" id="wrongRepeatPassword">${notEqualsPasswords}</span>
+            <span class="wrong w3-text-red" id="emptyRepeatPassword">${emptyFeild}</span>
+            <span class="wrong w3-text-red" id="equalsPassword">${emptyFeild}</span>
+            <br>
+            <input class="w3-button w3-black" type="submit" id="submit" value="Change password">
+
         </form>
     </div>
     <div class="w3-third">

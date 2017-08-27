@@ -75,7 +75,15 @@ function imgCrop(img, selection) {
         success: function (data, textStatus, jqXHR) {
             var objData = JSON.parse(data);
             if (objData.success === false) {
-                document.getElementById("wrong").style.display = 'inherit';
+                if (objData.wrongData !== undefined) {
+                    document.getElementById("wrongData").style.display = 'inherit';
+                } else if (objData.accessDenied !== undefined) {
+                    document.getElementById("accessDenied").style.display = 'inherit';
+                } else if (objData.wrongUpload !== undefined) {
+                    document.getElementById("wrongUpload").style.display = 'inherit';
+                } else {
+                    document.getElementById("wrongDB").style.display = 'inherit';
+                }
             } else {
                 window.location.reload();
             }

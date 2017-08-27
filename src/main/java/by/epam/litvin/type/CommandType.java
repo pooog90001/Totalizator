@@ -68,6 +68,18 @@ public enum CommandType {
         }
     },
 
+    CHANGE_AVATAR(new UpdateAvatarCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changeAvatar(content);
+        }
+    },
+
+    CHANGE_PASSWORD(new UpdatePasswordCommand(new UserReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((UserReceiverImpl) getCommand().getReceiver()).changePassword(content);
+        }
+    },
+
     OPEN_PAGE_NOT_FOUND(new OpenPageNotFoundCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((CommonReceiverImpl) getCommand().getReceiver()).openNotFoundPage(content);
@@ -276,7 +288,7 @@ public enum CommandType {
 
     OPEN_NEWS_SETTINGS(new OpenNewsSettingsCommand(new NewsReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((NewsReceiverImpl) getCommand().getReceiver()).openNewsSettings(content);
+            ((NewsReceiverImpl) getCommand().getReceiver()).openAllNewsPage(content);
         }
     },
 

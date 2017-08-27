@@ -14,10 +14,14 @@ import by.epam.litvin.type.UploadType;
 import by.epam.litvin.type.UserType;
 import by.epam.litvin.util.Formatter;
 import by.epam.litvin.util.StringEncoder;
+import by.epam.litvin.util.Uploader;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
 import com.google.gson.Gson;
+import org.apache.commons.io.FilenameUtils;
 
+import javax.servlet.http.Part;
+import java.io.File;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -30,39 +34,128 @@ import static by.epam.litvin.constant.RequestNameConstant.*;
 public class UserReceiverImpl implements UserReceiver {
 
     @Override
-    public void signUp(RequestContent requestContent) throws ReceiverException {
+    public void changeAvatar(RequestContent content) throws ReceiverException {
+        CommonValidatorImpl validator = new CommonValidatorImpl();
+        Uploader uploader = new Uploader();
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
+        File uploadPath = new File(content.getRealPath(), UploadType.AVATARS.getUploadFolder());
+        Part imagePart = content.getRequestParts().get(IMAGE);
+
+        String[] stringPointX1 = content.getRequestParameters().get(POINT_X1);
+        String[] stringPointX2 = content.getRequestParameters().get(POINT_X2);
+        String[] stringPointY1 = content.getRequestParameters().get(POINT_Y1);
+        String[] stringPointY2 = content.getRequestParameters().get(POINT_Y2);
+        String[] stringHeight = content.getRequestParameters().get(HEIGHT);
+        String[] stringWidth = content.getRequestParameters().get(WIDTH);
+
+        if (user == null) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(ACCESS_DENIED, new Gson().toJsonTree(true));
+            return;
+        }
+
+        if (imagePart == null || !validator.checkParamsForInteger(stringPointX1,
+                stringPointX2, stringPointY1, stringPointY2, stringHeight, stringWidth)) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(WRONG_DATA, new Gson().toJsonTree(true));
+            return;
+        }
+
+        String imageExtension = FilenameUtils.getExtension(imagePart.getSubmittedFileName());
+        int pointX1 = Integer.valueOf(stringPointX1[0]);
+        int pointX2 = Integer.valueOf(stringPointX2[0]);
+        int pointY1 = Integer.valueOf(stringPointY1[0]);
+        int pointY2 = Integer.valueOf(stringPointY2[0]);
+        int height = Integer.valueOf(stringHeight[0]);
+        int width = Integer.valueOf(stringWidth[0]);
+
+        if (!validator.isImageExtensionValid(imageExtension) ||
+                pointX1 == pointX2 || pointY1 == pointY2) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(WRONG_DATA, new Gson().toJsonTree(true));
+            return;
+        }
+
+        TransactionManager manager = new TransactionManager();
+        try {
+            UserDAOImpl userDAO = new UserDAOImpl();
+            manager.beginTransaction(userDAO);
+
+            user.setAvatarURL(user.getId() + _AVATAR_DOT + imageExtension);
+            File path = new File(uploadPath, user.getAvatarURL());
+            boolean isUploaded = uploader.uploadImage(imagePart, path, imageExtension,
+                    pointX1, pointX2, pointY1, pointY2, height, width);
+
+            if (!isUploaded) {
+                content.getAjaxResult().add(WRONG_UPLOAD, new Gson().toJsonTree(true));
+            }
+
+            boolean isUpdated = isUploaded && userDAO.updateAvatarPath(user);
+
+            if (isUploaded && isUpdated) {
+                manager.commit();
+
+            } else {
+                manager.rollback();
+            }
+
+            content.setAjaxSuccess(isUploaded && isUpdated);
+            content.getSessionAttributes().put(USER, userDAO.findEntityById(user.getId()));
+            manager.commit();
+            manager.endTransaction();
+
+        } catch (DAOException e) {
+            try {
+                manager.rollback();
+                manager.endTransaction();
+
+            } catch (DAOException e1) {
+                throw new ReceiverException("Change avatar rollback error", e1);
+            }
+            throw new ReceiverException(e);
+        }
+    }
+
+
+    @Override
+    public void changePassword(RequestContent content) throws ReceiverException {
+
+    }
+
+    @Override
+    public void signUp(RequestContent content) throws ReceiverException {
         UserValidatorImpl validator = new UserValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
-        String[] name = requestContent.getRequestParameters().get(NAME);
-        String[] email = requestContent.getRequestParameters().get(EMAIL);
-        String[] password = requestContent.getRequestParameters().get(PASSWORD);
-        String[] repeatPassword = requestContent.getRequestParameters().get(REPEAT_PASSWORD);
+        String[] name = content.getRequestParameters().get(NAME);
+        String[] email = content.getRequestParameters().get(EMAIL);
+        String[] password = content.getRequestParameters().get(PASSWORD);
+        String[] repeatPassword = content.getRequestParameters().get(REPEAT_PASSWORD);
         String confirmURL;
         String dbPassword;
         boolean isValidData = true;
 
-        requestContent.getRequestAttributes().put(NAME, name);
-        requestContent.getRequestAttributes().put(EMAIL, email);
-        requestContent.getRequestAttributes().put(PASSWORD, password);
-        requestContent.getRequestAttributes().put(REPEAT_PASSWORD, repeatPassword);
+        content.getRequestAttributes().put(NAME, name);
+        content.getRequestAttributes().put(EMAIL, email);
+        content.getRequestAttributes().put(PASSWORD, password);
+        content.getRequestAttributes().put(REPEAT_PASSWORD, repeatPassword);
 
         if (!commonValidator.isVarExist(password) || !validator.checkPassword(password[0])) {
-            requestContent.getRequestAttributes().put(WRONG_PASSWORD, true);
+            content.getRequestAttributes().put(WRONG_PASSWORD, true);
             return;
 
         }
         if (!commonValidator.isVarExist(repeatPassword) || !password[0].equals(repeatPassword[0])) {
-            requestContent.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, true);
+            content.getRequestAttributes().put(WRONG_REPEAT_PASSWORD, true);
             isValidData = false;
 
         }
         if (!commonValidator.isVarExist(email) || !validator.checkEmail(email[0])) {
-            requestContent.getRequestAttributes().put(WRONG_EMAIL, true);
+            content.getRequestAttributes().put(WRONG_EMAIL, true);
             isValidData = false;
 
         }
         if (!commonValidator.isVarExist(name) || !validator.checkName(name[0])) {
-            requestContent.getRequestAttributes().put(WRONG_NAME, true);
+            content.getRequestAttributes().put(WRONG_NAME, true);
             isValidData = false;
 
         }
@@ -72,6 +165,7 @@ public class UserReceiverImpl implements UserReceiver {
 
         dbPassword = StringEncoder.encode(password[0]);
         confirmURL = StringEncoder.encode(email[0]);
+
         UserEntity user = new UserEntity();
         user.setName(name[0]);
         user.setEmail(email[0]);
@@ -87,7 +181,7 @@ public class UserReceiverImpl implements UserReceiver {
                 handler.commit();
 
             } else {
-                requestContent.getRequestAttributes().put(EMAIL_EXISTS, true);
+                content.getRequestAttributes().put(EMAIL_EXISTS, true);
             }
 
             handler.endTransaction();
@@ -105,19 +199,19 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void signIn(RequestContent requestContent) throws ReceiverException {
-        String[] email = requestContent.getRequestParameters().get(EMAIL);
-        String[] password = requestContent.getRequestParameters().get(PASSWORD);
+    public void signIn(RequestContent content) throws ReceiverException {
+        String[] email = content.getRequestParameters().get(EMAIL);
+        String[] password = content.getRequestParameters().get(PASSWORD);
         String dbPassword;
 
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         UserValidatorImpl validator = new UserValidatorImpl();
-        requestContent.getRequestAttributes().put(EMAIL, email);
-        requestContent.getRequestAttributes().put(PASSWORD, password);
+        content.getRequestAttributes().put(EMAIL, email);
+        content.getRequestAttributes().put(PASSWORD, password);
 
         if (!commonValidator.isVarExist(password) || !commonValidator.isVarExist(email) ||
                 !validator.checkPassword(password[0]) || !validator.checkEmail(email[0])) {
-            requestContent.getRequestAttributes().put(WRONG_DATA, true);
+            content.getRequestAttributes().put(WRONG_DATA, true);
             return;
         }
 
@@ -137,17 +231,17 @@ public class UserReceiverImpl implements UserReceiver {
 
             if (foundUser != null) {
                 if (foundUser.getIsBlocked()) {
-                    requestContent.getSessionAttributes().put(TEXT, foundUser.getBlockedText());
-                    requestContent.getRequestAttributes().put(IS_BLOCKED, true);
+                    content.getSessionAttributes().put(TEXT, foundUser.getBlockedText());
+                    content.getRequestAttributes().put(IS_BLOCKED, true);
 
                 } else if (!foundUser.getIsConfirm()) {
-                    requestContent.getRequestAttributes().put(IS_NOT_CONFIRMED, true);
+                    content.getRequestAttributes().put(IS_NOT_CONFIRMED, true);
 
                 } else {
-                    requestContent.getSessionAttributes().put(USER, foundUser);
+                    content.getSessionAttributes().put(USER, foundUser);
                 }
             } else {
-                requestContent.getRequestAttributes().put(WRONG_DATA, true);
+                content.getRequestAttributes().put(WRONG_DATA, true);
             }
 
         } catch (DAOException e) {
@@ -163,8 +257,8 @@ public class UserReceiverImpl implements UserReceiver {
     }
 
     @Override
-    public void signOut(RequestContent requestContent) {
-        requestContent.getSessionAttributes().remove(RequestNameConstant.USER);
+    public void signOut(RequestContent content) {
+        content.getSessionAttributes().remove(RequestNameConstant.USER);
     }
 
     @Override

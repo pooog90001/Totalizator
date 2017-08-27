@@ -47,7 +47,7 @@
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
                                 <b> <c:out value="${news.title}"/> </b>
                             </button>
-                            <p class="w3-small"><c:out value="${news.text}"/></p>
+                            <p class="w3-small w3-padding"><c:out value="${news.text}"/></p>
                         </form>
                     </div>
                 </div>

@@ -74,6 +74,23 @@ public class Formatter {
         return (page - 1) * countItemsOnPage;
     }
 
+    public int formatToPage(String[] pageArr) {
+        int page = 1;
+
+        if (pageArr != null && pageArr[0] != null &&
+                !pageArr[0].trim().isEmpty()) {
+
+            try {
+                page = Integer.parseInt(pageArr[0]);
+                page = page < 1 ? -1 : page;
+
+            } catch (NumberFormatException e) {
+                page = -1;
+            }
+        }
+
+        return page;
+    }
 
     public Date formatToDate(String stringDate, String stringTime) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);

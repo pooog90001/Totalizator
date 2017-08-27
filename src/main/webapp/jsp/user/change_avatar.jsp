@@ -15,27 +15,28 @@
         <div class="w3-container"></div>
     </div>
     <div class="w3-third">
-        <h1>Change avatar</h1>
-
+        <div class="w3-row">
+            <div class="w3-col s12 w3-display-container">
+                <div class="w3-display-right">
+                    <button type="button" class="w3-button w3-card-4 w3-circle w3-theme-l3"
+                            style="padding: 15px 17px;" onclick="history.back(); return false;">
+                        <i class='fa fa-long-arrow-left'></i>
+                    </button>
+                </div>
+                <h1>Change avatar</h1>
+            </div>
+        </div>
         <div class="w3-row w3-hover-light-grey w3-card-2">
-            <form id='form' action="${pageContext.request.contextPath}/uploadController"
+            <form id="form" action="${pageContext.request.contextPath}/uploadController"
                   class="w3-card-2 w3-white w3-round w3-small" method="post" enctype="multipart/form-data">
-                <input type="hidden" name="command" value="create_news">
+                <input type="hidden" name="command" value="change_avatar">
                 <input type="hidden" name="width" id="width" value="0">
                 <input type="hidden" name="height" id="height" value="0">
                 <input type="hidden" name="x1" id="x1" value="0">
                 <input type="hidden" name="x2" id="x2" value="0">
                 <input type="hidden" name="y1" id="y1" value="0">
                 <input type="hidden" name="y2" id="y2" value="0">
-                <div class="w3-row w3-padding-small">
-                    <div class="w3-col s2 w3-padding">
-                        Title:
-                    </div>
-                    <div class="w3-col s6">
-                        <input type="text" name="title" required class="w3-input w3-border"
-                               placeholder="Fill this field">
-                    </div>
-                </div>
+
                 <div class="w3-row w3-padding-small">
 
                     <div class="w3-col s2 w3-padding">
@@ -46,38 +47,54 @@
                     </div>
 
                     <div class="w3-col s12 w3-center w3-padding-large">
-                        <img id="blah" src="#" class="" alt="image" style="max-width: 100%;"/>
+                        <div class="w3-border" style="min-height: 300px;">
+                            <img id="blah" src="#" class="" style="max-width: 100%;"/>
+                        </div>
                     </div>
                     <div class="w3-col s12" id="result">
                     </div>
                 </div>
-                <div class="w3-row w3-padding-small">
-                    <div class="w3-col s2 w3-padding">
-                        Text
-                    </div>
-                    <div class="w3-col s8 ">
-                                <textarea name="text" id="text" cols="70" rows="10" required
-                                          placeholder="Fill this field"></textarea>
-                    </div>
-                </div>
                 <div class="w3-row w3-padding-small w3-margin-top">
-                    <input type="button" id="createNews" value="Create" class="w3-button w3-theme w3">
+                    <input type="button" id="createNews" value="Accept" class="w3-button w3-theme w3">
                 </div>
             </form>
-            <div id="wrong" class="w3-row w3-text-red" style="display: none">
-                All field must be filled, and field on image selected. Images only with JPEG, JPG, PNG
-                extension.
+            <div id="wrongData" class="wrong w3-row w3-text-red" style="display: none">
+                Please, fill all fields. And select region on image too.
             </div>
-            <div id="errorResponse" class="w3-row w3-text-red" style="display: none">
-                Database or upload image error :(
+            <div id="wrongDB" class="wrong w3-row w3-text-red" style="display: none">
+                Data base error;
+            </div>
+            <div id="wrongUpload" class="wrong w3-row w3-text-red" style="display: none">
+                Upload error.
+            </div>
+            <div id="accessDenied" class="wrong w3-row w3-text-red" style="display: none">
+                You session is empty. Reload page, and try again.
+            </div>
+            <div id="errorResponse" class="wrong w3-row w3-text-red" style="display: none">
+                Database or upload image error. Max image size 10 MB.
             </div>
         </div>
     </div>
     <div class="w3-third">
         <div class="w3-container"></div>
     </div>
+    <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="post">
+        <input type="hidden" name="command" value="OPEN_PROFILE">
+    </form>
 </div>
 
 </body>
-
+<script src="${pageContext.request.contextPath}/js/change_avatar.js"></script>
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <%@include file="/jsp/partial/footer.jsp" %>

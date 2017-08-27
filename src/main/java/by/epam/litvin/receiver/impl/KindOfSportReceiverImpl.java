@@ -101,7 +101,8 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
         if (!commonValidator.isVarExist(stringCompetitorsCount) ||
                 !commonValidator.isInteger(stringCompetitorsCount[0]) ||
-                commonValidator.isVarExist(sportNameArr) || !validator.isNameValid(sportNameArr[0].trim())) {
+                !commonValidator.isVarExist(sportNameArr) ||
+                !validator.isNameValid(sportNameArr[0].trim())) {
             data.put("wrongData", true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;
@@ -109,7 +110,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
         int competitorsCount = Integer.valueOf(stringCompetitorsCount[0]);
 
-        if (validator.isCompetitorsCountValid(competitorsCount)) {
+        if (!validator.isCompetitorsCountValid(competitorsCount)) {
             data.put("wrongCount", true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;

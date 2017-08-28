@@ -35,16 +35,16 @@
         <form class="w3-container w3-card-2" name="form" method="post" id="form">
             <input type="hidden" name="command" value="CHANGE_PASSWORD">
 
-            <p>${password}:*</p>
+            <p><c:out value="${password}"/>:*</p>
             <input title="${password}" class="w3-input w3-border" type="password" id="oldPassword" name="oldPassword">
-            <span class="wrong w3-text-red" id="emptyOldPassword">${emptyFeild}</span>
+            <span class="wrong w3-text-red" id="emptyOldPassword"><c:out value="${emptyFeild}"/></span>
             <br>
 
             <p>New password:*</p>
             <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password">
 
-            <span class="wrong w3-text-red" id="wrongPassword">${wrongPassword}</span>
-            <span class="wrong w3-text-red" id="emptyPassword">${emptyFeild}</span>
+            <span class="wrong w3-text-red" id="wrongPassword"><c:out value="${wrongPassword}"/></span>
+            <span class="wrong w3-text-red" id="emptyPassword"><c:out value="${emptyFeild}"/></span>
             <br>
 
             <p>Repeat new password:*</p>

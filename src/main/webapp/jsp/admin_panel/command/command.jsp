@@ -98,12 +98,12 @@
                                 <div class="w3-card-2 w3-white w3-round w3-small">
                                     <div class="w3-col s4 w3-padding-small w3-center">
                                         <div class="commandName">
-                                                ${command['command_name']}
+                                                <c:out value="${command['command_name']}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s3 w3-padding-small w3-center">
                                         <div class="kindOfSportName">
-                                                ${command['kind_of_sport_name']}
+                                                <c:out value="${command['kind_of_sport_name']}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s3 w3-padding-small">

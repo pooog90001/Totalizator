@@ -76,7 +76,7 @@
                         ${competition['competition_id']}
                 </div>
                 <div class="w3-col s3">
-                        ${competition['kind_of_sport_name']}
+                        <c:out value="${competition['kind_of_sport_name']}"/>
                 </div>
                 <div class="w3-col s4">
                     <i class="w3-tiny">Date start:</i>
@@ -164,7 +164,7 @@
                     <div class='w3-row w3-small'>
                         <div class='w3-col s4'>
                             <div class='w3-col s4 '>Command:</div>
-                            <div class='w3-col s8'> ${competitor['command_name']} </div>
+                            <div class='w3-col s8'> <c:out value="${competitor['command_name']}"/> </div>
                         </div>
                         <div class='w3-col s4'>
                             <div class='w3-col s6 '>Win coefficient:</div>

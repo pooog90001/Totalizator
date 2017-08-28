@@ -140,12 +140,12 @@
                                 <div class="w3-row">
                                     <div class="w3-col s6">
                                         <div class="w3-container w3-small">
-                                                ${comment.user_name}
+                                                <c:out value="${comment.user_name}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s6">
                                         <div class="w3-container w3-small w3-text-dark-gray">
-                                                ${comment.comment_post_date}
+                                                <c:out value="${comment.comment_post_date}"/>
                                         </div>
                                     </div>
                                     <hr style="margin: 5px">
@@ -168,7 +168,7 @@
                                         </c:when>
                                         <c:otherwise>
                                             <div class="w3-col s12">
-                                                <span>${comment.comment_text} </span>
+                                                <span><c:out value="${comment.comment_text}"/> </span>
                                             </div>
                                         </c:otherwise>
                                     </c:choose>

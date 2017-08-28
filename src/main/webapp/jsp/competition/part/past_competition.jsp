@@ -12,10 +12,10 @@
             </div>
             <div class="w3-col s2"></div>
             <div class="w3-col s4">
-                    ${competition['kind_of_sport_name']}
+                    <c:out value="${competition['kind_of_sport_name']}"/>
             </div>
             <div class="w3-col s4">
-                    ${competition['competition_type_name']}
+                    <c:out value="${competition['competition_type_name']}"/>
             </div>
             <div class="w3-display-topright w3-tiny w3-theme w3-padding-small">
                 <ctg:date-presenter date="${competition['competition_date_start']}"/>
@@ -26,7 +26,7 @@
         <div class="w3-row  w3-padding-small">
             <div class="w3-col m4 s12 ">
                     <span name="competitionName">
-                            ${competition['competition_name']}
+                            <c:out value="${competition['competition_name']}"/>
                     </span>
             </div>
 
@@ -46,7 +46,7 @@
             <div class='w3-col s6 w3-left-align'>
                 <hr style="margin: 5px;">
                 <div class="w3-row">
-                    <div class='w3-col s5'> ${competitor['command_name']} </div>
+                    <div class='w3-col s5'> <c:out value="${competitor['command_name']}"/> </div>
 
                     <div class='w3-col s2 w3-text-gray'>
                         <c:choose>
@@ -60,7 +60,7 @@
                     </div>
                     <div class='w3-col s2'>
                             <span >
-                                ${competitor['competitor_result']}
+                                <c:out value="${competitor['competitor_result']}"/>
                                 <c:if test="${competitor['competitor_is_win']}">
                                    <i class="w3-tiny">winner</i>
                                 </c:if>

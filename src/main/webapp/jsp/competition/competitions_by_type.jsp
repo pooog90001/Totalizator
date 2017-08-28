@@ -23,7 +23,7 @@
 
         <div class="w3-row-padding">
             <div class="w3-container w3-xlarge">
-                ${kindOfSport.name} ${competitionType.name}
+                <c:out value="${kindOfSport.name}"/> <c:out value="${competitionType.name}"/>
             </div>
             <div class="w3-container">
                 <div class="w3-bar w3-black w3-card-2 w3-margin-bottom">

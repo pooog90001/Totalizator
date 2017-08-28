@@ -95,12 +95,12 @@
                                 <div class="w3-white w3-round w3-small">
                                     <div class="w3-col s4 w3-padding-small w3-center">
                                         <div class="name w3-padding-small">
-                                                ${kindOfSport.name}
+                                                <c:out value="${kindOfSport.name}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s3 w3-padding-small w3-center">
                                         <div class="count w3-padding-small">
-                                                ${kindOfSport.competitorCount}
+                                                <c:out value="${kindOfSport.competitorCount}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s3 w3-padding-small">

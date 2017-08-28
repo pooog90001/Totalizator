@@ -56,7 +56,7 @@
                                 <div class="w3-col s8">
                                     <div class="w3-row w3-right-align w3-small">
                                         <div class="w3-col s12 w3-padding-small">
-                                                ${user.name}
+                                                <c:out value="${user.name}"/>
                                         </div>
                                         <div class="w3-col s12 w3-padding-small">
                                             <ctg:decimal-presenter number="${user.cash}"/>$
@@ -159,12 +159,12 @@
                         <div class="w3-row w3-right-align">
                             <div class="w3-col s12">
                                 <div class="w3-container">
-                                    <p class="w3-padding-small"> ${user.name}</p>
+                                    <p class="w3-padding-small"> <c:out value="${user.name}"/></p>
                                 </div>
                             </div>
                             <div class="w3-col s12">
                                 <div class="w3-container">
-                                    <p class="w3-padding-small">${user.cash.toPlainString()}$</p>
+                                    <p class="w3-padding-small"><c:out value="${user.cash.toPlainString()}"/>$</p>
                                 </div>
                             </div>
                         </div>
@@ -179,13 +179,13 @@
                     <div class="w3-half">
                         <a href="${pageContext.request.contextPath}/jsp/user/sign_in.jsp"
                            class="w3-bar-item w3-hover-text-yellow w3-center">
-                            <p class="w3-center">${signIn}</p>
+                            <p class="w3-center"><c:out value="${signIn}"/></p>
                         </a>
                     </div>
                     <div class="w3-half">
                         <a href="${pageContext.request.contextPath}/jsp/user/sign_up.jsp"
                            class="w3-bar-item w3-hover-text-yellow w3-center">
-                            <p class="w3-center">${signUp}</p>
+                            <p class="w3-center"><c:out value="${signUp}"/></p>
                         </a>
                     </div>
                 </c:otherwise>
@@ -198,7 +198,7 @@
             <input type="submit" class="w3-button w3-padding w3-bar-item" value="${news}">
         </form>
 
-        <a href="#" class="w3-bar-item w3-button w3-padding">${live}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${live}"/></a>
         <a href="#" class="w3-bar-item w3-button w3-padding">
             <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
                 <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
@@ -213,8 +213,8 @@
                        value="${results}">
             </form>
         </a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">${aboutCompany}</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">${rules}</a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">${help}</a>
+        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${aboutCompany}"/></a>
+        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${rules}"/></a>
+        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${help}"/></a>
     </div>
 </header>

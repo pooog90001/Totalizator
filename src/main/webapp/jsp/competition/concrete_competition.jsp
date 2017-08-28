@@ -30,7 +30,7 @@
                         <i class='fa fa-long-arrow-left'></i>
                     </button>
                 </div>
-                <h2>${competition['competition_name']}</h2>
+                <h2><c:out value="${competition['competition_name']}"/></h2>
             </div>
             <form class="w3-row w3-container" id="doBetForm">
                 <input type="hidden" name="competitionId" value="${competition['competition_id']}">
@@ -39,10 +39,10 @@
                     <div class=" w3-card-2  w3-margin-bottom w3-small w3-display-container w3-medium">
                         <div class="w3-theme w3-padding">
                             № ${competition['competition_id']}
-                            ${competition['kind_of_sport_name']}
+                            <c:out value="${competition['kind_of_sport_name']}"/>
                         </div>
                         <div class="w3-padding-small">
-                            Тип: <b>${competition['competition_type_name']}</b>
+                            Тип: <b><c:out value="${competition['competition_type_name']}"/></b>
                         </div>
                         <div class="w3-padding-small">
                             Дата проведения: <b><ctg:date-presenter

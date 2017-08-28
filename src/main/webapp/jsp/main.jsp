@@ -50,7 +50,7 @@
                             <input type="hidden" name="command" value= "open_concrete_news">
                             <input type="hidden" name="newsId" value="${news.id}">
                             <button type="submit" class="w3-hover-none w3-button w3-hover-text-gray">
-                                <b> ${news.title} </b>
+                                <b> <c:out value="${news.title}"/> </b>
                             </button>
                             <p class="w3-small w3-padding">${news.text}</p>
                         </form>
@@ -92,7 +92,7 @@
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                 <button type="submit" class="w3-xlarge w3-button w3-hover-none">
-                    ${past}
+                    <c:out value="${past}"/>
                 </button>
             </form>
             <div class=" w3-container w3-padding-small w3-center">
@@ -104,7 +104,7 @@
                       action="${pageContext.request.contextPath}/generalController">
                     <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                     <button type="submit" class="w3-right w3-button w3-small">
-                        Все ${past}
+                        Все <c:out value="${past}"/>
                     </button>
                 </form>
             </div>

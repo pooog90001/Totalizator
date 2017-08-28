@@ -160,7 +160,7 @@
                                                 <input type="hidden" name="newsId" value="${news.id}">
                                                 <button type="submit"
                                                         class="w3-hover-none w3-button w3-hover-text-gray">
-                                                    <b> ${news.title} </b>
+                                                    <b> <c:out value="${news.title}"/> </b>
                                                 </button>
                                             </form>
                                         </div>

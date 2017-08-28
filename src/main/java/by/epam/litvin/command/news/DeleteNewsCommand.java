@@ -20,15 +20,12 @@ public class DeleteNewsCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Delete news receiver error", e);
         }
-
-        return router;
+        return null;
     }
 }

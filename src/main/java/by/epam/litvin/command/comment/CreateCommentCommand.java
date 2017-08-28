@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
-
 public class CreateCommentCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -21,15 +19,12 @@ public class CreateCommentCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Create comment receiver error", e);
         }
-
-        return router;
+        return null;
     }
 }

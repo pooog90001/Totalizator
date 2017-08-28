@@ -30,6 +30,7 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 import static by.epam.litvin.constant.GeneralConstant.USER;
 import static by.epam.litvin.constant.GeneralConstant.WRONG_DATA;
 import static by.epam.litvin.constant.RequestNameConstant.*;
+import static by.epam.litvin.constant.RequestNameConstant.NAME;
 
 public class UserReceiverImpl implements UserReceiver {
 
@@ -119,7 +120,77 @@ public class UserReceiverImpl implements UserReceiver {
 
     @Override
     public void changePassword(RequestContent content) throws ReceiverException {
+        UserValidatorImpl validator = new UserValidatorImpl();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
 
+        String[] oldPassword = content.getRequestParameters().get(OLD_PASSWORD);
+        String[] password = content.getRequestParameters().get(PASSWORD);
+        String[] repeatPassword = content.getRequestParameters().get(REPEAT_PASSWORD);
+        String newDBPassword;
+        String oldDBPassword;
+
+        if (user == null) {
+            content.setAjaxSuccess(false);
+            content.getAjaxResult().add(ACCESS_DENIED, new Gson().toJsonTree(true));
+            return;
+        }
+        if (!commonValidator.isVarExist(password) || !validator.checkPassword(password[0]) ||
+                !commonValidator.isVarExist(oldPassword) || !validator.checkPassword(oldPassword[0]) ||
+                !commonValidator.isVarExist(repeatPassword) || !validator.checkPassword(repeatPassword[0])) {
+            content.getAjaxResult().add(WRONG_DATA, new Gson().toJsonTree(true));
+            content.setAjaxSuccess(false);
+            return;
+        }
+        if (!password[0].equals(repeatPassword[0])) {
+            content.getAjaxResult().add(WRONG_REPEAT_PASSWORD, new Gson().toJsonTree(true));
+            content.setAjaxSuccess(false);
+            return;
+        }
+
+        newDBPassword = StringEncoder.encode(password[0]);
+        oldDBPassword = StringEncoder.encode(oldPassword[0]);
+        TransactionManager handler = new TransactionManager();
+        try {
+            UserDAOImpl userDao = new UserDAOImpl();
+            handler.beginTransaction(userDao);
+            UserEntity actualUser = userDao.findEntityById(user.getId());
+            boolean isPasswordValid = true;
+
+            if (!oldDBPassword.equals(actualUser.getPassword())) {
+                isPasswordValid = false;
+                content.getAjaxResult().add(WRONG_OLD_PASSWORD, new Gson().toJsonTree(true));
+            }
+            if (isPasswordValid && newDBPassword.equals(actualUser.getPassword())) {
+                isPasswordValid = false;
+                content.getAjaxResult().add(EQUALS_PASSWORDS, new Gson().toJsonTree(true));
+            }
+            if (!isPasswordValid) {
+                handler.rollback();
+                handler.endTransaction();
+                content.setAjaxSuccess(false);
+                return;
+            }
+            actualUser.setPassword(newDBPassword);
+            boolean isUpdated = userDao.updatePassword(actualUser);
+
+            if (isUpdated) {
+                content.getSessionAttributes().put(USER, actualUser);
+            }
+
+            content.setAjaxSuccess(isUpdated);
+            handler.commit();
+            handler.endTransaction();
+
+        } catch (DAOException e) {
+            try {
+                handler.rollback();
+                handler.endTransaction();
+            } catch (DAOException e1) {
+                throw new ReceiverException("Change password rollback error", e);
+            }
+            throw new ReceiverException(e);
+        }
     }
 
     @Override
@@ -264,21 +335,15 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void openUserSettings(RequestContent content) throws ReceiverException {
         Formatter formatter = new Formatter();
-        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] stringPage = content.getRequestParameters().get(PAGE_NUMBER);
-        int page = 1;
+        int page = formatter.formatToPage(stringPage);
 
-        if (commonValidator.isVarExist(stringPage)) {
-            if (commonValidator.isPageNumber(stringPage[0])) {
-                page = Integer.valueOf(stringPage[0]);
-
-            } else {
-                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
-                return;
-            }
+        if (page == -1) {
+            content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+            return;
         }
-        int startIndex = formatter.formatToStartIndex(page, COUNT_USERS_ON_PAGE);
 
+        int startIndex = formatter.formatToStartIndex(page, COUNT_USERS_ON_PAGE);
         TransactionManager manager = new TransactionManager();
         try {
             UserDAOImpl userDAO = new UserDAOImpl();
@@ -288,10 +353,15 @@ public class UserReceiverImpl implements UserReceiver {
             manager.commit();
             manager.endTransaction();
 
-            content.getRequestAttributes().put("userList", userList);
-            content.getRequestAttributes().put("limit", COUNT_USERS_ON_PAGE);
-            content.getRequestAttributes().put("usersCount", usersCount);
-            content.getRequestAttributes().put("userImagePath", UploadType.AVATARS.getUploadFolder());
+            if (userList.isEmpty() && page != 1) {
+                content.getRequestAttributes().put(PAGE_NOT_FOUND, true);
+                return;
+            }
+
+            content.getRequestAttributes().put(USER_LIST, userList);
+            content.getRequestAttributes().put(LIMIT, COUNT_USERS_ON_PAGE);
+            content.getRequestAttributes().put(USERS_COUNT, usersCount);
+            content.getRequestAttributes().put(USER_IMAGE_PATH, UploadType.AVATARS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -342,8 +412,8 @@ public class UserReceiverImpl implements UserReceiver {
             manager.endTransaction();
 
             content.getSessionAttributes().put(USER, actualUser);
-            content.getRequestAttributes().put("pastBetsAndGames", pastBetsAndGames);
-            content.getRequestAttributes().put("upcomingBetsAndGames", upcomingBetsAndGames);
+            content.getRequestAttributes().put(PAST_BETS_AND_GAMES, pastBetsAndGames);
+            content.getRequestAttributes().put(UPCOMING_BETS_AND_GAMES, upcomingBetsAndGames);
 
         } catch (DAOException e) {
             try {
@@ -360,17 +430,17 @@ public class UserReceiverImpl implements UserReceiver {
     private void extractCompetitors(List<Map<String, Object>> betsAndGames,
                                     CompetitorDAOImpl competitorDAO) throws DAOException {
         for (Map<String, Object> betAndGame : betsAndGames) {
-            CompetitionEntity game = (CompetitionEntity) betAndGame.get("competition");
+            CompetitionEntity game = (CompetitionEntity) betAndGame.get(COMPETITION);
             List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(game.getId());
-            betAndGame.put("competitors", competitors);
+            betAndGame.put(COMPETITORS, competitors);
         }
     }
 
     @Override
     public void changeRole(RequestContent content) throws ReceiverException {
-        int userId = Integer.valueOf(content.getRequestParameters().get("userId")[0]);
-        UserType userType = UserType.valueOf(content.getRequestParameters().get("userType")[0]);
-        UserEntity currentUser = (UserEntity) content.getSessionAttributes().get("user");
+        int userId = Integer.valueOf(content.getRequestParameters().get(USER_ID)[0]);
+        UserType userType = UserType.valueOf(content.getRequestParameters().get(USER_TYPE)[0]);
+        UserEntity currentUser = (UserEntity) content.getSessionAttributes().get(USER);
 
         if (!UserType.BOOKMAKER.equals(currentUser.getType()) || currentUser.getId() == userId) {
             content.setAjaxSuccess(false);
@@ -381,20 +451,19 @@ public class UserReceiverImpl implements UserReceiver {
         updateUser.setId(userId);
         updateUser.setType(userType);
 
-
         TransactionManager manager = new TransactionManager();
         try {
             UserDAOImpl userDAO = new UserDAOImpl();
             manager.beginTransaction(userDAO);
             boolean isUpdated = userDAO.updateRole(updateUser);
             content.setAjaxSuccess(isUpdated);
+
             if (isUpdated) {
                 manager.commit();
             } else {
                 manager.rollback();
             }
             manager.endTransaction();
-
 
         } catch (DAOException e) {
             try {
@@ -405,16 +474,15 @@ public class UserReceiverImpl implements UserReceiver {
             }
             throw new ReceiverException(e);
         }
-
     }
 
     @Override
     public void changeLock(RequestContent content) throws ReceiverException {
-        int userId = Integer.valueOf(content.getRequestParameters().get("userId")[0]);
-        boolean isBlocked = !Boolean.valueOf(content.getRequestParameters().get("blockState")[0]);
-        String[] arrayText = content.getRequestParameters().get("textBlock");
+        int userId = Integer.valueOf(content.getRequestParameters().get(USER_ID)[0]);
+        boolean isBlocked = !Boolean.valueOf(content.getRequestParameters().get(BLOCK_STATE)[0]);
+        String[] arrayText = content.getRequestParameters().get(TEXT_BLOCK);
         String blockedText = arrayText == null ? "" : arrayText[0].trim();
-        UserEntity currentUser = (UserEntity) content.getSessionAttributes().get("user");
+        UserEntity currentUser = (UserEntity) content.getSessionAttributes().get(USER);
 
         if (!UserType.BOOKMAKER.equals(currentUser.getType()) ||
                 currentUser.getId() == userId || (isBlocked && blockedText.isEmpty())) {
@@ -506,7 +574,7 @@ public class UserReceiverImpl implements UserReceiver {
 
             } else {
                 manager.rollback();
-                content.getAjaxResult().add("updateError", new Gson().toJsonTree(true));
+                content.getAjaxResult().add(UPDATE_ERROR, new Gson().toJsonTree(true));
             }
 
             content.setAjaxSuccess(isUpdated);
@@ -588,7 +656,7 @@ public class UserReceiverImpl implements UserReceiver {
 
             } else {
                 manager.rollback();
-                content.getAjaxResult().add("updateError", new Gson().toJsonTree(true));
+                content.getAjaxResult().add(UPDATE_ERROR, new Gson().toJsonTree(true));
             }
 
             content.setAjaxSuccess(isUpdated);

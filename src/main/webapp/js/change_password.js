@@ -39,12 +39,12 @@ $(document).ready(function () {
 
     function checkOldPassword() {
         emptyOldPassword.hide();
-        var value = password.val();
+        var value = oldPassword.val();
+        var result = true;
 
-        if (value.toString().trim() === "") {
+        if (value === "") {
             emptyOldPassword.show();
             result = false;
-
         }
         return result;
     }
@@ -58,8 +58,8 @@ $(document).ready(function () {
         var hasNumber = /\d/g.test(value);
         var hasSatisfactoryLength = (value.length >= 6 && value.length < 80);
         var result = true;
-
-        if (value.toString().trim() === "") {
+        checkRepeatPassword();
+        if (value === "") {
             emptyPassword.show();
             result = false;
 
@@ -78,7 +78,7 @@ $(document).ready(function () {
         var value2 = repeatPassword.val();
         var result = true;
 
-        if (value2.toString().trim() === "") {
+        if (value2 === "") {
             emptyRepeatPassword.show();
             result = false;
 
@@ -91,73 +91,64 @@ $(document).ready(function () {
 
 
     $("#submit").click(function (e) {
+        $(".wrong").each(function () {
+            this.style.display = "none";
+        });
         if (!(checkOldPassword() && checkPassword() && checkRepeatPassword())) {
             e.preventDefault();
 
         } else {
-
+            sendForm();
         }
     });
 
-    //checks for the button click event
-    $("#myButton").click(function (e) {
+    function sendForm() {
+        var $from = $('#form');
 
-        //get the form data and then serialize that
-        dataString = $("#myAjaxRequestForm").serialize();
+        var dataPost = "";
+        $from.find("input[name]").each(function (index, node) {
+            dataPost += node.name;
+            dataPost += "=";
+            dataPost += node.value;
+            dataPost += "&";
+        });
 
-        //get the form data using another method
-        var countryCode = $("input#countryCode").val();
-        dataString = "countryCode=" + countryCode;
-
-        //make the AJAX request, dataType is set to json
-        //meaning we are expecting JSON data in response from the server
         $.ajax({
             type: "POST",
-            url: "CountryInformation",
-            data: dataString,
+            url: "/ajaxController",
+            data: dataPost,
             dataType: "json",
 
-            //if received a response from the server
             success: function (data, textStatus, jqXHR) {
-                //our country code was correct so we have some information to display
-                if (data.success) {
-                    $("#ajaxResponse").html("");
-                    $("#ajaxResponse").append("<b>Country Code:</b> " + data.countryInfo.code + "<br/>");
-                    $("#ajaxResponse").append("<b>Country Name:</b> " + data.countryInfo.name + "<br/>");
-                    $("#ajaxResponse").append("<b>Continent:</b> " + data.countryInfo.continent + "<br/>");
-                    $("#ajaxResponse").append("<b>Region:</b> " + data.countryInfo.region + "<br/>");
-                    $("#ajaxResponse").append("<b>Life Expectancy:</b> " + data.countryInfo.lifeExpectancy + "<br/>");
-                    $("#ajaxResponse").append("<b>GNP:</b> " + data.countryInfo.gnp + "<br/>");
-                }
-                //display error message
-                else {
-                    $("#ajaxResponse").html("<div><b>Country code in Invalid!</b></div>");
+                if (data.success === false) {
+                    if (data.wrongData !== undefined) {
+                        document.getElementById("wrongData").style.display = 'inherit';
+                    } else if (data.accessDenied !== undefined) {
+                        document.getElementById("accessDenied").style.display = 'inherit';
+                    } else if (data.wrongUpload !== undefined) {
+                        document.getElementById("wrongRepeatPassword").style.display = 'inherit';
+                    } else if (data.wrongOldPassword !== undefined) {
+                        document.getElementById("wrongOldPassword").style.display = 'inherit';
+                    } else if (data.equalsPasswords !== undefined) {
+                        document.getElementById("equalsPasswords").style.display = 'inherit';
+                    } else {
+                        document.getElementById("wrongDB").style.display = 'inherit';
+                    }
+
+                } else {
+                    $("#openProfile").submit();
                 }
             },
-
-            //If there was no resonse from the server
             error: function (jqXHR, textStatus, errorThrown) {
                 console.log("Something really bad happened " + textStatus);
-                $("#ajaxResponse").html(jqXHR.responseText);
+                document.getElementById("errorResponse").style.display = 'inherit';
             },
-
-            //capture the request before it was sent to server
             beforeSend: function (jqXHR, settings) {
-                //adding some Dummy data to the request
-                settings.data += "&dummyData=whatever";
-                //disable the button until we get the response
-                $('#myButton').attr("disabled", true);
             },
-
-            //this is called after the response or error functions are finsihed
-            //so that we can take some action
             complete: function (jqXHR, textStatus) {
-                //enable the button
-                $('#myButton').attr("disabled", false);
             }
-
         });
-    });
+    }
 
 });
 

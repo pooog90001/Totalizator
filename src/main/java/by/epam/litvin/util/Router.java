@@ -7,7 +7,8 @@ public class Router {
 
     private String routPath;
 
-    public Router() {};
+    public Router() {
+    }
 
     public Router(RouteType routeType, String routPath) {
         this.routeType = routeType;

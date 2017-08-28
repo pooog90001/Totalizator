@@ -16,7 +16,7 @@ import java.io.IOException;
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB
         maxFileSize=1024*1024*10,      // 10MB
         maxRequestSize = 1024 * 1024 * 15) // 15MB
-@WebServlet(name = "UploadController", urlPatterns = {"/uploadController"})
+@WebServlet(name = "UploadController", urlPatterns = {"/uploadController"}) //TODO эти значения надо в констаннты?
 public class UploadController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -24,11 +24,9 @@ public class DeleteKindOfSportCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
-
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Delete kind of sport receiver error", e);
         }
-
         return router;
     }
 }

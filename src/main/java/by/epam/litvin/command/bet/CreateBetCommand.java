@@ -19,16 +19,13 @@ public class CreateBetCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
-
 
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Handle create bet receiver error", e);
         }
 
-        return router;
+        return null; //TODO Возвращать нуль нормально?
     }
 }

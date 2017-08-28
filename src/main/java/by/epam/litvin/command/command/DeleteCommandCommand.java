@@ -19,15 +19,12 @@ public class DeleteCommandCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Delete command receiver error", e);
         }
-
-        return router;
+        return null;
     }
 }

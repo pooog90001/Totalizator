@@ -12,6 +12,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import static by.epam.litvin.constant.GeneralConstant.PAGE_NOT_FOUND;
+
 public class OpenUserSettingsCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -26,9 +28,14 @@ public class OpenUserSettingsCommand extends AbstractCommand {
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
+            if (!requestContent.getRequestAttributes().containsKey(PAGE_NOT_FOUND)) {
+                router.setRouteType(RouteType.FORWARD);
+                router.setRoutePath(PageType.ADMIN_USER.getPage());
 
-            router.setRouteType(RouteType.FORWARD);
-            router.setRoutePath(PageType.ADMIN_USER.getPage());
+            } else {
+                router.setRouteType(RouteType.REDIRECT);
+                router.setRoutePath(PageType.ERROR_404.getPage());
+            }
 
 
         } catch (ReceiverException e) {

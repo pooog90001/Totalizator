@@ -37,13 +37,11 @@ public class OpenPastCompetitionsCommand extends AbstractCommand {
                 router.setRouteType(RouteType.REDIRECT);
             }
 
-
         } catch (ReceiverException e) {
             LOGGER.log(Level.ERROR, "Open past competitions receiver error", e);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
-
         return router;
     }
 }

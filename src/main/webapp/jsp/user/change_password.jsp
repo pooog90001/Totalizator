@@ -32,19 +32,16 @@
             </div>
         </div>
 
-        <form class="w3-container w3-card-2" name="form" method="post">
+        <form class="w3-container w3-card-2" name="form" method="post" id="form">
             <input type="hidden" name="command" value="CHANGE_PASSWORD">
 
             <p>${password}:*</p>
-            <input title="${password}" class="w3-input w3-border" type="password" id="oldPassword" name="password"
-                   value="${requestScope.get('password')}">
+            <input title="${password}" class="w3-input w3-border" type="password" id="oldPassword" name="oldPassword">
             <span class="wrong w3-text-red" id="emptyOldPassword">${emptyFeild}</span>
-            <span class="wrong w3-text-red" id="wrongOldPassword">${wrongPassword}</span>
             <br>
 
             <p>New password:*</p>
-            <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password"
-                   value="${requestScope.get('password')}">
+            <input title="${password}" class="w3-input w3-border" type="password" id="password" name="password">
 
             <span class="wrong w3-text-red" id="wrongPassword">${wrongPassword}</span>
             <span class="wrong w3-text-red" id="emptyPassword">${emptyFeild}</span>
@@ -52,22 +49,38 @@
 
             <p>Repeat new password:*</p>
             <input title="${repeatPassword}" class="w3-input w3-border" type="password" id="repeatPassword"
-                   name="repeatPassword"
-                   value="${requestScope.get('repeatPassword')}">
+                   name="repeatPassword">
 
             <span class="wrong w3-text-red" id="wrongRepeatPassword">${notEqualsPasswords}</span>
             <span class="wrong w3-text-red" id="emptyRepeatPassword">${emptyFeild}</span>
-            <span class="wrong w3-text-red" id="equalsPassword">${emptyFeild}</span>
+            <span class="wrong w3-text-red" id="equalsPasswords">Old and new passwords equals</span>
+            <span class="wrong w3-text-red" id="wrongOldPassword">Wrong old password</span>
+            <span class="wrong w3-text-red" id="wrongDB">Database error</span>
+            <span class="wrong w3-text-red" id="errorResponse">Server Error</span>
             <br>
-            <input class="w3-button w3-black" type="submit" id="submit" value="Change password">
+            <input class="w3-button w3-black" type="button" id="submit" value="Change password">
 
         </form>
     </div>
     <div class="w3-third">
         <div class="w3-container"></div>
     </div>
+    <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="post">
+        <input type="hidden" name="command" value="OPEN_PROFILE">
+    </form>
 </div>
 
 </body>
-
+<link rel="stylesheet" type="text/css"
+      href="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/css/imgareaselect-default.css"/>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.min.js"></script>
+<script type="text/javascript"
+        src="${pageContext.request.contextPath}/vendors/jquery.imgareaselect-0.9.10/scripts/jquery.imgareaselect.pack.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
 <%@include file="/jsp/partial/footer.jsp" %>

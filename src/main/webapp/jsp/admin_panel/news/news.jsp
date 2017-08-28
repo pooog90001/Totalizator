@@ -76,9 +76,7 @@
                             </div>
                             <div class="w3-col s8 ">
                                 <textarea name="text" id="text" cols="70" rows="10" required
-                                          style="resize: none;" placeholder="Fill this field">
-
-                                </textarea>
+                                          style="resize: none;" placeholder="Fill this field"></textarea>
                             </div>
                         </div>
                         <div class="w3-row w3-padding-small w3-margin-top">

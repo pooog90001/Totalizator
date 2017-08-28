@@ -23,6 +23,7 @@ public enum PageType {
     CONCRETE_COMPETITION,
     CONCRETE_NEWS,
     CONCRETE_NEWS_ADD,
+    HELP,
     PROFILE,
     BLOCK,
     INDEX,

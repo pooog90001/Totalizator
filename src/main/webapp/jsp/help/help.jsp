@@ -32,10 +32,10 @@
             </span>
         </div>
         <div class="w3-card-2 w3-container">
-            <h3>If you have a problem you can write to us and we try solve your problem.</h3>
+            <h3>If you have some problems or questions you can write to us and we answer. </h3>
 
-            <form class="w3-container">
-                <input class="w3-input w3-border" type="hidden" name="command" value="PROBLEM_EMAIL"/>
+            <form class="w3-container" action="${pageContext.request.contextPath}/generalController" method="post">
+                <input class="w3-input w3-border" type="hidden" name="command" value="SEND_QUESTION_EMAIL"/>
                 <label>
                     Your email:
                     <input class="w3-input w3-border" type="email" name="email" required style="max-width: 250px;">
@@ -44,12 +44,17 @@
                 <label>
                     Problem:
                     <textarea class="w3-input w3-border" name="text" id="text" cols="30" rows="3" required
-                              style="resize: none;">
-
-                    </textarea>
+                              style="resize: none;" maxlength="1000"></textarea>
                 </label>
                 <br>
                 <input type="submit" value="Send" class="w3-button w3-theme-l3"/>
+                <c:if test="${temporary['wrongData']}">
+                    <span class="w3-text-red"> Wrong data, check fields </span>
+                </c:if>
+                <c:if test="${temporary['success']}">
+                    <span class="w3-text-green">Mail successfully sent.</span>
+                </c:if>
+
             </form>
         </div>
 

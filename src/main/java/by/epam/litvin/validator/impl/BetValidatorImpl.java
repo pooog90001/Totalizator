@@ -10,7 +10,7 @@ public class BetValidatorImpl implements BetValidator {
     private static final int SCALE = 2;
 
     @Override
-    public boolean checkBetSize(BigDecimal betSize) {
+    public boolean checkBetSize(BigDecimal betSize) { //TODO ИЕРАРХИЯ ВАЛИДАТОРОВ и PAGE TYPE
         boolean isValid = true;
 
         if (betSize != null) {

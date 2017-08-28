@@ -71,7 +71,7 @@
                 You session is empty. Reload page, and try again.
             </div>
             <div id="errorResponse" class="wrong w3-row w3-text-red" style="display: none">
-                Database or upload image error. Max image size 10 MB.
+                Server or upload image error. Max image size 10 MB.
             </div>
         </div>
     </div>

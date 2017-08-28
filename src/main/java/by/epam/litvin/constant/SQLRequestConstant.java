@@ -31,9 +31,15 @@ final public class SQLRequestConstant {
             "UPDATE user " +
                     "SET user_type = ? " +
                     "WHERE user_id = ?;";
+
     public static final String UPDATE_AVATAR_PATH =
             "UPDATE user " +
                     "SET user_avatar_url = ? " +
+                    "WHERE user_id = ?;";
+
+    public static final String UPDATE_PASSWORD =
+            "UPDATE user " +
+                    "SET user_password = ? " +
                     "WHERE user_id = ?;";
 
     public static final String UPDATE_USER_LOCK =

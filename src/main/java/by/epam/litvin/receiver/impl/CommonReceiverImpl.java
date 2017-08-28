@@ -10,19 +10,55 @@ import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
+import by.epam.litvin.mail.SenderMail;
 import by.epam.litvin.receiver.CommonReceiver;
+import by.epam.litvin.type.MailType;
 import by.epam.litvin.type.UploadType;
 import by.epam.litvin.util.Formatter;
 import by.epam.litvin.util.Packer;
+import by.epam.litvin.validator.impl.CommonValidatorImpl;
+import by.epam.litvin.validator.impl.UserValidatorImpl;
 import com.google.gson.JsonObject;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.*;
+import static by.epam.litvin.constant.RequestNameConstant.EMAIL;
 import static javax.servlet.jsp.PageContext.SESSION;
 
 public class CommonReceiverImpl implements CommonReceiver{
+
+    @Override
+    public void sendQuestionEmail(RequestContent content) throws ReceiverException {
+        UserValidatorImpl userValidator = new UserValidatorImpl();
+        CommonValidatorImpl commonValidator = new CommonValidatorImpl();
+        HashMap<String, Object> data = new HashMap<>();
+        String[] emailArr = content.getRequestParameters().get(EMAIL);
+        String[] textArr = content.getRequestParameters().get(TEXT);
+
+        if (commonValidator.isVarExist(emailArr) &&
+                commonValidator.isVarExist(textArr) &&
+                userValidator.checkEmail(emailArr[0])) {
+
+            SenderMail sender = new SenderMail(emailArr[0], textArr[0], MailType.EMAIL.getValue());
+            sender.start();
+            data.put(SUCCESS, true);
+            content.getSessionAttributes().put(TEMPORARY, data);
+
+        } else {
+            data.put(WRONG_DATA, true);
+            content.getSessionAttributes().put(TEMPORARY, data);
+        }
+
+
+    }
+
+    @Override
+    public void sendConfirmEmail(RequestContent content) throws ReceiverException {
+
+    }
 
     @Override
     public void changeLocale(RequestContent requestContent) throws ReceiverException {
@@ -76,9 +112,9 @@ public class CommonReceiverImpl implements CommonReceiver{
             content.getRequestAttributes().put(NEWS_LIST, newsList);
             content.getRequestAttributes().put(UPCOMING_GAMES, upcomingGames);
             content.getRequestAttributes().put(PAST_GAMES, pastGames);
-            content.getSessionAttributes().put("kindsOfSportLeftBar", kindsOfSportResult);
-            content.getSessionAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
-            content.getSessionAttributes().put("userImagePath", UploadType.AVATARS.getUploadFolder());
+            content.getSessionAttributes().put(KINDS_OF_SPORT_LEFT_BAR, kindsOfSportResult);
+            content.getSessionAttributes().put(NEWS_IMAGE_PATH, UploadType.NEWS.getUploadFolder());
+            content.getSessionAttributes().put(USER_IMAGE_PATH, UploadType.AVATARS.getUploadFolder());
             content.getSessionAttributes().put(USER, user);
 
         } catch (DAOException e) {
@@ -98,7 +134,7 @@ public class CommonReceiverImpl implements CommonReceiver{
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
             List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
-            competition.put("competitors", competitors);
+            competition.put(COMPETITORS, competitors);
         }
     }
 
@@ -119,7 +155,7 @@ public class CommonReceiverImpl implements CommonReceiver{
             manager.commit();
             manager.endTransaction();
 
-            requestContent.getRequestAttributes().put("statisticMap", statisticMap);
+            requestContent.getRequestAttributes().put(STATISTIC_MAP, statisticMap);
 
         } catch (DAOException e) {
             try {

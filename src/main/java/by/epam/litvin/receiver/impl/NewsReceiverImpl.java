@@ -53,9 +53,9 @@ public class NewsReceiverImpl implements NewsReceiver {
 
             formatter.formatNewsForPreview(newsList);
             content.getRequestAttributes().put(NEWS_LIST, newsList);
-            content.getRequestAttributes().put("limit", COUNT_NEWS_ON_PAGE);
-            content.getRequestAttributes().put("newsCount", newsCount);
-            content.getRequestAttributes().put("newsImagePath", UploadType.NEWS.getUploadFolder());
+            content.getRequestAttributes().put(LIMIT, COUNT_NEWS_ON_PAGE);
+            content.getRequestAttributes().put(NEWS_COUNT, newsCount);
+            content.getRequestAttributes().put(NEWS_IMAGE_PATH, UploadType.NEWS.getUploadFolder());
 
         } catch (DAOException e) {
             try {
@@ -77,17 +77,16 @@ public class NewsReceiverImpl implements NewsReceiver {
         NewsValidatorImpl newsValidator = new NewsValidatorImpl();
         CommonValidatorImpl validator = new CommonValidatorImpl();
         File uploadPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
-        Formatter formatter = new Formatter();
         Uploader uploader = new Uploader();
 
-        String[] stringPointX1 = content.getRequestParameters().get("x1");
-        String[] stringPointX2 = content.getRequestParameters().get("x2");
-        String[] stringPointY1 = content.getRequestParameters().get("y1");
-        String[] stringPointY2 = content.getRequestParameters().get("y2");
-        String[] stringHeight = content.getRequestParameters().get("height");
-        String[] stringWidth = content.getRequestParameters().get("width");
-        String[] textArray = content.getRequestParameters().get("text");
-        String[] titleArray = content.getRequestParameters().get("title");
+        String[] stringPointX1 = content.getRequestParameters().get(POINT_X1);
+        String[] stringPointX2 = content.getRequestParameters().get(POINT_X2);
+        String[] stringPointY1 = content.getRequestParameters().get(POINT_Y1);
+        String[] stringPointY2 = content.getRequestParameters().get(POINT_Y2);
+        String[] stringHeight = content.getRequestParameters().get(HEIGHT);
+        String[] stringWidth = content.getRequestParameters().get(WIDTH);
+        String[] textArray = content.getRequestParameters().get(TEXT);
+        String[] titleArray = content.getRequestParameters().get(TITLE);
         Part imagePart = content.getRequestParts().get(IMAGE);
 
         if (imagePart == null || !validator.checkParamsForInteger(stringPointX1, stringPointX2,
@@ -163,8 +162,8 @@ public class NewsReceiverImpl implements NewsReceiver {
 
     @Override
     public void deleteNews(RequestContent content) throws ReceiverException {
-        int newsId = Integer.valueOf(content.getRequestParameters().get("newsId")[0]);
-        String newsImageUrl = content.getRequestParameters().get("newsImageUrl")[0];
+        int newsId = Integer.valueOf(content.getRequestParameters().get(NEWS_ID)[0]);
+        String newsImageUrl = content.getRequestParameters().get(NEWS_IMAGE_URL)[0];
 
         File directoryPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
         File file = new File(directoryPath, newsImageUrl);
@@ -237,8 +236,8 @@ public class NewsReceiverImpl implements NewsReceiver {
             handler.commit();
             handler.endTransaction();
 
-            content.getRequestAttributes().put("newsCommentList", newsCommentList);
-            content.getRequestAttributes().put("attrNews", news);
+            content.getRequestAttributes().put(NEWS_COMMENT_LIST, newsCommentList);
+            content.getRequestAttributes().put(ATTR_NEWS, news);
 
         } catch (DAOException e) {
             try {

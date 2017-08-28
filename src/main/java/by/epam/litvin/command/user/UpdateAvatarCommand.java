@@ -20,8 +20,6 @@ public class UpdateAvatarCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
@@ -29,6 +27,6 @@ public class UpdateAvatarCommand extends AbstractCommand {
             LOGGER.log(Level.ERROR, "Update avatar receiver error", e);
         }
 
-        return router;
+        return null;
     }
 }

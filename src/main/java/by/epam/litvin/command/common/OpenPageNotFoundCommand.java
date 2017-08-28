@@ -29,7 +29,7 @@ public class OpenPageNotFoundCommand extends AbstractCommand {
             router.setRoutePath(PageType.ERROR_404.getPage());
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "page not found receiver error", e);
+            LOGGER.log(Level.ERROR, "Page not found receiver error", e);
         }
         return router;
     }

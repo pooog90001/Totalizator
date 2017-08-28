@@ -14,6 +14,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Set;
 
+import static by.epam.litvin.constant.RequestNameConstant.*;
+
 public class SignUpCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
@@ -26,14 +28,11 @@ public class SignUpCommand extends AbstractCommand {
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
-
             Set<String> keys = requestContent.getRequestAttributes().keySet();
 
-            if (keys.contains("wrongEmail") ||
-                    keys.contains("wrongName") ||
-                    keys.contains("wrongPassword") ||
-                    keys.contains("wrongRepeatPassword") ||
-                    keys.contains("emailExists")) {
+            if (keys.contains(WRONG_EMAIL) || keys.contains(WRONG_NAME) ||
+                    keys.contains(WRONG_PASSWORD) || keys.contains(WRONG_REPEAT_PASSWORD) ||
+                    keys.contains(EMAIL_EXISTS)) {
                 router.setRouteType(RouteType.FORWARD);
                 router.setRoutePath(PageType.SIGN_UP.getPage());
 
@@ -43,11 +42,10 @@ public class SignUpCommand extends AbstractCommand {
             }
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Sign up receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }
-
         return router;
     }
 }

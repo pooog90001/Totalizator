@@ -25,7 +25,6 @@ public class CreateCommandCommand extends AbstractCommand {
 
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
-
             router.setRoutePath(PageType.ADMIN_COMMAND_ADD.getPage());
             router.setRouteType(RouteType.REDIRECT);
 

@@ -14,14 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.litvin.constant.GeneralConstant.NEW_NAME;
-import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
+import static by.epam.litvin.constant.GeneralConstant.*;
+import static by.epam.litvin.constant.RequestNameConstant.WRONG_NAME;
 
 public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     @Override
     public void openCompetitionTypeSetting(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl validator = new CommonValidatorImpl();
-        String[] errorNames = {"wrongName", "duplicateName"};
+        String[] errorNames = {WRONG_NAME, DUPLICATE_NAME};
 
         for (String errorName : errorNames) {
             String[] error = requestContent.getRequestParameters().get(errorName);
@@ -39,7 +39,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             manager.commit();
             manager.endTransaction();
 
-            requestContent.getRequestAttributes().put("competitionTypes", typesList);
+            requestContent.getRequestAttributes().put(COMPETITION_TYPES, typesList);
 
         } catch (DAOException e) {
             try {
@@ -57,7 +57,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         CompetitionTypeValidatorImpl validator = new CompetitionTypeValidatorImpl();
         String[] newNameArr = requestContent.getRequestParameters().get(NEW_NAME);
-        String[] stringId = requestContent.getRequestParameters().get("competitionTypeId");
+        String[] stringId = requestContent.getRequestParameters().get(COMPETITION_TYPE_ID);
 
         if (!commonValidator.isVarExist(newNameArr) || !validator.isNameValid(newNameArr[0].trim()) ||
                 !commonValidator.isVarExist(stringId) || !commonValidator.isInteger(stringId[0])) {
@@ -95,11 +95,11 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     public void createCompetitionType(RequestContent requestContent) throws ReceiverException {
         CompetitionTypeValidatorImpl validator = new CompetitionTypeValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
-        String[] typeNameArr = requestContent.getRequestParameters().get("name");
+        String[] typeNameArr = requestContent.getRequestParameters().get(NAME);
         Map<String, Object> data = new HashMap<>();
 
         if (!commonValidator.isVarExist(typeNameArr) || !validator.isNameValid(typeNameArr[0].trim())) {
-            data.put("wrongName", true);
+            data.put(WRONG_NAME, true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
@@ -118,7 +118,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
             manager.endTransaction();
 
             if (!isCreated) {
-                data.put("duplicateName", true);
+                data.put(DUPLICATE_NAME, true);
                 requestContent.getSessionAttributes().put(TEMPORARY, data);
             }
 
@@ -136,7 +136,7 @@ public class CompetitionTypeReceiverImpl implements CompetitonTypeReceiver {
     @Override
     public void deleteCompetitionType(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
-        String[] stringId = requestContent.getRequestParameters().get("competitionTypeId");
+        String[] stringId = requestContent.getRequestParameters().get(COMPETITION_TYPE_ID);
 
         if (!commonValidator.isVarExist(stringId) || !commonValidator.isInteger(stringId[0])) {
             requestContent.setAjaxSuccess(false);

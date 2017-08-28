@@ -29,7 +29,7 @@ public class OpenMainCommand extends AbstractCommand {
             router.setRoutePath(PageType.MAIN.getPage());
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Open main receiver error", e);
             router.setRouteType(RouteType.REDIRECT);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
         }

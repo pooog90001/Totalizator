@@ -30,11 +30,10 @@ public class OpenCompetitionsByTypeCommand extends AbstractCommand {
             router.setRouteType(RouteType.FORWARD);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Open concrete competition receiver error", e);
+            LOGGER.log(Level.ERROR, "Open competitions by type receiver error", e);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
-
         return router;
     }
 }

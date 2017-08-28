@@ -42,7 +42,6 @@ public class OpenConcreteCompetitionCommand extends AbstractCommand {
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
-
         return router;
     }
 }

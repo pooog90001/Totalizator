@@ -30,13 +30,12 @@ public class AjaxController  extends HttpServlet {
         AbstractCommand executionCommand;
         RequestContent requestContent = new RequestContent();
 
-
         requestContent.extractValues(req);
         executionCommand = new FactoryCommand().initCommand(requestContent);
         executionCommand.execute(requestContent);
         requestContent.insertAttributes(req);
         JsonObject json = requestContent.getAjaxResult();
         resp.getWriter().println(json.toString());
-        resp.getWriter().close();
+        resp.getWriter().close(); //TODO Что делать с этой желтой областью?
     }
 }

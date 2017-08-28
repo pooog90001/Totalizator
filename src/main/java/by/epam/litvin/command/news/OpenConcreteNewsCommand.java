@@ -38,11 +38,10 @@ public class OpenConcreteNewsCommand extends AbstractCommand {
             }
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Open concrete news receiver error", e);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }
-
         return router;
     }
 }

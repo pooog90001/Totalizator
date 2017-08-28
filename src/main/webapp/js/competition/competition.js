@@ -34,19 +34,19 @@ selectKind.onchange = function (e) {
         innerHtml += "<div class='w3-col s3'>";
         innerHtml += "<div class='w3-col s2 w3-padding'>L:</div>";
         innerHtml += "<div class='w3-col s10'>";
-        innerHtml += "<input class='w3-input w3' id='less_total_coeff' type='number' value='1.00' name='less_total_coeff' step='0.01' required value='' min='1' max='20000'>";
+        innerHtml += "<input class='w3-input w3' id='lessTotalCoeff' type='number' value='1.00' name='lessTotalCoeff' step='0.01' required value='' min='1' max='20000'>";
         innerHtml += "</div>";
         innerHtml += "</div>";
         innerHtml += "<div class='w3-col s3'>";
         innerHtml += "<div class='w3-col s2 w3-padding'>M:</div>";
         innerHtml += "<div class='w3-col s10'>";
-        innerHtml += "<input class='w3-input w3' id='more_total_coeff' type='number' value='1.00' name='more_total_coeff' step='0.01' required value='' min='1' max='20000'>";
+        innerHtml += "<input class='w3-input w3' id='moreTotalCoeff' type='number' value='1.00' name='moreTotalCoeff' step='0.01' required value='' min='1' max='20000'>";
         innerHtml += "</div>";
         innerHtml += "</div>";
         innerHtml += "<div class='w3-col s3'>";
         innerHtml += "<div class='w3-col s2 w3-padding'>X:</div>";
         innerHtml += "<div class='w3-col s10'>";
-        innerHtml += "<input class='w3-input w3' id='standoff_coeff' type='number' value='1.00' name='standoff_coeff' step='0.01' required value='' min='1' max='20000'>";
+        innerHtml += "<input class='w3-input w3' id='standoffCoeff' type='number' value='1.00' name='standoffCoeff' step='0.01' required value='' min='1' max='20000'>";
         innerHtml += "</div>";
         innerHtml += "</div>";
         innerHtml += "</div>";
@@ -126,9 +126,9 @@ function checkBeforeCreate(element) {
     var coeffs = document.getElementsByName("competitorCoeff");
     var commands = document.getElementsByName("commandId");
     var total = document.getElementById("total");
-    var lessTotalCoeff = document.getElementById("less_total_coeff");
-    var moreTotalCoeff = document.getElementById("more_total_coeff");
-    var standoffCoeff = document.getElementById("standoff_coeff");
+    var lessTotalCoeff = document.getElementById("lessTotalCoeff");
+    var moreTotalCoeff = document.getElementById("moreTotalCoeff");
+    var standoffCoeff = document.getElementById("standoffCoeff");
     var isActive = document.getElementById("isActive");
     var isValid = true;
 
@@ -190,9 +190,9 @@ checkForActive = function (e) {
     var isValid = true;
     var competitorsCoeff = document.getElementsByTagName('competitorCoeff');
     var total = document.getElementById('total');
-    var lessTotalCoeff = document.getElementById('less_total_coeff');
-    var moreTotalCoeff = document.getElementById('more_total_coeff');
-    var standoffCoeff = document.getElementById('standoff_coeff');
+    var lessTotalCoeff = document.getElementById('lessTotalCoeff');
+    var moreTotalCoeff = document.getElementById('moreTotalCoeff');
+    var standoffCoeff = document.getElementById('standoffCoeff');
     var errorBox = document.getElementById('errorBox');
     var competitionType = document.getElementById('competitionType');
     var kindOfSport = document.getElementById('selectKind');

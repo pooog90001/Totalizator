@@ -37,9 +37,8 @@ public class UpdateStateCompetitionCommand extends AbstractCommand {
                 router.setRouteType(RouteType.REDIRECT);
             }
 
-
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Handle receiver error", e);
+            LOGGER.log(Level.ERROR, "Update state competition receiver error", e);
             router.setRoutePath(PageType.ERROR_SERVER.getPage());
             router.setRouteType(RouteType.REDIRECT);
         }

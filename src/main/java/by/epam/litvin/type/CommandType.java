@@ -6,10 +6,7 @@ import by.epam.litvin.command.bet.CreateBetCommand;
 import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
 import by.epam.litvin.command.comment.CreateCommentCommand;
-import by.epam.litvin.command.common.ChangeLocaleCommand;
-import by.epam.litvin.command.common.OpenAdminStatisticCommand;
-import by.epam.litvin.command.common.OpenMainCommand;
-import by.epam.litvin.command.common.OpenPageNotFoundCommand;
+import by.epam.litvin.command.common.*;
 import by.epam.litvin.command.competition.*;
 import by.epam.litvin.command.competitiontype.CreateCompetitionTypeCommand;
 import by.epam.litvin.command.competitiontype.DeleteCompetitionTypeCommand;
@@ -56,13 +53,13 @@ public enum CommandType {
         }
     },
 
-    WITHDRAW_MONEY(new OpenProfileCommand(new UserReceiverImpl())) {
+    WITHDRAW_MONEY(new WithdrawMoneyCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).withdrawMoney(content);
         }
     },
 
-    ADD_MONEY(new OpenProfileCommand(new UserReceiverImpl())) {
+    ADD_MONEY(new AddMoneyCommand(new UserReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((UserReceiverImpl) getCommand().getReceiver()).addMoney(content);
         }
@@ -89,6 +86,18 @@ public enum CommandType {
     CHANGE_LOCALE(new ChangeLocaleCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((CommonReceiverImpl) getCommand().getReceiver()).changeLocale(content);
+        }
+    },
+
+    SEND_CONFIRM_EMAIL(new SendConfirmEmailCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).sendConfirmEmail(content);
+        }
+    },
+
+    SEND_QUESTION_EMAIL(new SendQuestionEmailCommand(new CommonReceiverImpl())) {
+        public void doReceiver(RequestContent content) throws ReceiverException {
+            ((CommonReceiverImpl) getCommand().getReceiver()).sendQuestionEmail(content);
         }
     },
 

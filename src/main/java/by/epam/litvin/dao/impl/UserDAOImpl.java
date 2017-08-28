@@ -197,6 +197,25 @@ public class UserDAOImpl extends DAO<UserEntity> {
 
         } catch (SQLException e) {
             if (!CAN_NOT_DELETE_OR_UPDATE.equals(e.getSQLState())) {
+                throw new DAOException("Update avatar error ", e);
+            }
+        }
+        return isUpdated;
+    }
+
+    public boolean updatePassword(UserEntity entity) throws DAOException {
+        boolean isUpdated = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.UPDATE_PASSWORD)) {
+
+            statement.setString(1, entity.getPassword());
+            statement.setInt(2, entity.getId());
+
+            isUpdated = statement.executeUpdate() == 1;
+
+
+        } catch (SQLException e) {
+            if (!CAN_NOT_DELETE_OR_UPDATE.equals(e.getSQLState())) {
                 throw new DAOException("Create user error ", e);
             }
         }

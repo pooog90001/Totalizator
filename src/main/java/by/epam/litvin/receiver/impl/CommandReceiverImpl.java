@@ -25,7 +25,7 @@ public class CommandReceiverImpl implements CommandReceiver {
     @Override
     public void openCommandSetting(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
-        String[] errorNames = {"wrongData", "duplicateName"};
+        String[] errorNames = {WRONG_DATA, DUPLICATE_NAME};
 
         for (String name : errorNames) {
             String[] error = requestContent.getRequestParameters().get(name);
@@ -45,8 +45,8 @@ public class CommandReceiverImpl implements CommandReceiver {
             manager.commit();
             manager.endTransaction();
 
-            requestContent.getRequestAttributes().put("kindsOfSport", kindOfSportList);
-            requestContent.getRequestAttributes().put("commands", commandList);
+            requestContent.getRequestAttributes().put(KINDS_OF_SPORT, kindOfSportList);
+            requestContent.getRequestAttributes().put(COMMANDS, commandList);
 
         } catch (DAOException e) {
             try {
@@ -102,7 +102,7 @@ public class CommandReceiverImpl implements CommandReceiver {
         CommandValidatorImpl validator = new CommandValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] stringSportId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
-        String[] commandNameArr = requestContent.getRequestParameters().get("name");
+        String[] commandNameArr = requestContent.getRequestParameters().get(NAME);
         requestContent.getSessionAttributes().remove(TEMPORARY);
         Map<String, Object> data = new HashMap<>();
 
@@ -128,7 +128,7 @@ public class CommandReceiverImpl implements CommandReceiver {
             manager.endTransaction();
 
             if (!isCreated) {
-                data.put("duplicateName", true);
+                data.put(DUPLICATE_NAME, true);
                 requestContent.getSessionAttributes().put(TEMPORARY, data);
             }
 
@@ -201,7 +201,7 @@ public class CommandReceiverImpl implements CommandReceiver {
             manager.commit();
             manager.endTransaction();
 
-            object.add("commands", element);
+            object.add(COMMANDS, element);
             requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {

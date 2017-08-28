@@ -20,8 +20,6 @@ public class UpdatePasswordCommand extends AbstractCommand {
 
     @Override
     public Router execute(RequestContent requestContent) {
-        Router router = new Router();
-
         try {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
@@ -29,6 +27,6 @@ public class UpdatePasswordCommand extends AbstractCommand {
             LOGGER.log(Level.ERROR, "Update password receiver error", e);
         }
 
-        return router;
+        return null;
     }
 }

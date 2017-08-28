@@ -1,4 +1,4 @@
-package by.epam.litvin.command.user;
+package by.epam.litvin.command.common;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.content.RequestContent;
@@ -10,11 +10,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class UpdateUserRoleCommand extends AbstractCommand {
+public class SendConfirmEmailCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-
-    public UpdateUserRoleCommand(Receiver receiver) {
+    public SendConfirmEmailCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -24,7 +23,7 @@ public class UpdateUserRoleCommand extends AbstractCommand {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Update user role receiver error", e);
+            LOGGER.log(Level.ERROR, "Send confirm email receiver error", e);
         }
         return null;
     }

@@ -47,7 +47,7 @@ $(document).ready(function() {
        var hasNumber = /\d/g.test(value);
        var hasSatisfactoryLength = (value.length >= 6 && value.length < 80);
        var result = true;
-
+       checkRepeatPassword();
        if(value === "") {
            emptyPassword.show();
            result = false;

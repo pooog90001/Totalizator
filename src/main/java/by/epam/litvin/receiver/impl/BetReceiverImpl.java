@@ -5,7 +5,6 @@ import by.epam.litvin.bean.CompetitionEntity;
 import by.epam.litvin.bean.CompetitorEntity;
 import by.epam.litvin.bean.UserEntity;
 import by.epam.litvin.content.RequestContent;
-import by.epam.litvin.dao.CompetitionDAO;
 import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.dao.impl.BetDAOImpl;
 import by.epam.litvin.dao.impl.CompetitionDAOImpl;
@@ -16,7 +15,6 @@ import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.BetReceiver;
 import by.epam.litvin.type.ExpectResultType;
 import by.epam.litvin.util.Formatter;
-import by.epam.litvin.validator.CommonValidator;
 import by.epam.litvin.validator.CompetitionValidator;
 import by.epam.litvin.validator.UserValidator;
 import by.epam.litvin.validator.impl.BetValidatorImpl;
@@ -26,22 +24,18 @@ import by.epam.litvin.validator.impl.UserValidatorImpl;
 import com.google.gson.Gson;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Predicate;
 
-import static by.epam.litvin.constant.GeneralConstant.ACCESS_DENIED;
-import static by.epam.litvin.constant.GeneralConstant.USER;
+import static by.epam.litvin.constant.GeneralConstant.*;
 
 public class BetReceiverImpl implements BetReceiver {
     @Override
     public void createBet(RequestContent content) throws ReceiverException {
-        String[] stringOnCommand = content.getRequestParameters().get("onCommand");
-        String[] stringCompetitionId = content.getRequestParameters().get("competitionId");
-        String[] stringValue = content.getRequestParameters().get("value");
-        String[] stringCash = content.getRequestParameters().get("cash");
-        UserEntity user = (UserEntity) content.getSessionAttributes().get("user");
+        String[] stringOnCommand = content.getRequestParameters().get(ON_COMMAND);
+        String[] stringCompetitionId = content.getRequestParameters().get(COMPETITION_ID);
+        String[] stringValue = content.getRequestParameters().get(VALUE);
+        String[] stringCash = content.getRequestParameters().get(CASH);
+        UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         UserValidator userValidator = new UserValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         CompetitionValidator competitionValidator = new CompetitionValidatorImpl();
@@ -50,16 +44,14 @@ public class BetReceiverImpl implements BetReceiver {
 
         if (!userValidator.isUser(user)) {
             content.setAjaxSuccess(false);
-            content.getAjaxResult().add(ACCESS_DENIED,
-                    new Gson().toJsonTree(true));
+            content.getAjaxResult().add(ACCESS_DENIED, new Gson().toJsonTree(true));
             return;
         }
 
         if (!commonValidator.isVarExist(stringOnCommand) ||
-                !commonValidator.isVarExist(stringCash) ) {
+                !commonValidator.isVarExist(stringCash)) {
             content.setAjaxSuccess(false);
-            content.getAjaxResult().add("dataEmpty",
-                    new Gson().toJsonTree(true));
+            content.getAjaxResult().add(DATA_EMPTY, new Gson().toJsonTree(true));
             return;
         }
 
@@ -70,15 +62,14 @@ public class BetReceiverImpl implements BetReceiver {
         ExpectResultType expectedResult = null;
 
         if (onCommand) {
-           competitorId = Integer.valueOf(stringValue[0]);
+            competitorId = Integer.valueOf(stringValue[0]);
         } else {
             expectedResult = ExpectResultType.valueOf(stringValue[0].toUpperCase());
         }
 
         if (!betValidator.checkBetSize(cash)) {
             content.setAjaxSuccess(false);
-            content.getAjaxResult().add("wrongCash",
-                    new Gson().toJsonTree(true));
+            content.getAjaxResult().add(WRONG_CASH, new Gson().toJsonTree(true));
             return;
         }
 
@@ -95,8 +86,7 @@ public class BetReceiverImpl implements BetReceiver {
 
             if (cash.compareTo(actualUser.getCash()) == 1) {
                 content.setAjaxSuccess(false);
-                content.getAjaxResult().add("littleMoney",
-                        new Gson().toJsonTree(true));
+                content.getAjaxResult().add(LITTLE_MONEY, new Gson().toJsonTree(true));
                 manager.rollback();
                 manager.endTransaction();
                 return;
@@ -107,7 +97,7 @@ public class BetReceiverImpl implements BetReceiver {
             if (!competitionValidator.isValidForBet(game)) {
                 manager.rollback();
                 manager.endTransaction();
-                content.getAjaxResult().add("wrongCompetition",
+                content.getAjaxResult().add(WRONG_COMPETITION,
                         new Gson().toJsonTree(true));
                 return;
             }
@@ -116,7 +106,7 @@ public class BetReceiverImpl implements BetReceiver {
 
             if (!onCommand) {
                 competitorId = competitors.stream()
-                        .findFirst().filter(c-> c.getCommandId() == finalCompetitionId)
+                        .findFirst().filter(c -> c.getCommandId() == finalCompetitionId)
                         .orElse(null).getId();
             } else {
                 isTransactionSuccess = competitors.stream()
@@ -138,8 +128,7 @@ public class BetReceiverImpl implements BetReceiver {
                 manager.commit();
                 content.getSessionAttributes().put(USER, actualUser);
             } else {
-                content.getAjaxResult().add("wrongCreation",
-                        new Gson().toJsonTree(true));
+                content.getAjaxResult().add(WRONG_CREATION, new Gson().toJsonTree(true));
                 manager.rollback();
             }
 

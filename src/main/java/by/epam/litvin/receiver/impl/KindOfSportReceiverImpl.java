@@ -14,15 +14,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static by.epam.litvin.constant.GeneralConstant.KIND_OF_SPORT_ID;
-import static by.epam.litvin.constant.GeneralConstant.TEMPORARY;
+import static by.epam.litvin.constant.GeneralConstant.*;
 
 public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
     @Override
     public void openKindOfSportSetting(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
-        String[] errorNames = {"wrongData", "duplicateName", "wrongCount"};
+        String[] errorNames = {WRONG_DATA, DUPLICATE_NAME, WRONG_COUNT};
 
         for (String errorName : errorNames) {
             String[] error = requestContent.getRequestParameters().get(errorName);
@@ -40,7 +39,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             manager.commit();
             manager.endTransaction();
 
-            requestContent.getRequestAttributes().put("kindOfSportList", kindOfSportList);
+            requestContent.getRequestAttributes().put(KIND_OF_SPORT_LIST, kindOfSportList);
 
         } catch (DAOException e) {
                 try {
@@ -57,7 +56,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
     public void updateKindOfSport(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         KindOfSportValidatorImpl validator = new KindOfSportValidatorImpl();
-        String[] newNameArr = requestContent.getRequestParameters().get("newName");
+        String[] newNameArr = requestContent.getRequestParameters().get(NEW_NAME);
         String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
 
         if (!commonValidator.isVarExist(newNameArr) || !commonValidator.isVarExist(stringId) ||
@@ -95,15 +94,15 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
     public void createKindOfSport(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         KindOfSportValidatorImpl validator = new KindOfSportValidatorImpl();
-        String[] stringCompetitorsCount = requestContent.getRequestParameters().get("count");
-        String[] sportNameArr = requestContent.getRequestParameters().get("name");
+        String[] stringCompetitorsCount = requestContent.getRequestParameters().get(COUNT);
+        String[] sportNameArr = requestContent.getRequestParameters().get(NAME);
         Map<String, Object> data = new HashMap<>();
 
         if (!commonValidator.isVarExist(stringCompetitorsCount) ||
                 !commonValidator.isInteger(stringCompetitorsCount[0]) ||
                 !commonValidator.isVarExist(sportNameArr) ||
                 !validator.isNameValid(sportNameArr[0].trim())) {
-            data.put("wrongData", true);
+            data.put(WRONG_DATA, true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
@@ -111,7 +110,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
         int competitorsCount = Integer.valueOf(stringCompetitorsCount[0]);
 
         if (!validator.isCompetitorsCountValid(competitorsCount)) {
-            data.put("wrongCount", true);
+            data.put(WRONG_COUNT, true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
@@ -132,7 +131,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
             manager.endTransaction();
 
             if (!isCreated) {
-                data.put("duplicateName", true);
+                data.put(DUPLICATE_NAME, true);
                 requestContent.getSessionAttributes().put(TEMPORARY, data);
             }
 
@@ -150,7 +149,7 @@ public class KindOfSportReceiverImpl implements KindOfSportReceiver {
 
     @Override
     public void deleteKindOfSport(RequestContent requestContent) throws ReceiverException {
-        String[] stringId = requestContent.getRequestParameters().get("kindOfSportId");
+        String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
 
         if (!commonValidator.isVarExist(stringId) || !commonValidator.isInteger(stringId[0])) {

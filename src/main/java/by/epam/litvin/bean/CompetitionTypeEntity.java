@@ -6,6 +6,9 @@ public class CompetitionTypeEntity extends Entity {
     private int id;
     private String name;
 
+    /**
+     * Default constructor.
+     */
     public CompetitionTypeEntity() {}
 
     public int getId() {

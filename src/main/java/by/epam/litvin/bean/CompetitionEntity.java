@@ -19,8 +19,20 @@ public class CompetitionEntity extends Entity {
     private BigDecimal lessTotal;
     private BigDecimal standoff;
 
+    /**
+     * Default constructor.
+     */
     public CompetitionEntity() {}
 
+    /**
+     * Constructor with params.
+     *
+     * @param name
+     * @param dateStart
+     * @param dateFinish
+     * @param isActive
+     * @param typeId
+     */
     public CompetitionEntity(String name, Date dateStart, Date dateFinish, boolean isActive, int typeId) {
         this.name = name;
         this.dateStart = dateStart;
@@ -29,98 +41,218 @@ public class CompetitionEntity extends Entity {
         this.typeId = typeId;
     }
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get name.
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name.
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get description.
+     *
+     * @return
+     */
     public String getDescripton() {
         return descripton;
     }
 
+    /**
+     * Set description.
+     *
+     * @param descripton
+     */
     public void setDescripton(String descripton) {
         this.descripton = descripton;
     }
 
+    /**
+     * Get date start.
+     *
+     * @return
+     */
     public Date getDateStart() {
         return dateStart;
     }
 
+    /**
+     * Set date start.
+     *
+     * @param dateStart
+     */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
+    /**
+     * Get date finish.
+     *
+     * @return
+     */
     public Date getDateFinish() {
         return dateFinish;
     }
 
+    /**
+     * Set date finish.
+     *
+     * @param dateFinish
+     */
     public void setDateFinish(Date dateFinish) {
         this.dateFinish = dateFinish;
     }
 
+    /**
+     * Get active.
+     *
+     * @return
+     */
     public Boolean getActive() {
         return isActive;
     }
 
+    /**
+     * Set active.
+     *
+     * @param active
+     */
     public void setActive(Boolean active) {
         isActive = active;
     }
 
+    /**
+     * Get type ID.
+     *
+     * @return
+     */
     public int getTypeId() {
         return typeId;
     }
 
+    /**
+     * Set type ID.
+     *
+     * @param typeId
+     */
     public void setTypeId(int typeId) {
         this.typeId = typeId;
     }
 
+    /**
+     * Get total.
+     *
+     * @return
+     */
     public BigDecimal getTotal() {
         return total;
     }
 
+    /**
+     * Set total.
+     *
+     * @param total
+     */
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
+    /**
+     * Get more total.
+     *
+     * @return
+     */
     public BigDecimal getMoreTotal() {
         return moreTotal;
     }
 
+    /**
+     * Set more total.
+     *
+     * @param moreTotal
+     */
     public void setMoreTotal(BigDecimal moreTotal) {
         this.moreTotal = moreTotal;
     }
 
+    /**
+     * Get less total.
+     *
+     * @return
+     */
     public BigDecimal getLessTotal() {
         return lessTotal;
     }
 
+    /**
+     * Set less total.
+     *
+     * @param lessTotal
+     */
     public void setLessTotal(BigDecimal lessTotal) {
         this.lessTotal = lessTotal;
     }
 
+    /**
+     * Get standoff.
+     *
+     * @return
+     */
     public BigDecimal getStandoff() {
         return standoff;
     }
 
+    /**
+     * Set standoff.
+     *
+     * @param standoff
+     */
     public void setStandoff(BigDecimal standoff) {
         this.standoff = standoff;
     }
 
+    /**
+     * Get result filled.
+     *
+     * @return
+     */
     public boolean getResultFilled() {
         return isResultFilled;
     }
 
+    /**
+     * Set result filled.
+     *
+     * @param resultFilled
+     */
     public void setResultFilled(boolean resultFilled) {
         isResultFilled = resultFilled;
     }

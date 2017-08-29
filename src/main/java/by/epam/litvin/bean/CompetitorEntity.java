@@ -12,52 +12,115 @@ public class CompetitorEntity extends Entity {
     private Boolean isWin;
     private int result;
 
+    /**
+     * Default constructor.
+     */
     public CompetitorEntity() {}
 
+    /**
+     * Get result.
+     *
+     * @return
+     */
     public int getResult() {
         return result;
     }
 
+    /**
+     * Set result.
+     *
+     * @param result
+     */
     public void setResult(int result) {
         this.result = result;
     }
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get team ID.
+     *
+     * @return
+     */
     public int getTeamId() {
         return teamId;
     }
 
+    /**
+     * Set team ID.
+     *
+     * @param teamId
+     */
     public void setTeamId(int teamId) {
         this.teamId = teamId;
     }
 
+    /**
+     * Get competition ID.
+     *
+     * @return
+     */
     public int getCompetitionId() {
         return competitionId;
     }
 
+    /**
+     * Set competition ID.
+     *
+     * @param competitionId
+     */
     public void setCompetitionId(int competitionId) {
         this.competitionId = competitionId;
     }
 
+    /**
+     * Get win.
+     *
+     * @return
+     */
     public Boolean getWin() {
         return isWin;
     }
 
+    /**
+     * Set win.
+     *
+     * @param win
+     */
     public void setWin(Boolean win) {
         isWin = win;
     }
 
+    /**
+     * Get win coefficient.
+     *
+     * @return
+     */
     public BigDecimal getWinCoeff() {
         return winCoeff;
     }
 
+    /**
+     * Set win coefficient.
+     *
+     * @param winCoeff
+     */
     public void setWinCoeff(BigDecimal winCoeff) {
         this.winCoeff = winCoeff;
     }

@@ -12,52 +12,115 @@ public class CommentEntity extends Entity {
     private int newsId;
     private int userId;
 
+    /**
+     * Default constructor.
+     */
     public CommentEntity() {}
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get text.
+     *
+     * @return
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Set text.
+     *
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Get blocked.
+     *
+     * @return
+     */
     public Boolean getBlocked() {
         return isBlocked;
     }
 
+    /**
+     * Set blocked.
+     *
+     * @param blocked
+     */
     public void setBlocked(Boolean blocked) {
         isBlocked = blocked;
     }
 
+    /**
+     * Get post date.
+     *
+     * @return
+     */
     public Date getPostDate() {
         return postDate;
     }
 
+    /**
+     * Set post date.
+     *
+     * @param postDate
+     */
     public void setPostDate(Date postDate) {
         this.postDate = postDate;
     }
 
+    /**
+     * Get news ID.
+     *
+     * @return
+     */
     public int getNewsId() {
         return newsId;
     }
 
+    /**
+     * Set news ID.
+     *
+     * @param newsId
+     */
     public void setNewsId(int newsId) {
         this.newsId = newsId;
     }
 
+    /**
+     * Get user ID.
+     *
+     * @return
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Set user ID.
+     *
+     * @param userId
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }

@@ -5,24 +5,48 @@ import by.epam.litvin.type.RouteType;
 public class Router {
     private RouteType routeType = RouteType.FORWARD;
 
-    private String routPath;
+    private String routePath;
 
+    /**
+     * Default constructor.
+     */
     public Router() {
     }
 
-    public Router(RouteType routeType, String routPath) {
+    /**
+     * Constructor with route type and route path parameters.
+     *
+     * @param routeType
+     * @param routePath
+     */
+    public Router(RouteType routeType, String routePath) {
         this.routeType = routeType;
-        this.routPath = routPath;
+        this.routePath = routePath;
     }
 
-    public Router(String routPath) {
-        this.routPath = routPath;
+    /**
+     * Constructor with route path parameters.
+     *
+     * @param routePath
+     */
+    public Router(String routePath) {
+        this.routePath = routePath;
     }
 
+    /**
+     * Get route type. rout
+     *
+     * @return
+     */
     public RouteType getRouteType() {
         return routeType;
     }
 
+    /**
+     * Set route type.
+     *
+     * @param routeType
+     */
     public void setRouteType(RouteType routeType) {
         if (routeType == null) {
             this.routeType = RouteType.FORWARD;
@@ -30,11 +54,21 @@ public class Router {
         this.routeType = routeType;
     }
 
+    /**
+     * Get route path.
+     *
+     * @return
+     */
     public String getRoutePath() {
-        return routPath;
+        return routePath;
     }
 
+    /**
+     * Set route path.
+     *
+     * @param routPath
+     */
     public void setRoutePath(String routPath) {
-        this.routPath = routPath;
+        this.routePath = routePath;
     }
 }

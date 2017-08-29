@@ -22,6 +22,14 @@ abstract class AbstractController extends HttpServlet {
         executeRequest(req, resp);
     }
 
+    /**
+     * Execute request.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     protected void executeRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
         AbstractCommand executionCommand;

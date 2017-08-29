@@ -28,12 +28,20 @@ public class ConnectionPool {
     private static AtomicBoolean isCreated = new AtomicBoolean(false);
     private static ConnectionPool instance;
 
+    /**
+     * Default constructor.
+     */
     private ConnectionPool() {
         config = new ConnectionPoolConfig();
         availableConns = new ArrayBlockingQueue<>(config.getPoolCapacity());
         usedConns = new ArrayBlockingQueue<>(config.getPoolCapacity());
     }
 
+    /**
+     * Get instance.
+     *
+     * @return
+     */
     public static ConnectionPool getInstance() {
         if (!isCreated.get()) {
             locker.lock();
@@ -47,13 +55,24 @@ public class ConnectionPool {
         return instance;
     }
 
-
+    /**
+     * Create connection.
+     *
+     * @return
+     * @throws SQLException
+     */
     private ProxyConnection createConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(config.getUrl(), config.getProperties());
         LOGGER.log(Level.INFO, "New connection created");
         return new ProxyConnection(connection);
     }
 
+    /**
+     * Retrieve connection.
+     *
+     * @return
+     * @throws ConnectionPoolException
+     */
     public ProxyConnection retrieveConnection() throws ConnectionPoolException {
         ProxyConnection newConn;
         try {
@@ -69,6 +88,11 @@ public class ConnectionPool {
         return usedConns.offer(newConn) ? newConn : null;
     }
 
+    /**
+     * Put back connection.
+     *
+     * @param connection
+     */
     public void putbackConnection(ProxyConnection connection) {
         if (connection != null) {
             if (usedConns.remove(connection)) {
@@ -77,6 +101,11 @@ public class ConnectionPool {
         }
     }
 
+    /**
+     * Get available connections count.
+     *
+     * @return
+     */
     public int getAvailableConnsCount() {
         int result;
 
@@ -90,7 +119,11 @@ public class ConnectionPool {
         return result;
     }
 
-
+    /**
+     * Destroy pool.
+     *
+     * @throws ConnectionPoolException
+     */
     public void destroyPool() throws ConnectionPoolException {
         try {
             for (ProxyConnection availableConn : availableConns) {

@@ -16,6 +16,11 @@ public class Formatter {
     private static final int COUNT_SYMBOLS_ON_NEWS_PREVIEW = 100;
     private static final String DATE_FORMAT = "yyyy-MM-dd HH:mm";
 
+    /**
+     * Format news for preview.
+     *
+     * @param newsList
+     */
     public void formatNewsForPreview(List<NewsEntity> newsList) {
         if (newsList == null) {
             return;
@@ -29,12 +34,30 @@ public class Formatter {
         }
     }
 
+    /**
+     * Format to cash.
+     *
+     * @param decimal
+     * @return
+     */
     public BigDecimal formatToCash(BigDecimal decimal) {
 
         return decimal == null ? null :
                 decimal.setScale(BET_CASH_SCALE, BigDecimal.ROUND_DOWN);
     }
 
+    /**
+     * Format image.
+     *
+     * @param image
+     * @param pointX1
+     * @param pointX2
+     * @param pointY1
+     * @param pointY2
+     * @param height
+     * @param width
+     * @return
+     */
     public BufferedImage formatImage(BufferedImage image,
                                      int pointX1,
                                      int pointX2,
@@ -64,6 +87,13 @@ public class Formatter {
         return image;
     }
 
+    /**
+     * Format to start index.
+     *
+     * @param page
+     * @param countItemsOnPage
+     * @return
+     */
     public int formatToStartIndex(int page, int countItemsOnPage) {
         if (page < 1) {
             page = 1;
@@ -74,6 +104,12 @@ public class Formatter {
         return (page - 1) * countItemsOnPage;
     }
 
+    /**
+     * Format to page.
+     *
+     * @param pageArr
+     * @return
+     */
     public int formatToPage(String[] pageArr) {
         int page = 1;
 
@@ -92,6 +128,13 @@ public class Formatter {
         return page;
     }
 
+    /**
+     * Format to date.
+     *
+     * @param stringDate
+     * @param stringTime
+     * @return
+     */
     public Date formatToDate(String stringDate, String stringTime) {
         SimpleDateFormat dateFormatter = new SimpleDateFormat(DATE_FORMAT);
 

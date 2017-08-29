@@ -14,6 +14,12 @@ import static by.epam.litvin.constant.GeneralConstant.COMMAND;
 public class FactoryCommand {
     private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger();
 
+    /**
+     * Initiate command.
+     *
+     * @param requestContent
+     * @return
+     */
     public AbstractCommand initCommand(RequestContent requestContent) {
         CommonValidator commonValidator = new CommonValidatorImpl();
         AbstractCommand command;

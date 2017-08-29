@@ -9,44 +9,97 @@ public class NewsEntity extends Entity {
     private String imageUrl;
     private Date dateCreation;
 
+    /**
+     * Default constructor.
+     */
     public NewsEntity() {}
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get title.
+     *
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     * Set title.
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * Get text.
+     *
+     * @return
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     * Set text.
+     *
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     * Get image URL.
+     *
+     * @return
+     */
     public String getImageUrl() {
         return imageUrl;
     }
 
+    /**
+     * Set image URL.
+     *
+     * @param imageUrl
+     */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
     }
 
+    /**
+     * Get date creation.
+     *
+     * @return
+     */
     public Date getDateCreation() {
         return dateCreation;
     }
 
+    /**
+     * Set date creation.
+     *
+     * @param dateCreation
+     */
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;
     }

@@ -26,12 +26,22 @@ public class RequestContent {
     private String contextPath;
     private String realPath;
 
+    /**
+     * Default constructor.
+     */
     public RequestContent() {
         requestAttributes = new HashMap<>();
         requestParameters = new HashMap<>();
         sessionAttributes = new HashMap<>();
     }
 
+    /**
+     * Extract values from HTTP servlet request.
+     *
+     * @param request
+     * @throws IOException
+     * @throws ServletException
+     */
     public void extractValues(HttpServletRequest request) throws IOException, ServletException {
         Enumeration<String> attrNames = request.getAttributeNames();
         Enumeration<String> paramNames = request.getParameterNames();
@@ -64,7 +74,11 @@ public class RequestContent {
     }
 
 
-
+    /**
+     * Insert attributes into HTTP servlet request.
+     *
+     * @param request
+     */
     public void insertAttributes(HttpServletRequest request) {
         Enumeration<String> sessionAttrNames = request.getSession().getAttributeNames();
         Enumeration<String> attrNames = request.getAttributeNames();
@@ -83,26 +97,56 @@ public class RequestContent {
         sessionAttributes.forEach((key, value) -> request.getSession().setAttribute(key, value));
     }
 
+    /**
+     * Get request attributes.
+     *
+     * @return
+     */
     public HashMap<String, Object> getRequestAttributes() {
         return requestAttributes;
     }
 
+    /**
+     * Get request parameters.
+     *
+     * @return
+     */
     public HashMap<String, String[]> getRequestParameters() {
         return requestParameters;
     }
 
+    /**
+     * Get session attributes.
+     *
+     * @return
+     */
     public HashMap<String, Object> getSessionAttributes() {
         return sessionAttributes;
     }
 
+    /**
+     * Get AJAX result.
+     *
+     * @return
+     */
     public JsonObject  getAjaxResult() {
         return ajaxResult;
     }
 
+    /**
+     * Set AJAX result.
+     *
+     * @param ajaxResult
+     */
     public void setAjaxResult(JsonObject  ajaxResult) {
         this.ajaxResult = ajaxResult;
     }
 
+    /**
+     * Set AJAX success.
+     *
+     * @param isSuccess
+     */
     public void setAjaxSuccess(boolean isSuccess) {
         JsonObject jsonObject = new JsonObject();
         JsonElement element = new Gson().toJsonTree(isSuccess);
@@ -116,14 +160,29 @@ public class RequestContent {
         }
     }
 
+    /**
+     * Get request parts.
+     *
+     * @return
+     */
     public Map<String, Part> getRequestParts() {
         return requestParts;
     }
 
+    /**
+     * Get context path.
+     *
+     * @return
+     */
     public String getContextPath() {
         return contextPath;
     }
 
+    /**
+     * Get real path.
+     *
+     * @return
+     */
     public String getRealPath() {
         return realPath;
     }

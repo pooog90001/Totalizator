@@ -14,9 +14,21 @@ public class BetEntity extends Entity {
     private int competitorId;
     private ExpectResultType expectedResult;
 
+    /**
+     * Default constructor.
+     *
+     */
     public BetEntity() {
     }
 
+    /**
+     * Constructor with params.
+     *
+     * @param userId
+     * @param cash
+     * @param competitorId
+     * @param expectedResult
+     */
     public BetEntity(int userId, BigDecimal cash, int competitorId, ExpectResultType expectedResult) {
         this.userId = userId;
         this.cash = cash;
@@ -24,58 +36,128 @@ public class BetEntity extends Entity {
         this.expectedResult = expectedResult;
     }
 
+    /**
+     * Get id.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get user ID.
+     *
+     * @return
+     */
     public int getUserId() {
         return userId;
     }
 
+    /**
+     * Set user ID.
+     *
+     * @param userId
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
 
+    /**
+     * Get cash.
+     *
+     * @return
+     */
     public BigDecimal getCash() {
         return cash;
     }
 
+    /**
+     * Set cash.
+     *
+     * @param cash
+     */
     public void setCash(BigDecimal cash) {
         this.cash = cash;
     }
 
+    /**
+     * Get win.
+     *
+     * @return
+     */
     public Boolean getWin() {
         return isWin;
     }
 
+    /**
+     * Set win.
+     *
+     * @param win
+     */
     public void setWin(Boolean win) {
         isWin = win;
     }
 
+    /**
+     * Get active.
+     *
+     * @return
+     */
     public Boolean getActive() {
         return isActive;
     }
 
+    /**
+     * Set active.
+     *
+     * @param active
+     */
     public void setActive(Boolean active) {
         isActive = active;
     }
 
+    /**
+     * Get competitor ID.
+     *
+     * @return
+     */
     public int getCompetitorId() {
         return competitorId;
     }
 
+    /**
+     * Set competitor ID.
+     *
+     * @param competitorId
+     */
     public void setCompetitorId(int competitorId) {
         this.competitorId = competitorId;
     }
 
+    /**
+     * Get expected result.
+     *
+     * @return
+     */
     public ExpectResultType getExpectedResult() {
         return expectedResult;
     }
 
+    /**
+     * Set expected result.
+     *
+     * @param expectedResult
+     */
     public void setExpectedResult(ExpectResultType expectedResult) {
         this.expectedResult = expectedResult;
     }

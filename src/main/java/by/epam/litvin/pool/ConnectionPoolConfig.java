@@ -19,6 +19,9 @@ class ConnectionPoolConfig {
     private final Properties properties;
     private String url;
 
+    /**
+     * Default constructor.
+     */
     ConnectionPoolConfig() {
         try {
             ResourceBundle resourceBundle = ResourceBundle.getBundle(DB_PROPERTIES);
@@ -43,14 +46,29 @@ class ConnectionPoolConfig {
         }
     }
 
+    /**
+     * `get URL.
+     *
+     * @return
+     */
     String getUrl() {
         return url;
     }
 
+    /**
+     * Get properties.
+     *
+     * @return
+     */
     Properties getProperties() {
         return properties;
     }
 
+    /**
+     * Get pool capacity.
+     *
+     * @return
+     */
     int getPoolCapacity() {
         return Integer.valueOf(properties.getProperty(CAPACITY)); //question about this one
     }

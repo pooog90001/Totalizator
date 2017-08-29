@@ -17,93 +17,206 @@ public class UserEntity extends Entity {
      private BigDecimal cash;
      private String avatarURL;
 
+    /**
+     * Default constructor.
+     */
     public UserEntity() {
     }
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get name.
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name.
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get email.
+     *
+     * @return
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Set email.
+     *
+     * @param email
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Get password.
+     *
+     * @return
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     * Set password.
+     *
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Get type.
+     *
+     * @return
+     */
     public UserType getType() {
         return type;
     }
 
+    /**
+     * Set type.
+     *
+     * @param type
+     */
     public void setType(UserType type) {
         this.type = type;
     }
 
+    /**
+     * Get is confirm.
+     *
+     * @return
+     */
     public boolean getIsConfirm() {
         return isConfirm;
     }
 
+    /**
+     * Set confirm.
+     *
+     * @param confirm
+     */
     public void setConfirm(boolean confirm) {
         isConfirm = confirm;
     }
 
+    /**
+     * Get is blocked.
+     *
+     * @return
+     */
     public boolean getIsBlocked() {
         return isBlocked;
     }
 
+    /**
+     * Set blocked.
+     *
+     * @param blocked
+     */
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
     }
 
+    /**
+     * Get cash.
+     *
+     * @return
+     */
     public BigDecimal getCash() {
         return cash;
     }
 
+    /**
+     * Set cash.
+     *
+     * @param cash
+     */
     public void setCash(BigDecimal cash) {
         this.cash = cash;
     }
 
+    /**
+     * Get confirm URL.
+     *
+     * @return
+     */
     public String getConfirmUrl() {
         return confirmUrl;
     }
 
+    /**
+     * Set confirm URL.
+     *
+     * @param confirmUrl
+     */
     public void setConfirmUrl(String confirmUrl) {
         this.confirmUrl = confirmUrl;
     }
 
+    /**
+     * Get avatar URL.
+     *
+     * @return
+     */
     public String getAvatarURL() {
         return avatarURL;
     }
 
+    /**
+     * Set avatar URL.
+     *
+     * @param avatarURL
+     */
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
     }
 
+    /**
+     * Get blocked text.
+     *
+     * @return
+     */
     public String getBlockedText() {
         return blockedText;
     }
 
+    /**
+     * Set blocked text.
+     *
+     * @param blockedText
+     */
     public void setBlockedText(String blockedText) {
         this.blockedText = blockedText;
     }

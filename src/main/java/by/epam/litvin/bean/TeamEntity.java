@@ -6,29 +6,62 @@ public class TeamEntity extends Entity {
     private String name;
     private int kindOfSportId;
 
+    /**
+     * Default constructor.
+     */
     public TeamEntity() {
     }
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get name.
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name.
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get kind of sport ID.
+     *
+     * @return
+     */
     public int getKindOfSportId() {
         return kindOfSportId;
     }
 
+    /**
+     * Set kind of sport ID.
+     *
+     * @param kindOfSportId
+     */
     public void setKindOfSportId(int kindOfSportId  ) {
         this.kindOfSportId = kindOfSportId;
     }

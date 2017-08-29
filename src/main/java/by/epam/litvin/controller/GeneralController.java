@@ -27,6 +27,14 @@ public class GeneralController extends HttpServlet {
         executeRequest(req, resp);
     }
 
+    /**
+     * Execute request.
+     *
+     * @param req
+     * @param resp
+     * @throws ServletException
+     * @throws IOException
+     */
     private void executeRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         AbstractCommand executionCommand;
         RequestContent requestContent = new RequestContent();

@@ -15,9 +15,24 @@ import static by.epam.litvin.constant.GeneralConstant.USER;
         urlPatterns = {"/jsp/user/profile.jsp", "/jsp/user/change_avatar.jsp", "/jsp/user/change_password.jsp"},
         dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD})
 public class UserAccessFilter implements Filter {
+    /**
+     * Initiate method.
+     *
+     * @param fConfig
+     * @throws ServletException
+     */
     public void init(FilterConfig fConfig) throws ServletException {
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
 
@@ -33,6 +48,9 @@ public class UserAccessFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Destroy method.
+     */
     public void destroy() {
     }
 }

@@ -7,28 +7,61 @@ public class KindOfSportEntity extends Entity {
     private String name;
     private int competitorCount;
 
+    /**
+     * Default constructor.
+     */
     public KindOfSportEntity() {}
 
+    /**
+     * Get ID.
+     *
+     * @return
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Set ID.
+     *
+     * @param id
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Get name.
+     *
+     * @return
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set name.
+     *
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Get competition count.
+     *
+     * @return
+     */
     public int getCompetitorCount() {
         return competitorCount;
     }
 
+    /**
+     * Set competition count.
+     *
+     * @param competitorCount
+     */
     public void setCompetitorCount(int competitorCount) {
         this.competitorCount = competitorCount;
     }

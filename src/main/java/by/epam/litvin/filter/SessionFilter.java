@@ -16,9 +16,25 @@ import static javax.servlet.jsp.PageContext.SESSION;
 public class SessionFilter implements Filter {
     private static final int SESSION_LIFE_TIME = 1000 * 60;
 
-    public void destroy() {
+    /**
+     * Initiate method.
+     *
+     * @param config
+     * @throws ServletException
+     */
+    public void init(FilterConfig config) throws ServletException {
+
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws ServletException
+     * @throws IOException
+     */
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
@@ -40,8 +56,11 @@ public class SessionFilter implements Filter {
         chain.doFilter(request, response);
     }
 
-    public void init(FilterConfig config) throws ServletException {
-
+    /**
+     * Destroy method.
+     */
+    public void destroy() {
     }
+
 
 }

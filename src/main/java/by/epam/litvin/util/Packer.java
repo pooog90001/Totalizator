@@ -12,7 +12,12 @@ import java.util.Map;
 
 public class Packer {
 
-
+    /**
+     * Order kind of sport.
+     *
+     * @param kindOfSportList
+     * @return
+     */
     public  Map<KindOfSportEntity, List<CompetitionTypeEntity>>
     orderKindsOfSport(List<Map<String, Object>> kindOfSportList) {
 

@@ -16,18 +16,64 @@ public abstract class DAO<T extends Entity> {
 
     protected ProxyConnection connection;
 
+    /**
+     * Find all entities.
+     *
+     * @return
+     * @throws DAOException
+     */
     public abstract List<T> findAll() throws DAOException;
 
+    /**
+     * Find entity by ID.
+     *
+     * @param id
+     * @return
+     * @throws DAOException
+     */
     public abstract T findEntityById(int id) throws DAOException;
 
+    /**
+     * Delete entity by ID.
+     *
+     * @param id
+     * @return
+     * @throws DAOException
+     */
     public abstract boolean delete(int id) throws DAOException;
 
+    /**
+     * Delete entity.
+     *
+     * @param entity
+     * @return
+     * @throws DAOException
+     */
     public abstract boolean delete(T entity) throws DAOException;
 
+    /**
+     * Create entity.
+     *
+     * @param entity
+     * @return
+     * @throws DAOException
+     */
     public abstract boolean create(T entity) throws DAOException;
 
+    /**
+     * Update entity.
+     *
+     * @param entity
+     * @return
+     * @throws DAOException
+     */
     public abstract boolean update(T entity) throws DAOException;
 
+    /**
+     * Set connection.
+     *
+     * @param connection
+     */
     public void setConnection(ProxyConnection connection) {
         this.connection = connection;
     }

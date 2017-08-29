@@ -8,6 +8,10 @@ import java.util.concurrent.Executor;
 final public class ProxyConnection implements Connection, AutoCloseable{
     private Connection connection;
 
+    /**
+     * Default constructor.
+     * @param connection
+     */
     ProxyConnection(Connection connection) {
         this.connection = connection;
     }

@@ -13,6 +13,15 @@ import java.io.IOException;
 public class ImageUploader {
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * Upload image.
+     *
+     * @param imagePart
+     * @param fullPath
+     * @param imageExtension
+     * @param cropParams
+     * @return
+     */
     public boolean uploadImage(Part imagePart, File fullPath,
                                String imageExtension, int... cropParams) {
 

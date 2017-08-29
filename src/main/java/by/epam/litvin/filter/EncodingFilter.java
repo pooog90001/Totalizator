@@ -15,12 +15,26 @@ public class EncodingFilter implements Filter {
     private String code;
     private String contentType;
 
-
+    /**
+     * Initiate method.
+     *
+     * @param fConfig
+     * @throws ServletException
+     */
     public void init(FilterConfig fConfig) throws ServletException {
         code = fConfig.getInitParameter("encoding");
         contentType = fConfig.getInitParameter("contentType");
     }
 
+    /**
+     * Do filter.
+     *
+     * @param request
+     * @param response
+     * @param chain
+     * @throws IOException
+     * @throws ServletException
+     */
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -38,6 +52,9 @@ public class EncodingFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    /**
+     * Destroy method.
+     */
     public void destroy() {
         code = null;
         contentType = null;

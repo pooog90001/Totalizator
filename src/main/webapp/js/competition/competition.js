@@ -52,9 +52,9 @@ selectKind.onchange = function (e) {
         innerHtml += "</div>";
     }
 
-    var dataString = "kindOfSportId=" + selectedOption.value + "&command=find_commands";
+    var dataString = "kindOfSportId=" + selectedOption.value + "&command=find_teams";
 
-    var commandOptions = "";
+    var teamOptions = "";
     //make the AJAX request, dataType is set to json
     //meaning we are expecting JSON data in response from the server
     $.ajax({
@@ -65,10 +65,10 @@ selectKind.onchange = function (e) {
 
         //if received a response from the server
         success: function (data, textStatus, jqXHR) {
-            commandOptions += "<option value='' selected disabled > Choose command </option>";
+            teamOptions += "<option value='' selected disabled > Choose team </option>";
 
-            for (var i = 0; i < data.commands.length; i++) {
-                commandOptions += "<option required value='" + data.commands[i].id + "' >" + data.commands[i].name + "</option>";
+            for (var i = 0; i < data.teams.length; i++) {
+                teamOptions += "<option required value='" + data.teams[i].id + "'><pre>" + data.teams[i].name + "</pre></option>";
             }
         },
 
@@ -87,10 +87,10 @@ selectKind.onchange = function (e) {
             for (var i = 0; i < count; i++) {
                 innerHtml += "<div class='w3-row'>";
                 innerHtml += "<div class='w3-col s6'>";
-                innerHtml += "<div class='w3-col s4 w3-padding'>Command:</div>";
+                innerHtml += "<div class='w3-col s4 w3-padding'>Teams:</div>";
                 innerHtml += "<div class='w3-col s8'>";
-                innerHtml += "<select id='commandName' required name='commandId' class='w3-select'>";
-                innerHtml += commandOptions;
+                innerHtml += "<select id='teamName' required name='teamId' class='w3-select'>";
+                innerHtml += teamOptions;
                 innerHtml += "</select>";
                 innerHtml += "</div>";
                 innerHtml += "</div>";
@@ -124,7 +124,7 @@ function openTab(evt, elementId, group, linkGroup) {
 function checkBeforeCreate(element) {
     document.getElementById("wrongJS").style.display = 'none';
     var coeffs = document.getElementsByName("competitorCoeff");
-    var commands = document.getElementsByName("commandId");
+    var teams = document.getElementsByName("teamId");
     var total = document.getElementById("total");
     var lessTotalCoeff = document.getElementById("lessTotalCoeff");
     var moreTotalCoeff = document.getElementById("moreTotalCoeff");
@@ -132,10 +132,10 @@ function checkBeforeCreate(element) {
     var isActive = document.getElementById("isActive");
     var isValid = true;
 
-    for (var r = 0; r < commands.length; r++) {
-        for (var j = 0; j < commands.length; j++) {
+    for (var r = 0; r < teams.length; r++) {
+        for (var j = 0; j < teams.length; j++) {
             if (r !== j) {
-                if (commands[j].value === commands[r].value) {
+                if (teams[j].value === teams[r].value) {
                     isValid = false;
                 }
             }
@@ -202,7 +202,7 @@ checkForActive = function (e) {
     var dateFinish = document.getElementById('dateFinish');
     var timeFinish = document.getElementById('timeFinish');
     var isActve = document.getElementById('isActive');
-    var commandsId =  document.getElementsByTagName('commandId');
+    var teamsId = document.getElementsByTagName('teamId');
 
     errorBox.style.display = "none";
 
@@ -233,7 +233,7 @@ checkForActive = function (e) {
     } else if (timeFinish.value === '') {
         isValid = false;
 
-    } else if (!isCommandsNameValid(commandsId)) {
+    } else if (!isTeamsNameValid(teamsId)) {
         isValid = false;
     }
 
@@ -250,9 +250,9 @@ checkForActive = function (e) {
 
 };
 
-function isCommandsNameValid(commandsId) {
-    for (var i = 0; i < commandsId.size; i++) {
-        if (commandsId[i].value === '') {
+function isTeamsNameValid(teamsId) {
+    for (var i = 0; i < teamsId.size; i++) {
+        if (teamsId[i].value === '') {
             return false;
         }
     }

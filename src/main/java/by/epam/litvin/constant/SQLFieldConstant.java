@@ -37,11 +37,11 @@ final public class SQLFieldConstant {
         public static final String POST_DATE = COMMENT + "post_date";
     }
 
-    public final class Command {
-        private static final String COMMAND = "command_";
-        public static final String ID = COMMAND + "id";
-        public static final String NAME = COMMAND + "name";
+    public final class TEAM {
         public static final String KIND_OF_SPORT_ID = "kind_of_sport_id";
+        private static final String TEAM = "team_";
+        public static final String ID = TEAM + "id";
+        public static final String NAME = TEAM + "name";
     }
 
     public final class CompetitionType {
@@ -67,10 +67,10 @@ final public class SQLFieldConstant {
     }
 
     public final class KindOfSport {
+        public static final String COMPETITOR_COUNT = "competitor_count";
         private static final String KIND_OF_SPORT = "kind_of_sport_";
         public static final String ID = KIND_OF_SPORT + "id";
         public static final String NAME = KIND_OF_SPORT + "name";
-        public static final String COMPETITOR_COUNT = "competitor_count";
     }
 
     public final class Competitor {

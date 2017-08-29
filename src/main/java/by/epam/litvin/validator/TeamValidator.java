@@ -1,5 +1,5 @@
 package by.epam.litvin.validator;
 
-public interface CommandValidator extends Validator {
+public interface TeamValidator extends Validator {
     boolean isNameValid(String name);
 }

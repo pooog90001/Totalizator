@@ -128,18 +128,6 @@
                            value="<c:out value='${results}'/>">
                 </form>
                 <div class="w3-bar-item w3-padding-small">
-                    <a href="${pageContext.request.contextPath}/jsp/about/about_company.jsp"
-                       class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow">
-                        <c:out value="${aboutCompany}"/>
-                    </a>
-                </div>
-                <div class="w3-bar-item w3-padding-small">
-                    <a href="${pageContext.request.contextPath}/jsp/rules/ruler.jsp"
-                       class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow">
-                        <c:out value="${rules}"/>
-                    </a>
-                </div>
-                <div class="w3-bar-item w3-padding-small">
                     <a href="${pageContext.request.contextPath}/jsp/help/help.jsp"
                        class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow">
                         <c:out value="${help}"/>
@@ -197,8 +185,6 @@
             <input type="hidden" name="command" value="open_all_news">
             <input type="submit" class="w3-button w3-padding w3-bar-item" value="${news}">
         </form>
-
-        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${live}"/></a>
         <a href="#" class="w3-bar-item w3-button w3-padding">
             <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
                 <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
@@ -213,8 +199,8 @@
                        value="${results}">
             </form>
         </a>
-        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${aboutCompany}"/></a>
-        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${rules}"/></a>
-        <a href="#" class="w3-bar-item w3-button w3-padding"><c:out value="${help}"/></a>
+        <a href="${pageContext.request.contextPath}/jsp/help/help.jsp" class="w3-bar-item w3-button w3-padding">
+            <c:out value="${help}"/>
+        </a>
     </div>
 </header>

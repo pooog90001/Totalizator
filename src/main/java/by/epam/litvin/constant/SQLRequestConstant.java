@@ -4,8 +4,8 @@ package by.epam.litvin.constant;
 
 final public class SQLRequestConstant {
     public static final String  CREATE_USER =
-            "INSERT INTO user (user_name, user_email, user_password, user_confirm_url) " +
-                    "VALUES (?, ?, ?, ?);";
+            "INSERT INTO user (user_name, user_email, user_password) " +
+                    "VALUES (?, ?, ?);";
     public static final String FIND_USER_BY_EMAIL_AND_PASSWORD =
             "SELECT user_id, user_name , user_email, user_password, user_avatar_url, user_type, " +
                     "user_confirm_url, user_is_blocked, user_blocked_text, user_is_confirm, user_cash " +
@@ -80,35 +80,35 @@ final public class SQLRequestConstant {
             "UPDATE news  " +
                     "SET news_image_url = ? " +
                     "WHERE news_id = ? ;";
-    public static final String FIND_ALL_COMMAND =
-            "SELECT command_id, command_name, kind_of_sport_id " +
-                    "FROM command;";
-    public static final String FIND_ALL_COMMANDS_WITH_KIND_OF_SPORT =
-            "SELECT command_id, " +
-                    "       command_name, " +
-                    "       command.kind_of_sport_id, " +
+    public static final String FIND_ALL_TEAMS =
+            "SELECT team_id, team_name, kind_of_sport_id " +
+                    "FROM team;";
+    public static final String FIND_ALL_TEAMS_WITH_KIND_OF_SPORT =
+            "SELECT team_id, " +
+                    "       team_name, " +
+                    "       team.kind_of_sport_id, " +
                     "       kind_of_sport_name " +
-                    "FROM  command, " +
+                    "FROM  team, " +
                     "       kind_of_sport " +
-                    "WHERE command.kind_of_sport_id = kind_of_sport.kind_of_sport_id;";
-    public static final String FIND_COMMANDS_BY_SPORT_ID =
+                    "WHERE team.kind_of_sport_id = kind_of_sport.kind_of_sport_id;";
+    public static final String FIND_TEAMS_BY_SPORT_ID =
             "   SELECT DISTINCT " +
-                    "    command_id, command_name, command.kind_of_sport_id " +
+                    "    team_id, team_name, team.kind_of_sport_id " +
                     "FROM " +
-                    "    command, " +
+                    "    team, " +
                     "    kind_of_sport " +
                     "WHERE " +
-                    "    command.kind_of_sport_id = ?;";
-    public static final String DELETE_COMMAND_BY_ID =
+                    "    team.kind_of_sport_id = ?;";
+    public static final String DELETE_TEAM_BY_ID =
             "DELETE " +
-                    "FROM command " +
-                    "WHERE command_id = ?;";
-    public static final String UPDATE_COMMAND_BY_ID =
-            "UPDATE command " +
-                    "SET command_name = ? " +
-                    "WHERE command_id = ?;";
-    public static final String CREATE_COMMAND =
-            "INSERT INTO command (command_name, kind_of_sport_id) " +
+                    "FROM team " +
+                    "WHERE team_id = ?;";
+    public static final String UPDATE_TEAM_BY_ID =
+            "UPDATE team " +
+                    "SET team_name = ? " +
+                    "WHERE team_id = ?;";
+    public static final String CREATE_TEAM =
+            "INSERT INTO team (team_name, kind_of_sport_id) " +
                     "VALUES (?, ?);";
     public static final String FIND_UPCOMING_GAME_BY_ID =
             "SELECT  DISTINCT " +
@@ -126,14 +126,14 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "        competition.competition_id  = ? " +
                     "        AND competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = true ;";
     public static final String FIND_GAME_BY_ID =
@@ -169,13 +169,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = ? " +
                     "ORDER BY competition.competition_date_start " +
@@ -196,13 +196,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = ? ";
     public static final String FIND_ALL_UPCOMING_GAMES_BY_TYPE_ID =
@@ -221,14 +221,14 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                            "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                            "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
                     "        AND competition_type.competition_type_id = ? " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                            "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND kind_of_sport.kind_of_sport_id = ? " +
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = ? ";
@@ -248,14 +248,14 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
                     "        AND competition_type.competition_type_id = ? " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND kind_of_sport.kind_of_sport_id = ? " +
                     "        AND competition_date_finish < NOW()  " +
                     "        AND competition_is_active = ? " +
@@ -284,13 +284,13 @@ final public class SQLRequestConstant {
                     "    LEFT JOIN competitor as competitor1 ON (bet.competitor_id = competitor1.competitor_id) " +
                     "        LEFT JOIN competition ON (competitor1.competition_id = competition.competition_id) " +
                     "        LEFT JOIN competitor as competitor2 ON (competitor2.competition_id = competition.competition_id) " +
-                    "        left join command on (command.command_id = competitor2.command_id) " +
-                    "        LEFT JOIN kind_of_sport ON (kind_of_sport.kind_of_sport_id = command.kind_of_sport_id) " +
+                    "        left join team on (team.team_id = competitor2.team_id) " +
+                    "        LEFT JOIN kind_of_sport ON (kind_of_sport.kind_of_sport_id = team.kind_of_sport_id) " +
                     "        LEFT JOIN competition_type ON (competition.competition_type_id = competition_type.competition_type_id) " +
                     "WHERE " +
                     "    competition_date_finish < NOW() " +
                     "        AND competition_is_active = TRUE " +
-                    "        AND competitor2.command_id != 0 " +
+                    "        AND competitor2.team_id != 0 " +
                     "        AND user.user_id = ? " +
                     "        AND competition_is_result_filled = TRUE " +
                     "ORDER BY competition_date_finish DESC;";
@@ -318,13 +318,13 @@ final public class SQLRequestConstant {
                     "    LEFT JOIN competitor as competitor1 ON (bet.competitor_id = competitor1.competitor_id) " +
                     "        LEFT JOIN competition ON (competitor1.competition_id = competition.competition_id) " +
                     "        LEFT JOIN competitor as competitor2 ON (competitor2.competition_id = competition.competition_id) " +
-                    "        left join command on (command.command_id = competitor2.command_id) " +
-                    "        LEFT JOIN kind_of_sport ON (kind_of_sport.kind_of_sport_id = command.kind_of_sport_id) " +
+                    "        left join team on (team.team_id = competitor2.team_id) " +
+                    "        LEFT JOIN kind_of_sport ON (kind_of_sport.kind_of_sport_id = team.kind_of_sport_id) " +
                     "        LEFT JOIN competition_type ON (competition.competition_type_id = competition_type.competition_type_id) " +
                     "WHERE " +
                     "    competition_date_start > NOW() " +
                     "        AND competition_is_active = TRUE " +
-                    "        AND competitor2.command_id != 0 " +
+                    "        AND competitor2.team_id != 0 " +
                     "        AND user.user_id = ? " +
                     "        AND competition_is_result_filled = false " +
                     "  ORDER BY competition_date_start; ";
@@ -335,13 +335,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start > NOW()  " +
                     "        AND competition_is_active = ? ";
     public static final String FIND_ALL_NOW_GAMES =
@@ -360,13 +360,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_start < NOW()  " +
                     "        AND competition_date_finish > NOW()  " +
                     "        AND competition_is_active = ?; ";
@@ -377,13 +377,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_finish < NOW()  " +
                     "        AND competition_is_result_filled = ?  " +
                     "        AND competition_is_active = ?; ";
@@ -403,13 +403,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_finish < NOW()  " +
                     "        AND competition_is_result_filled = ?  " +
                     "        AND competition_is_active = ?; ";
@@ -429,13 +429,13 @@ final public class SQLRequestConstant {
                     "    competition,  " +
                     "    competition_type,  " +
                     "    competitor,  " +
-                    "    command,  " +
+                    "    team,  " +
                     "    kind_of_sport  " +
                     "WHERE  " +
                     "    competitor.competition_id = competition.competition_id  " +
-                    "        AND competitor.command_id = command.command_id  " +
+                    "        AND competitor.team_id = team.team_id  " +
                     "        AND competition.competition_type_id = competition_type.competition_type_id  " +
-                    "        AND command.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
+                    "        AND team.kind_of_sport_id = kind_of_sport.kind_of_sport_id  " +
                     "        AND competition_date_finish < NOW()  " +
                     "        AND competition_is_result_filled = ?  " +
                     "        AND competition_is_active = ? " +
@@ -450,9 +450,9 @@ final public class SQLRequestConstant {
             "FROM " +
             "    kind_of_sport " +
             "        LEFT JOIN " +
-            "    command ON (kind_of_sport.kind_of_sport_id = command.kind_of_sport_id) " +
+                    "    team ON (kind_of_sport.kind_of_sport_id = team.kind_of_sport_id) " +
             "        LEFT JOIN " +
-            "    competitor ON (command.command_id = competitor.command_id) " +
+                    "    competitor ON (team.team_id = competitor.team_id) " +
             "        LEFT JOIN " +
             "    competition ON (competitor.competition_id = competition.competition_id) " +
             "        LEFT JOIN " +
@@ -531,27 +531,28 @@ final public class SQLRequestConstant {
     public static final String DELETE_COMPETITION_TYPE =
             "DELETE FROM competition_type " +
                     "WHERE competition_type_id = ?;";
-    public static final String FIND_ALL_COMPETITORS_WITH_COMMAND_BY_GAME_ID =
+    public static final String FIND_ALL_COMPETITORS_WITH_TEAM_BY_GAME_ID =
             "    SELECT   " +
                     "          competitor.competitor_id,   " +
-                    "          command_name,   " +
+                    "          team_name,   " +
                     "          competitor_result,   " +
                     "          competitor_is_win,   " +
                     "          competitor_win_coeff  " +
                     "    FROM  " +
                     "          competitor,  " +
-                    "          command, " +
+                    "          team, " +
                     "          competition " +
                     "    WHERE   " +
-                    "          competitor.command_id = command.command_id " +
-                    "          and command.command_id != 0  " +
+                    "          competitor.team_id = team.team_id " +
+                    "          and team.team_id != 0  " +
                     "          and competitor.competition_id = competition.competition_id " +
                     "          and competition.competition_id = ?; ";
+
     public static final String FIND_ALL_COMPETITORS_GAME_ID =
                     "    SELECT  " +
                             "    competitor.competitor_id, " +
                             "    competitor.competition_id, " +
-                            "    competitor.command_id, " +
+                            "    competitor.team_id, " +
                             "    competitor_result, " +
                             "    competitor_is_win, " +
                             "    competitor_win_coeff " +
@@ -571,7 +572,7 @@ final public class SQLRequestConstant {
                             "WHERE " +
                             "    competition_id = ? " +
                             "        AND bet_total = ? " +
-                            "        AND competitor.command_id = 0;";
+                            "        AND competitor.team_id = 0;";
     public static final String COUNT_BETS_ON_COMPETITOR =
             "SELECT  " +
                     "    COUNT(DISTINCT bet_id) AS count " +
@@ -580,7 +581,7 @@ final public class SQLRequestConstant {
                     "    competitor " +
                     "WHERE " +
                     "    bet.competitor_id = ? " +
-                    "        AND command_id != 0";
+                    "        AND team_id != 0";
     public static final String AMOUNT_OF_MONEY_ON_COMPETITION =
                     "SELECT  " +
                             "    SUM(bet_cash) AS cash " +
@@ -589,7 +590,7 @@ final public class SQLRequestConstant {
                             "WHERE " +
                             "     competitor.competition_id = ? " +
                             "        AND bet_total = ? " +
-                            "        AND competitor.command_id = 0;";
+                            "        AND competitor.team_id = 0;";
     public static final String AMOUNT_OF_MONEY_ON_COMPETITOR =
                     "SELECT  " +
                     "    SUM(bet_cash) as cash " +
@@ -599,11 +600,10 @@ final public class SQLRequestConstant {
                     "WHERE " +
                     "    bet.competitor_id = ? " +
                     "        AND competitor.competitor_id = bet.competitor_id " +
-                    "        AND competitor.command_id != 0;";
+                            "        AND competitor.team_id != 0;";
     public static final String SELECT_ADMIN_STATISTIC =
             "SELECT " +
                     "(SELECT COUNT(user_id) FROM user) AS countRegistered, " +
-                    "(SELECT COUNT(user_id) FROM user WHERE user_is_confirm = 0) AS countConfirmed, " +
                     "(SELECT COUNT(user_id) FROM user WHERE user_is_blocked) AS countLocked, " +
                     "(SELECT COUNT(news_id) FROM news) AS countNews, " +
                     "(SELECT COUNT(kind_of_sport_id) FROM kind_of_sport) AS countSports; ";
@@ -623,7 +623,7 @@ final public class SQLRequestConstant {
                     "VALUES (?, '', ?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String INSERT_COMPETITOR =
             "INSERT INTO `totalizatorr`.`competitor` " +
-                    "(`command_id`, " +
+                    "(`team_id`, " +
                     "`competition_id`, " +
                     "`competitor_win_coeff`) " +
                     "VALUES (?, ?, ?);";
@@ -731,7 +731,7 @@ final public class SQLRequestConstant {
                     "    bet.bet_is_win = competitor_is_win " +
                     "WHERE " +
                     "    competitor.competition_id = ? " +
-                    "        AND competitor.command_id != 0 " +
+                    "        AND competitor.team_id != 0 " +
                     "        AND competitor.competitor_id = bet.competitor_id " +
                     "        AND bet.user_id = user.user_id;";
     public static final String SET_VAR_FIRST_COMPETITOR_RESULT = "SET @competitor1 = ?;";
@@ -765,7 +765,7 @@ final public class SQLRequestConstant {
                     "        WHERE  " +
                     "            competition.competition_id = ?  " +
                     "                AND competitor.competition_id = competition.competition_id  " +
-                    "                AND competitor.command_id = 0  " +
+                    "                AND competitor.team_id = 0  " +
                     "                AND competitor.competitor_id = bet.competitor_id  " +
                     "                AND bet.user_id = user.user_id;";
 

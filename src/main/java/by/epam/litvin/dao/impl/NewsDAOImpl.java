@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
+import static by.epam.litvin.constant.GeneralConstant.COUNT;
 import static by.epam.litvin.constant.SQLRequestConstant.UPDATE_IMAGE_PATH_NEWS;
 
 public class NewsDAOImpl extends DAO<NewsEntity> {
@@ -25,13 +26,13 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
             ResultSet resultSet = statement.executeQuery();
             newsList = extractNewsData(resultSet);
         } catch (SQLException e) {
-            throw new DAOException("Find news error ", e);
+            throw new DAOException("Find all news error ", e);
         }
 
         return newsList;
     }
 
-    public List<NewsEntity> find(int startIndex, int limit) throws DAOException {
+    public List<NewsEntity> findLimit(int startIndex, int limit) throws DAOException {
         List<NewsEntity> newsList;
 
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_LIMIT_NEWS)) {
@@ -42,7 +43,7 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
             newsList = extractNewsData(resultSet);
 
         } catch (SQLException e) {
-            throw new DAOException("Find news error ", e);
+            throw new DAOException("Find limit news error ", e);
         }
 
         return newsList;
@@ -97,7 +98,7 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
 
 
             if (resultSet.next()) {
-                countNews = resultSet.getInt("count");
+                countNews = resultSet.getInt(COUNT);
             }
 
         } catch (SQLException e) {

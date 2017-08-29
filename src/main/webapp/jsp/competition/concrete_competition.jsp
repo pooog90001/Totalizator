@@ -60,21 +60,21 @@
                                     <label class="w3-padding-small">
                                         Less total: <ctg:decimal-presenter
                                             number="${competition['competition_less_total_coeff']}"/>
-                                        <input type="radio" onCommand="false" value="LESS" name="bet">
+                                        <input type="radio" onTeam="false" value="LESS" name="bet">
                                     </label>
                                 </div>
                                 <div class='w3-col l5'>
                                     <label class="w3-padding-small">
                                         More total: <ctg:decimal-presenter
                                             number="${competition['competition_more_total_coeff']}"/>
-                                        <input type="radio" onCommand="false" value="MORE" name="bet">
+                                        <input type="radio" onTeam="false" value="MORE" name="bet">
                                     </label>
                                 </div>
                                 <div class='w3-col l5 '>
                                     <label class="w3-padding-small">
                                         Standdoff: <ctg:decimal-presenter
                                             number="${competition['competition_standoff_coeff']}"/>
-                                        <input type="radio" name="bet" onCommand="false" value="EQUALS" required>
+                                        <input type="radio" name="bet" onTeam="false" value="EQUALS" required>
                                     </label>
                                 </div>
                             </c:if>
@@ -83,13 +83,13 @@
                                 <div class='w3-col s12 w3-left-align'>
                                     <hr style="margin: 5px;">
                                     <div class="w3-row">
-                                        <div class='w3-col s5'> ${competitor['command_name']} </div>
+                                        <div class='w3-col s5'> ${competitor['team_name']} </div>
 
                                         <div class='w3-col s5 w3-right-align'>
                                             <label class="w3-padding-small">
                                                 Win: <ctg:decimal-presenter
                                                     number="${competitor['competitor_win_coeff']}"/>
-                                                <input type="radio" name="bet" onCommand="true"
+                                                <input type="radio" name="bet" onTeam="true"
                                                        value="${competitor['competitor_id']}">
                                             </label>
                                         </div>

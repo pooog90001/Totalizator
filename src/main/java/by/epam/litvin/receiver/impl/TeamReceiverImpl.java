@@ -1,16 +1,16 @@
 package by.epam.litvin.receiver.impl;
 
-import by.epam.litvin.bean.CommandEntity;
 import by.epam.litvin.bean.KindOfSportEntity;
+import by.epam.litvin.bean.TeamEntity;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.dao.TransactionManager;
-import by.epam.litvin.dao.impl.CommandDAOImpl;
 import by.epam.litvin.dao.impl.KindOfSportDAOImpl;
+import by.epam.litvin.dao.impl.TeamDAOImpl;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
-import by.epam.litvin.receiver.CommandReceiver;
-import by.epam.litvin.validator.impl.CommandValidatorImpl;
+import by.epam.litvin.receiver.TeamReceiver;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
+import by.epam.litvin.validator.impl.TeamValidatorImpl;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -21,9 +21,9 @@ import java.util.Map;
 
 import static by.epam.litvin.constant.GeneralConstant.*;
 
-public class CommandReceiverImpl implements CommandReceiver {
+public class TeamReceiverImpl implements TeamReceiver {
     @Override
-    public void openCommandSetting(RequestContent requestContent) throws ReceiverException {
+    public void openTeamSetting(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] errorNames = {WRONG_DATA, DUPLICATE_NAME};
 
@@ -38,33 +38,33 @@ public class CommandReceiverImpl implements CommandReceiver {
         TransactionManager manager = new TransactionManager();
         try {
             KindOfSportDAOImpl kindOfSportDAO = new KindOfSportDAOImpl();
-            CommandDAOImpl commandDAO = new CommandDAOImpl();
-            manager.beginTransaction(kindOfSportDAO, commandDAO);
+            TeamDAOImpl teamDAO = new TeamDAOImpl();
+            manager.beginTransaction(kindOfSportDAO, teamDAO);
             List<KindOfSportEntity> kindOfSportList = kindOfSportDAO.findAll();
-            List<Map<String, Object>> commandList = commandDAO.findAllWithKindOfSport();
+            List<Map<String, Object>> teamList = teamDAO.findAllWithKindOfSport();
             manager.commit();
             manager.endTransaction();
 
             requestContent.getRequestAttributes().put(KINDS_OF_SPORT, kindOfSportList);
-            requestContent.getRequestAttributes().put(COMMANDS, commandList);
+            requestContent.getRequestAttributes().put(TEAMS, teamList);
 
         } catch (DAOException e) {
             try {
                 manager.rollback();
                 manager.endTransaction();
             } catch (DAOException e1) {
-                throw new ReceiverException("Open command setting rollback error", e);
+                throw new ReceiverException("Open team setting rollback error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
     @Override
-    public void updateCommand(RequestContent requestContent) throws ReceiverException {
-        CommandValidatorImpl validator = new CommandValidatorImpl();
+    public void updateTeam(RequestContent requestContent) throws ReceiverException {
+        TeamValidatorImpl validator = new TeamValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] newNameArr = requestContent.getRequestParameters().get(NEW_NAME);
-        String[] stringId = requestContent.getRequestParameters().get(COMMAND_ID);
+        String[] stringId = requestContent.getRequestParameters().get(TEAM_ID);
 
         if (!commonValidator.isVarExist(newNameArr) || !commonValidator.isVarExist(stringId) ||
                 !validator.isNameValid(newNameArr[0].trim())) {
@@ -72,16 +72,16 @@ public class CommandReceiverImpl implements CommandReceiver {
             return;
         }
 
-        CommandEntity command = new CommandEntity();
-        command.setId(Integer.valueOf(stringId[0]));
-        command.setName(newNameArr[0].trim());
+        TeamEntity team = new TeamEntity();
+        team.setId(Integer.valueOf(stringId[0]));
+        team.setName(newNameArr[0].trim());
 
         TransactionManager manager = new TransactionManager();
         try {
-            CommandDAOImpl commandDAO = new CommandDAOImpl();
-            manager.beginTransaction(commandDAO);
+            TeamDAOImpl teamDAO = new TeamDAOImpl();
+            manager.beginTransaction(teamDAO);
 
-            requestContent.setAjaxSuccess(commandDAO.update(command));
+            requestContent.setAjaxSuccess(teamDAO.update(team));
 
             manager.commit();
             manager.endTransaction();
@@ -91,38 +91,38 @@ public class CommandReceiverImpl implements CommandReceiver {
                 manager.rollback();
                 manager.endTransaction();
             } catch (DAOException e1) {
-                throw new ReceiverException("Update command rollback error", e);
+                throw new ReceiverException("Update team rollback error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
     @Override
-    public void createCommand(RequestContent requestContent) throws ReceiverException {
-        CommandValidatorImpl validator = new CommandValidatorImpl();
+    public void createTeam(RequestContent requestContent) throws ReceiverException {
+        TeamValidatorImpl validator = new TeamValidatorImpl();
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         String[] stringSportId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
-        String[] commandNameArr = requestContent.getRequestParameters().get(NAME);
+        String[] teamNameArr = requestContent.getRequestParameters().get(NAME);
         requestContent.getSessionAttributes().remove(TEMPORARY);
         Map<String, Object> data = new HashMap<>();
 
-        if (!commonValidator.isVarExist(commandNameArr) || !validator.isNameValid(commandNameArr[0]) ||
+        if (!commonValidator.isVarExist(teamNameArr) || !validator.isNameValid(teamNameArr[0]) ||
                 !commonValidator.isVarExist(stringSportId) || !commonValidator.isInteger(stringSportId[0])) {
-            data.put("wrongData", true);
+            data.put(WRONG_DATA, true);
             requestContent.getSessionAttributes().put(TEMPORARY, data);
             return;
         }
 
-        CommandEntity command = new CommandEntity();
-        command.setName(commandNameArr[0]);
-        command.setKindOfSportId(Integer.valueOf(stringSportId[0]));
+        TeamEntity team = new TeamEntity();
+        team.setName(teamNameArr[0]);
+        team.setKindOfSportId(Integer.valueOf(stringSportId[0]));
 
         TransactionManager manager = new TransactionManager();
         try {
-            CommandDAOImpl commandDAO = new CommandDAOImpl();
-            manager.beginTransaction(commandDAO);
+            TeamDAOImpl teamDAO = new TeamDAOImpl();
+            manager.beginTransaction(teamDAO);
 
-            boolean isCreated = commandDAO.create(command);
+            boolean isCreated = teamDAO.create(team);
 
             manager.commit();
             manager.endTransaction();
@@ -137,30 +137,30 @@ public class CommandReceiverImpl implements CommandReceiver {
                 manager.rollback();
                 manager.endTransaction();
             } catch (DAOException e1) {
-                throw new ReceiverException("Create command rollback error", e);
+                throw new ReceiverException("Create team rollback error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
     @Override
-    public void deleteCommand(RequestContent requestContent) throws ReceiverException {
+    public void deleteTeam(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl validator = new CommonValidatorImpl();
-        String[] stringId = requestContent.getRequestParameters().get(COMMAND_ID);
+        String[] stringId = requestContent.getRequestParameters().get(TEAM_ID);
 
         if (!validator.isVarExist(stringId) || !validator.isInteger(stringId[0])) {
             requestContent.setAjaxSuccess(false);
             return;
         }
 
-        int commandId = Integer.valueOf(stringId[0]);
+        int teamId = Integer.valueOf(stringId[0]);
 
         TransactionManager manager = new TransactionManager();
         try {
-            CommandDAOImpl commandDAO = new CommandDAOImpl();
-            manager.beginTransaction(commandDAO);
+            TeamDAOImpl teamDAO = new TeamDAOImpl();
+            manager.beginTransaction(teamDAO);
 
-            boolean isDeleted = commandDAO.delete(commandId);
+            boolean isDeleted = teamDAO.delete(teamId);
 
             manager.commit();
             manager.endTransaction();
@@ -171,14 +171,14 @@ public class CommandReceiverImpl implements CommandReceiver {
                 manager.rollback();
                 manager.endTransaction();
             } catch (DAOException e1) {
-                throw new ReceiverException("Delete command rollback error", e);
+                throw new ReceiverException("Delete team rollback error", e);
             }
             throw new ReceiverException(e);
         }
     }
 
     @Override
-    public void findCommand(RequestContent requestContent) throws ReceiverException {
+    public void findTeam(RequestContent requestContent) throws ReceiverException {
         CommonValidatorImpl validator = new CommonValidatorImpl();
         String[] stringId = requestContent.getRequestParameters().get(KIND_OF_SPORT_ID);
 
@@ -193,15 +193,15 @@ public class CommandReceiverImpl implements CommandReceiver {
 
         TransactionManager manager = new TransactionManager();
         try {
-            CommandDAOImpl commandDAO = new CommandDAOImpl();
-            manager.beginTransaction(commandDAO);
+            TeamDAOImpl teamDAO = new TeamDAOImpl();
+            manager.beginTransaction(teamDAO);
 
-            JsonElement element = gson.toJsonTree(commandDAO.findBySportId(sportId));
+            JsonElement element = gson.toJsonTree(teamDAO.findBySportId(sportId));
 
             manager.commit();
             manager.endTransaction();
 
-            object.add(COMMANDS, element);
+            object.add(TEAMS, element);
             requestContent.setAjaxResult(object);
 
         } catch (DAOException e) {
@@ -209,7 +209,7 @@ public class CommandReceiverImpl implements CommandReceiver {
                 manager.rollback();
                 manager.endTransaction();
             } catch (DAOException e1) {
-                throw new ReceiverException("Find command rollback error", e);
+                throw new ReceiverException("Find team rollback error", e);
             }
             throw new ReceiverException(e);
         }

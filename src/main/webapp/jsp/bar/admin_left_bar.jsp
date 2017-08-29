@@ -22,7 +22,7 @@
             </button>
         </form>
         <form action="${pageContext.request.contextPath}/generalController" class="w3-margin-bottom w3-card-2">
-            <input type="hidden" name="command" value="open_command_settings">
+            <input type="hidden" name="command" value="open_team_settings">
             <button type="submit" class="w3-button w3-block w3-theme-l2 w3-center">
                 Команды
             </button>

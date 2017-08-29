@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static by.epam.litvin.constant.GeneralConstant.BET;
+import static by.epam.litvin.constant.GeneralConstant.COMPETITION;
 import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 public class BetDAOImpl extends BetDAO {
@@ -66,8 +68,8 @@ public class BetDAOImpl extends BetDAO {
                         resultSet.getString(SQLFieldConstant.KindOfSport.NAME));
                 betAndGame.put(SQLFieldConstant.CompetitionType.NAME,
                         resultSet.getString(SQLFieldConstant.CompetitionType.NAME));
-                betAndGame.put("bet", bet);
-                betAndGame.put("competition", competition);
+                betAndGame.put(BET, bet);
+                betAndGame.put(COMPETITION, competition);
                 betsAndGames.add(betAndGame);
             }
 
@@ -111,8 +113,8 @@ public class BetDAOImpl extends BetDAO {
                         resultSet.getString(SQLFieldConstant.KindOfSport.NAME));
                 betAndGame.put(SQLFieldConstant.CompetitionType.NAME,
                         resultSet.getString(SQLFieldConstant.CompetitionType.NAME));
-                betAndGame.put("bet", bet);
-                betAndGame.put("competition", competition);
+                betAndGame.put(BET, bet);
+                betAndGame.put(COMPETITION, competition);
                 betsAndGames.add(betAndGame);
             }
         } catch (SQLException e) {

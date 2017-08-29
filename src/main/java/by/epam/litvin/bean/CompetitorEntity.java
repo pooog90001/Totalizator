@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 public class CompetitorEntity extends Entity {
 
     private int id;
-    private int commandId;
+    private int teamId;
     private int competitionId;
     private BigDecimal winCoeff;
     private Boolean isWin;
@@ -30,12 +30,12 @@ public class CompetitorEntity extends Entity {
         this.id = id;
     }
 
-    public int getCommandId() {
-        return commandId;
+    public int getTeamId() {
+        return teamId;
     }
 
-    public void setCommandId(int commandId) {
-        this.commandId = commandId;
+    public void setTeamId(int teamId) {
+        this.teamId = teamId;
     }
 
     public int getCompetitionId() {
@@ -70,7 +70,7 @@ public class CompetitorEntity extends Entity {
         CompetitorEntity that = (CompetitorEntity) o;
 
         if (id != that.id) return false;
-        if (commandId != that.commandId) return false;
+        if (teamId != that.teamId) return false;
         if (competitionId != that.competitionId) return false;
         if (result != that.result) return false;
         if (winCoeff != null ? !winCoeff.equals(that.winCoeff) : that.winCoeff != null) return false;
@@ -80,7 +80,7 @@ public class CompetitorEntity extends Entity {
     @Override
     public int hashCode() {
         int result1 = id;
-        result1 = 31 * result1 + commandId;
+        result1 = 31 * result1 + teamId;
         result1 = 31 * result1 + competitionId;
         result1 = 31 * result1 + (winCoeff != null ? winCoeff.hashCode() : 0);
         result1 = 31 * result1 + (isWin != null ? isWin.hashCode() : 0);

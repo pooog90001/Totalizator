@@ -45,7 +45,8 @@ final public class GeneralConstant {
     public static final String UPCOMING_GAMES = "upcomingGames";
     public static final String PAST_GAMES = "pastGames";
     public static final String GAMES_COUNT = "gamesCount";
-    public static final String COMMANDS = "commands";
+    public static final String TEAMS = "teams";
+    public static final String BET = "bet";
     public static final String COMPETITORS = "competitors";
     public static final String STATISTIC_MAP = "statisticMap";
     public static final String NAME = "name";
@@ -69,7 +70,7 @@ final public class GeneralConstant {
     public static final String TEXT = "text";
     public static final String INVALID_TEXT = "invalidText";
     public static final String KIND_OF_SPORT_ID = "kindOfSportId";
-    public static final String COMMAND_ID = "commandId";
+    public static final String TEAM_ID = "teamId";
     public static final String COMPETITOR_ID = "competitorId";
     public static final String COMPETITOR_COEFF = "competitorCoeff";
     public static final String COMPETITOR_RESULT = "competitorResult";
@@ -84,6 +85,11 @@ final public class GeneralConstant {
     public static final String COMPETITION = "competition";
     public static final String COMPETITION_TYPE = "competitionType";
     public static final String COMPETITION_TYPE_ID = "competitionTypeId";
+    public static final String COMMAND = "command";
+    public static final String COUNT_REGISTERED = "countRegistered";
+    public static final String COUNT_LOCKED = "countLocked";
+    public static final String COUNT_NEWS = "countNews";
+    public static final String COUNT_SPORTS = "countSports";
     public static final String TYPE_ID = "typeId";
     public static final String DATE_START = "dateStart";
     public static final String DATE_FINISH = "dateFinish";
@@ -106,7 +112,7 @@ final public class GeneralConstant {
     public static final String NEWS_COMMENT_LIST = "newsCommentList";
     public static final String ATTR_NEWS = "attrNews";
     public static final String OLD_PASSWORD = "oldPassword";
-    public static final String ON_COMMAND = "onCommand";
+    public static final String ON_TEAM = "onTeam";
     public static final String NEW_NAME = "newName";
     public static final String BETS_COUNT = "betsCount";
     public static final String BETS_LESS_TOTAL_COUNT = "betsLessTotalCount";
@@ -123,7 +129,7 @@ final public class GeneralConstant {
     public static final String COUNT = "count";
     public static final String CASH = "cash";
     public static final String VALUE = "value";
-    public static final String COMMAND = "command";
+    public static final String TEAM = "team";
     public static final String PAGE_NOT_FOUND = "pageNotFound";
     public static final String PAGE_NUMBER = "pageNumber";
     public static final String LITTLE_MONEY = "littleMoney";

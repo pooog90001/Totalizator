@@ -22,7 +22,7 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
 
 
     public List<Map<String, Object>> findUsingKindsOfSport() throws DAOException {
-        List<Map<String, Object>> kindOfSportList = null;
+        List<Map<String, Object>> kindOfSportList;
 
         try (PreparedStatement statement = connection.prepareStatement(FIND_USING_KINDS_OF_SPORT)) {
             ResultSet resultSet = statement.executeQuery();

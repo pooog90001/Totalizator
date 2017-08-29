@@ -3,7 +3,6 @@ package by.epam.litvin.type;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.command.bet.CreateBetCommand;
-import by.epam.litvin.command.command.*;
 import by.epam.litvin.command.comment.ChangeLockCommentCommand;
 import by.epam.litvin.command.comment.CreateCommentCommand;
 import by.epam.litvin.command.common.*;
@@ -17,6 +16,7 @@ import by.epam.litvin.command.kindofsport.DeleteKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.OpenKindOfSportCommand;
 import by.epam.litvin.command.kindofsport.UpdateKindOfSportCommand;
 import by.epam.litvin.command.news.*;
+import by.epam.litvin.command.team.*;
 import by.epam.litvin.command.user.*;
 import by.epam.litvin.content.RequestContent;
 import by.epam.litvin.exception.ReceiverException;
@@ -86,12 +86,6 @@ public enum CommandType {
     CHANGE_LOCALE(new ChangeLocaleCommand(new CommonReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
             ((CommonReceiverImpl) getCommand().getReceiver()).changeLocale(content);
-        }
-    },
-
-    SEND_CONFIRM_EMAIL(new SendConfirmEmailCommand(new CommonReceiverImpl())) {
-        public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommonReceiverImpl) getCommand().getReceiver()).sendConfirmEmail(content);
         }
     },
 
@@ -193,27 +187,27 @@ public enum CommandType {
         }
     },
 
-    OPEN_COMMAND_SETTINGS(new OpenCommandsCommand(new CommandReceiverImpl())) {
+    OPEN_TEAM_SETTINGS(new OpenTeamsCommand(new TeamReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommandReceiverImpl) getCommand().getReceiver()).openCommandSetting(content);
+            ((TeamReceiverImpl) getCommand().getReceiver()).openTeamSetting(content);
         }
     },
 
-    UPDATE_COMMAND(new UpdateCommandCommand(new CommandReceiverImpl())) {
+    UPDATE_TEAM(new UpdateTeamCommand(new TeamReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommandReceiverImpl) getCommand().getReceiver()).updateCommand(content);
+            ((TeamReceiverImpl) getCommand().getReceiver()).updateTeam(content);
         }
     },
 
-    CREATE_COMMAND(new CreateCommandCommand(new CommandReceiverImpl())) {
+    CREATE_TEAM(new CreateTeamCommand(new TeamReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommandReceiverImpl) getCommand().getReceiver()).createCommand(content);
+            ((TeamReceiverImpl) getCommand().getReceiver()).createTeam(content);
         }
     },
 
-    DELETE_COMMAND(new DeleteCommandCommand(new CommandReceiverImpl())) {
+    DELETE_TEAM(new DeleteTeamCommand(new TeamReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommandReceiverImpl) getCommand().getReceiver()).deleteCommand(content);
+            ((TeamReceiverImpl) getCommand().getReceiver()).deleteTeam(content);
         }
     },
 
@@ -247,9 +241,9 @@ public enum CommandType {
         }
     },
 
-    FIND_COMMANDS(new FindCommandsCommand(new CommandReceiverImpl())) {
+    FIND_TEAMS(new FindTeamsCommand(new TeamReceiverImpl())) {
         public void doReceiver(RequestContent content) throws ReceiverException {
-            ((CommandReceiverImpl) getCommand().getReceiver()).findCommand(content);
+            ((TeamReceiverImpl) getCommand().getReceiver()).findTeam(content);
         }
     },
 

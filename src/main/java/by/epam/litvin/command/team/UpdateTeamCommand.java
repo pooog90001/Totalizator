@@ -1,4 +1,4 @@
-package by.epam.litvin.command.command;
+package by.epam.litvin.command.team;
 
 import by.epam.litvin.command.AbstractCommand;
 import by.epam.litvin.content.RequestContent;
@@ -10,10 +10,10 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class FindCommandsCommand extends AbstractCommand {
+public class UpdateTeamCommand extends AbstractCommand {
     private static final Logger LOGGER = LogManager.getLogger();
 
-    public FindCommandsCommand(Receiver receiver) {
+    public UpdateTeamCommand(Receiver receiver) {
         super(receiver);
     }
 
@@ -23,7 +23,7 @@ public class FindCommandsCommand extends AbstractCommand {
             receiver.action(CommandType.takeCommandType(this), requestContent);
 
         } catch (ReceiverException e) {
-            LOGGER.log(Level.ERROR, "Find command receiver error", e);
+            LOGGER.log(Level.ERROR, "Update team receiver error", e);
         }
         return null;
     }

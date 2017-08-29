@@ -31,7 +31,7 @@ import static by.epam.litvin.constant.GeneralConstant.*;
 public class BetReceiverImpl implements BetReceiver {
     @Override
     public void createBet(RequestContent content) throws ReceiverException {
-        String[] stringOnCommand = content.getRequestParameters().get(ON_COMMAND);
+        String[] stringOnTeam = content.getRequestParameters().get(ON_TEAM);
         String[] stringCompetitionId = content.getRequestParameters().get(COMPETITION_ID);
         String[] stringValue = content.getRequestParameters().get(VALUE);
         String[] stringCash = content.getRequestParameters().get(CASH);
@@ -48,7 +48,7 @@ public class BetReceiverImpl implements BetReceiver {
             return;
         }
 
-        if (!commonValidator.isVarExist(stringOnCommand) ||
+        if (!commonValidator.isVarExist(stringOnTeam) ||
                 !commonValidator.isVarExist(stringCash)) {
             content.setAjaxSuccess(false);
             content.getAjaxResult().add(DATA_EMPTY, new Gson().toJsonTree(true));
@@ -57,11 +57,11 @@ public class BetReceiverImpl implements BetReceiver {
 
         BigDecimal cash = formatter.formatToCash(new BigDecimal(stringCash[0]));
         int competitionId = Integer.valueOf(stringCompetitionId[0]);
-        boolean onCommand = Boolean.valueOf(stringOnCommand[0]);
+        boolean onTeam = Boolean.valueOf(stringOnTeam[0]);
         int competitorId = 0;
         ExpectResultType expectedResult = null;
 
-        if (onCommand) {
+        if (onTeam) {
             competitorId = Integer.valueOf(stringValue[0]);
         } else {
             expectedResult = ExpectResultType.valueOf(stringValue[0].toUpperCase());
@@ -104,9 +104,9 @@ public class BetReceiverImpl implements BetReceiver {
             List<CompetitorEntity> competitors = competitorDAO.findByGameId(competitionId);
             int finalCompetitionId = competitorId;
 
-            if (!onCommand) {
+            if (!onTeam) {
                 competitorId = competitors.stream()
-                        .findFirst().filter(c -> c.getCommandId() == finalCompetitionId)
+                        .findFirst().filter(c -> c.getTeamId() == finalCompetitionId)
                         .orElse(null).getId();
             } else {
                 isTransactionSuccess = competitors.stream()

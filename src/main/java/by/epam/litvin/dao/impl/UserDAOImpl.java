@@ -13,8 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.epam.litvin.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
-import static by.epam.litvin.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
+import static by.epam.litvin.constant.GeneralConstant.*;
 import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 
@@ -35,7 +34,7 @@ public class UserDAOImpl extends DAO<UserEntity> {
             foundUser = extractUser(result);
 
         } catch (SQLException e) {
-            throw new DAOException("Find user error ", e);
+            throw new DAOException("Find all users error ", e);
         }
 
         return foundUser;
@@ -104,7 +103,7 @@ public class UserDAOImpl extends DAO<UserEntity> {
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Find user error ", e);
+            throw new DAOException("Find limit users error ", e);
         }
 
         return userList;
@@ -118,11 +117,11 @@ public class UserDAOImpl extends DAO<UserEntity> {
             ResultSet resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                count = resultSet.getInt("count");
+                count = resultSet.getInt(COUNT);
             }
 
         } catch (SQLException e) {
-            throw new DAOException("Find count news error ", e);
+            throw new DAOException("Find users count error ", e);
         }
 
         return count;
@@ -146,7 +145,6 @@ public class UserDAOImpl extends DAO<UserEntity> {
             statement.setString(1, entity.getName());
             statement.setString(2, entity.getEmail());
             statement.setString(3, entity.getPassword());
-            statement.setString(4, entity.getConfirmUrl());
 
             isCreated = statement.executeUpdate() == 1;
 

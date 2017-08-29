@@ -130,8 +130,8 @@
                 <input type="hidden" name="competitorId" value="${competitor['competitor_id']}">
                 <div class='w3-row w3-small'>
                     <div class='w3-col s5'>
-                        <div class='w3-col s4 '>Command:</div>
-                        <div class='w3-col s8'> <c:out value="${competitor['command_name']}"/> </div>
+                        <div class='w3-col s4 '>Team:</div>
+                        <div class='w3-col s8'><c:out value="${competitor['team_name']}"/></div>
                     </div>
                     <div class='w3-col s4'>
                         <div class='w3-col s6 '>Win coefficient:</div>
@@ -148,7 +148,8 @@
                         </div>
                     </div>
                     <div class="w3-col s3">
-                        <form id="resultForm" action="/generalController" method="post">
+                        <form id="resultForm" action="${pageContext.request.contextPath}/generalController"
+                              method="post">
                             <input type="hidden" name="command" value="fill_results_competition">
                             <input type="hidden" name="competitionId" value="${competition['competition_id']}">
 

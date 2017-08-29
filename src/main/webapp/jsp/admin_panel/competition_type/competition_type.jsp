@@ -85,7 +85,7 @@
                                 <div class="w3-card-2 w3-white w3-round w3-small">
                                     <div class="w3-col s6 w3-padding-small w3-center">
                                         <div class="competitionTypeName">
-                                                ${competitionType.name}
+                                            <c:out value="${competitionType.name}"/>
                                         </div>
                                     </div>
                                     <div class="w3-col s1 w3-padding-small w3-center">

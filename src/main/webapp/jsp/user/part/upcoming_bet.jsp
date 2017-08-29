@@ -103,7 +103,7 @@
                     <div class='w3-col s6 w3-left-align'>
                         <hr style="margin: 5px;">
                         <div class="w3-row">
-                            <div class='w3-col s5'><c:out value="${competitor['command_name']}"/></div>
+                            <div class='w3-col s5'><c:out value="${competitor['team_name']}"/></div>
                             <c:choose>
                                 <c:when test="${betAndGame.bet.competitorId eq competitor['competitor_id']}">
                                     <span class='w3-col s1 w3-text-green'>W:</span>

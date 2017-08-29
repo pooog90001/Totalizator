@@ -150,42 +150,32 @@
                                 </div>
                                 <div class="w3-col s8">
                                     <div class="w3-row">
-                                        <div class="w3-col s12 w3-left-align w3-small">
-                                           <span>
+                                        <div class="w3-col s12 w3-left-align w3-small ">
+                                            <div style="margin: 4px">
                                                <i>Name: </i>
                                                <b> <c:out value="${userEntity.name}"/> </b>
                                                <i>Cash: </i>
                                                <b> <ctg:decimal-presenter number="${userEntity.cash}"/>$ </b>
-                                           </span>
-                                            <br>
-                                            <span>
+                                            </div>
+                                            <div style="margin: 4px">
                                                <i>Role: </i>
                                                <b> <c:out value="${userEntity.type}"/>  </b>
-                                           </span>
-                                            <br>
-                                            <span>
+                                            </div>
+                                            <div style="margin: 4px">
                                                <i>Email: </i>
                                                <b> <c:out value="${userEntity.email}"/>  </b>
-                                           </span><br>
-                                            <span>
-                                               <i>Confirmed: </i>
-                                               <b> <c:out value="${userEntity.isConfirm}"/>  </b>
-                                           </span>
-                                            <br>
-                                            <span>
+                                            </div>
+                                            <div style="margin: 4px">
                                                <i>Blocked: </i>
                                                <b> <c:out value="${userEntity.isBlocked}"/>  </b>
-                                           </span>
-                                            <br>
+                                            </div>
                                             <c:if test="${userEntity.isBlocked}">
-                                                <span>
+                                                <div style="margin: 4px">
                                                <i>Blocked text: </i>
                                                <b> <c:out value="${userEntity.blockedText}"/> </b>
-                                           </span>
+                                                </div>
                                             </c:if>
 
-                                        </div>
-                                        <div class="w3-col s12">
                                         </div>
                                     </div>
                                 </div>

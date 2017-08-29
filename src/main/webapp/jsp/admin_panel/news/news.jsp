@@ -165,7 +165,9 @@
                                             </form>
                                         </div>
                                         <div class="w3-col s12">
-                                            <p class="w3-small">${news.text}</p>
+                                            <p class="w3-small">
+                                                <c:out value="${news.text}"/>
+                                            </p>
                                         </div>
                                     </div>
                                 </div>

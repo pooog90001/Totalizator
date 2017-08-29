@@ -83,8 +83,8 @@ function doBet(e, formId) {
 
     $from.find("input[name]").each(function (index, node) {
         if (node.name === "bet" && node.checked) {
-            dataPost += "onCommand=";
-            dataPost += $(node).attr('onCommand');
+            dataPost += "onTeam=";
+            dataPost += $(node).attr('onTeam');
             dataPost += "&";
             dataPost += "value";
             dataPost += "=";

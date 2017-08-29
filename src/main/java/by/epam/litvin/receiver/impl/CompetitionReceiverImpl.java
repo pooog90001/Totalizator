@@ -114,7 +114,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
+            List<Map<String, Object>> competitors = competitorDAO.findWithTeamByGameId(compId);
 
             for (Map<String, Object> competitor : competitors) {
                 int competitorId = (int) competitor.get(SQLFieldConstant.Competitor.ID);
@@ -160,30 +160,30 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
+            List<Map<String, Object>> competitors = competitorDAO.findWithTeamByGameId(compId);
             competition.put(COMPETITORS, competitors);
         }
     }
 
-    private CompetitorEntity[] insertParamToCompetitorsArr(String[] commandsId, String[] competitorsCoeff) {
+    private CompetitorEntity[] insertParamToCompetitorsArr(String[] teamsId, String[] competitorsCoeff) {
         CommonValidatorImpl commonValidator = new CommonValidatorImpl();
         CompetitionValidatorImpl competitionValidator = new CompetitionValidatorImpl();
         CompetitorEntity[] competitors = null;
         boolean isSuccess = true;
 
-        if (commandsId == null || competitorsCoeff == null ||
-                commandsId.length != competitorsCoeff.length) {
+        if (teamsId == null || competitorsCoeff == null ||
+                teamsId.length != competitorsCoeff.length) {
             isSuccess = false;
         }
 
         if (isSuccess) {
-            competitors = new CompetitorEntity[commandsId.length];
+            competitors = new CompetitorEntity[teamsId.length];
 
             for (int i = 0; i < competitors.length; i++) {
-                if (commonValidator.isInteger(commandsId[i]) &&
+                if (commonValidator.isInteger(teamsId[i]) &&
                         competitionValidator.isCoeff(competitorsCoeff[i])) {
                     CompetitorEntity competitor = new CompetitorEntity();
-                    competitor.setCommandId(Integer.valueOf(commandsId[i]));
+                    competitor.setTeamId(Integer.valueOf(teamsId[i]));
                     competitor.setWinCoeff(competitionValidator.checkStringCoeff(competitorsCoeff[i]));
                     competitors[i] = competitor;
 
@@ -206,7 +206,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringDateFinish = content.getRequestParameters().get(DATE_FINISH);
         String[] stringTimeFinish = content.getRequestParameters().get(TIME_FINISH);
         String[] stringIsActive = content.getRequestParameters().get(IS_ACTIVE);
-        String[] commandsId = content.getRequestParameters().get(COMMAND_ID);
+        String[] teamsId = content.getRequestParameters().get(TEAM_ID);
         String[] competitorsCoeff = content.getRequestParameters().get(COMPETITOR_COEFF);
         boolean isActive = (stringIsActive != null && ON.equals(stringIsActive[0]));
         String[] stringTotal = content.getRequestParameters().get(TOTAL);
@@ -228,7 +228,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         }
 
         CompetitorEntity[] competitors =
-                insertParamToCompetitorsArr(commandsId, competitorsCoeff);
+                insertParamToCompetitorsArr(teamsId, competitorsCoeff);
 
         if (competitors == null) {
             data.put(WRONG_COMPETITORS, true);
@@ -248,7 +248,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         if (isActive) {
             boolean isValid = true;
 
-            if (commandsId.length == 2) {
+            if (teamsId.length == 2) {
                 if (total == null || lessTotalCoeff == null ||
                         moreTotalCoeff == null || standoffCoeff == null) {
                     isValid = false;
@@ -309,7 +309,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             int competitionId = competitionDAO.createAndGetId(competition);
             CompetitorEntity competitorEntity = new CompetitorEntity();
             competitorEntity.setCompetitionId(competitionId);
-            competitorEntity.setCommandId(0);
+            competitorEntity.setTeamId(0);
 
             if (!competitorDAO.create(competitorEntity)) {
                 transactionAccess = false;
@@ -1023,7 +1023,7 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
             }
 
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
+            List<Map<String, Object>> competitors = competitorDAO.findWithTeamByGameId(compId);
             competition.put(COMPETITORS, competitors);
             manager.commit();
             manager.endTransaction();

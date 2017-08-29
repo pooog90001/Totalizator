@@ -10,11 +10,11 @@ import by.epam.litvin.dao.TransactionManager;
 import by.epam.litvin.dao.impl.*;
 import by.epam.litvin.exception.DAOException;
 import by.epam.litvin.exception.ReceiverException;
-import by.epam.litvin.mail.SenderMail;
 import by.epam.litvin.receiver.CommonReceiver;
 import by.epam.litvin.type.MailType;
 import by.epam.litvin.type.UploadType;
 import by.epam.litvin.util.Formatter;
+import by.epam.litvin.util.MailSender;
 import by.epam.litvin.util.Packer;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
@@ -42,7 +42,7 @@ public class CommonReceiverImpl implements CommonReceiver{
                 commonValidator.isVarExist(textArr) &&
                 userValidator.checkEmail(emailArr[0])) {
 
-            SenderMail sender = new SenderMail(emailArr[0], textArr[0], MailType.EMAIL.getValue());
+            MailSender sender = new MailSender(emailArr[0], textArr[0], MailType.EMAIL.getValue());
             sender.start();
             data.put(SUCCESS, true);
             content.getSessionAttributes().put(TEMPORARY, data);
@@ -87,7 +87,7 @@ public class CommonReceiverImpl implements CommonReceiver{
                     kindOfSportDAO, competitorDAO, userDAO);
 
             List<Map<String, Object>> kindOfSportList = kindOfSportDAO.findUsingKindsOfSport();
-            List<NewsEntity> newsList = newsDAO.find(0, COUNT_NEWS_ON_MAIN_PAGE);
+            List<NewsEntity> newsList = newsDAO.findLimit(0, COUNT_NEWS_ON_MAIN_PAGE);
 
             List<Map<String, Object>> upcomingGames = competitionDAO.findLimitUpcomingGames(0,
                     COUNT_COMPETITIONS_ON_MAIN_PAGE, true);
@@ -133,7 +133,7 @@ public class CommonReceiverImpl implements CommonReceiver{
 
         for (Map<String, Object> competition : competitions) {
             int compId = (int) competition.get(SQLFieldConstant.Competition.ID);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(compId);
+            List<Map<String, Object>> competitors = competitorDAO.findWithTeamByGameId(compId);
             competition.put(COMPETITORS, competitors);
         }
     }

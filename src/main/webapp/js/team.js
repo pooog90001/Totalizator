@@ -9,10 +9,10 @@ function edit(e, id) {
 
         $this.html("");
         $this.html("<i class='fa fa-save'></i>");
-        $contanier.find('.commandName').each(function () {
+        $contanier.find('.teamName').each(function () {
             var value = $(this).text().toString().trim();
             $this.attr('oldName', value);
-            var input = $('<input class="commandName" />').val(value);
+            var input = $('<input class="teamName" />').val(value);
             $(this).replaceWith(input);
         });
     }
@@ -20,9 +20,9 @@ function edit(e, id) {
         $this.removeAttr('editing');
         $this.html("");
         $this.html("<i class='fa fa-edit'></i>");
-        $contanier.find('.commandName').each(function () {
+        $contanier.find('.teamName').each(function () {
             var name = $(this).val().toString().trim();
-            var div = $('<div class="commandName" />').text(name);
+            var div = $('<div class="teamName" />').text(name);
             $(this).replaceWith(div);
             save(e, id, name);
         });
@@ -32,7 +32,7 @@ function edit(e, id) {
 function save(e, id, name) {
 
     //get the form data using another method
-    var dataString = "commandId=" + id + "&newName="+ name + "&command=update_command";
+    var dataString = "teamId=" + id + "&newName=" + name + "&command=update_team";
 
     var $this = $(e);
     var $contanier = $("#" + id);
@@ -50,7 +50,7 @@ function save(e, id, name) {
             if (data.success === false) {
                 console.log("Something really bad happened " + textStatus);
 
-                $contanier.find('.commandName').each(function () {
+                $contanier.find('.teamName').each(function () {
                     $(this).text($this.attr("oldName"));
                 });
                 modal_edit_wrong.style.display = 'block';
@@ -61,17 +61,12 @@ function save(e, id, name) {
         error: function (jqXHR, textStatus, errorThrown) {
             console.log("Something really bad happened " + textStatus);
 
-            $contanier.find('.commandName').each(function () {
+            $contanier.find('.teamName').each(function () {
                 $(this).text($this.attr("oldName"));
             });
             modal_edit_error.style.display = 'block';
         },
-
-        //capture the request before it was sent to server
         beforeSend: function (jqXHR, settings) {},
-
-        //this is called after the response or error functions are finsihed
-        //so that we can take some action
         complete: function (jqXHR, textStatus) {}
     });
 }
@@ -85,7 +80,7 @@ function del(e, id) {
     $modal.css("display","none");
     $contanier.css("display","none");
     //get the form data using another method
-    var dataString = "commandId=" + id + "&command=delete_command";
+    var dataString = "teamId=" + id + "&command=delete_team";
     //make the AJAX request, dataType is set to json
     //meaning we are expecting JSON data in response from the server
     $.ajax({

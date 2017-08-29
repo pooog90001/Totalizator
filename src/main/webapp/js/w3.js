@@ -63,4 +63,13 @@ function changeLanguage(element) {
     });
 }
 
+document.onload = function () {
+    var bodyHeight = $("body").height();
+    var windowHeight = window.innerHeight(true);
 
+    if (bodyHeight < windowHeight) {
+        var marginTop = (windowHeight - bodyHeight).toString();
+        $("footer").css('marginTop', marginTop + "px");
+    }
+
+};

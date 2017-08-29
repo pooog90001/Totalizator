@@ -88,7 +88,7 @@ public class CommentDAOImpl extends DAO<CommentEntity> {
     }
 
     public boolean deleteByNewsId(int newsId) throws DAOException {
-        boolean isDeleted = false;
+        boolean isDeleted;
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.DELETE_COMMENT_BY_NEWS_ID)) {
             statement.setInt(1,newsId);
             isDeleted = !statement.execute();

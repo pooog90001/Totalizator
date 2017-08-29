@@ -10,7 +10,7 @@ import by.epam.litvin.exception.ReceiverException;
 import by.epam.litvin.receiver.NewsReceiver;
 import by.epam.litvin.type.UploadType;
 import by.epam.litvin.util.Formatter;
-import by.epam.litvin.util.Uploader;
+import by.epam.litvin.util.ImageUploader;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.NewsValidatorImpl;
 import com.google.gson.Gson;
@@ -41,7 +41,7 @@ public class NewsReceiverImpl implements NewsReceiver {
         try {
             NewsDAOImpl newsDAO = new NewsDAOImpl();
             handler.beginTransaction(newsDAO);
-            List<NewsEntity> newsList = newsDAO.find(startIndex, COUNT_NEWS_ON_PAGE);
+            List<NewsEntity> newsList = newsDAO.findLimit(startIndex, COUNT_NEWS_ON_PAGE);
             int newsCount = newsDAO.findNewsCount();
             handler.commit();
             handler.endTransaction();
@@ -77,7 +77,7 @@ public class NewsReceiverImpl implements NewsReceiver {
         NewsValidatorImpl newsValidator = new NewsValidatorImpl();
         CommonValidatorImpl validator = new CommonValidatorImpl();
         File uploadPath = new File(content.getRealPath(), UploadType.NEWS.getUploadFolder());
-        Uploader uploader = new Uploader();
+        ImageUploader uploader = new ImageUploader();
 
         String[] stringPointX1 = content.getRequestParameters().get(POINT_X1);
         String[] stringPointX2 = content.getRequestParameters().get(POINT_X2);

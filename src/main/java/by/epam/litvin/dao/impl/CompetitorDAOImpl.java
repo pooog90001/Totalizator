@@ -22,10 +22,10 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
         throw new UnsupportedOperationException();
     }
 
-    public List<Map<String, Object>> findWithCommandByGameId(int competitionId) throws DAOException {
+    public List<Map<String, Object>> findWithTeamByGameId(int competitionId) throws DAOException {
         List<Map<String, Object>> competitorList;
         try (PreparedStatement statement =
-                     connection.prepareStatement(FIND_ALL_COMPETITORS_WITH_COMMAND_BY_GAME_ID)) {
+                     connection.prepareStatement(FIND_ALL_COMPETITORS_WITH_TEAM_BY_GAME_ID)) {
             statement.setInt(1, competitionId);
             ResultSet resultSet = statement.executeQuery();
             competitorList = new ArrayList<>();
@@ -36,8 +36,8 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
                         resultSet.getInt(SQLFieldConstant.Competitor.ID));
                 competitor.put(SQLFieldConstant.Competitor.WIN_COEFF,
                         resultSet.getBigDecimal(SQLFieldConstant.Competitor.WIN_COEFF));
-                competitor.put(SQLFieldConstant.Command.NAME,
-                        resultSet.getString(SQLFieldConstant.Command.NAME));
+                competitor.put(SQLFieldConstant.TEAM.NAME,
+                        resultSet.getString(SQLFieldConstant.TEAM.NAME));
                 competitor.put(SQLFieldConstant.Competitor.RESULT,
                         resultSet.getInt(SQLFieldConstant.Competitor.RESULT));
                 competitor.put(SQLFieldConstant.Competitor.IS_WIN,
@@ -45,7 +45,7 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
                 competitorList.add(competitor);
             }
         } catch (SQLException e) {
-            throw new DAOException("find all competitors whith command error", e);
+            throw new DAOException("find all competitors whith team error", e);
         }
         return competitorList;
     }
@@ -60,7 +60,7 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
             while (resultSet.next()) {
                 CompetitorEntity competitor = new CompetitorEntity();
                 competitor.setId(resultSet.getInt(SQLFieldConstant.Competitor.ID));
-                competitor.setCommandId(resultSet.getInt(SQLFieldConstant.Command.ID));
+                competitor.setTeamId(resultSet.getInt(SQLFieldConstant.TEAM.ID));
                 competitor.setCompetitionId(resultSet.getInt(SQLFieldConstant.Competition.ID));
                 competitor.setWinCoeff(resultSet.getBigDecimal(SQLFieldConstant.Competitor.WIN_COEFF));
                 competitor.setResult(resultSet.getInt(SQLFieldConstant.Competitor.RESULT));
@@ -68,7 +68,7 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
                 competitorList.add(competitor);
             }
         } catch (SQLException e) {
-            throw new DAOException("find all competitors whith command error", e);
+            throw new DAOException("find all competitors whith team error", e);
         }
         return competitorList;
     }
@@ -93,7 +93,7 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
         boolean isCreated = false;
 
         try (PreparedStatement statement = connection.prepareStatement(INSERT_COMPETITOR)) {
-            statement.setInt(1, entity.getCommandId());
+            statement.setInt(1, entity.getTeamId());
             statement.setInt(2, entity.getCompetitionId());
             statement.setBigDecimal(3, entity.getWinCoeff());
             isCreated = statement.executeUpdate() == 1;
@@ -120,25 +120,6 @@ public class CompetitorDAOImpl extends DAO<CompetitorEntity> {
         }
 
         return isUpdated;
-    }
-
-    public List<Integer> findIdsByCompetitionId(int competitionId) throws DAOException {
-        List<Integer> idList;
-
-        try (PreparedStatement statement = connection.prepareStatement(FIND_COMPETITOR_IDS_BY_COMPETITION_ID)) {
-            statement.setInt(1, competitionId);
-            ResultSet resultSet = statement.executeQuery();
-            idList = new ArrayList<>();
-
-            while (resultSet.next()) {
-                idList.add(resultSet.getInt(SQLFieldConstant.Competitor.ID));
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Find competitor id error", e);
-        }
-
-        return idList;
     }
 
     public void deleteByCompetitionId(int competitionId) throws DAOException {

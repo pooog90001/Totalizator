@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class Uploader {
+public class ImageUploader {
     private static final Logger LOGGER = LogManager.getLogger();
 
     public boolean uploadImage(Part imagePart, File fullPath,

@@ -156,15 +156,16 @@
                     </div>
                 </div>
             </c:if>
-            <form id="resultForm${competition['competition_id']}" name="resultForm" action="/generalController"
+            <form id="resultForm${competition['competition_id']}" name="resultForm"
+                  action="${pageContext.request.contextPath}/generalController"
                   method="post" onsubmit=" return checkBeforeFillResults('pastUnfilledGame'+${competition['competition_id']});">
                 <input type="hidden" name="command" value="FILL_RESULTS_COMPETITION">
                 <input type="hidden" name="competitionId" value="${competition['competition_id']}">
                 <c:forEach var="competitor" items="${competition['competitors']}">
                     <div class='w3-row w3-small'>
                         <div class='w3-col s4'>
-                            <div class='w3-col s4 '>Command:</div>
-                            <div class='w3-col s8'> <c:out value="${competitor['command_name']}"/> </div>
+                            <div class='w3-col s4 '>Team:</div>
+                            <div class='w3-col s8'><c:out value="${competitor['team_name']}"/></div>
                         </div>
                         <div class='w3-col s4'>
                             <div class='w3-col s6 '>Win coefficient:</div>

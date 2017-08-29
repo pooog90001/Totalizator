@@ -15,7 +15,6 @@ import org.apache.logging.log4j.Logger;
 import java.util.Set;
 
 import static by.epam.litvin.constant.GeneralConstant.IS_BLOCKED;
-import static by.epam.litvin.constant.GeneralConstant.IS_NOT_CONFIRMED;
 import static by.epam.litvin.constant.RequestNameConstant.WRONG_DATA;
 
 public class SignInCommand extends AbstractCommand {
@@ -40,10 +39,6 @@ public class SignInCommand extends AbstractCommand {
             } else if (keys.contains(IS_BLOCKED)) {
                 router.setRouteType(RouteType.REDIRECT);
                 router.setRoutePath(PageType.BLOCK.getPage());
-
-            } else if (keys.contains(IS_NOT_CONFIRMED)) {
-                router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.CONFIRM.getPage());
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);

@@ -105,8 +105,8 @@
                 <input type="hidden" name="competitorId" value="${competitor['competitor_id']}">
                 <div class='w3-row w3-small'>
                     <div class='w3-col s6'>
-                        <div class='w3-col s4 '>Command:</div>
-                        <div class='w3-col s8'> <c:out value="${competitor['command_name']}"/> </div>
+                        <div class='w3-col s4 '>Team:</div>
+                        <div class='w3-col s8'><c:out value="${competitor['team_name']}"/></div>
                     </div>
                     <div class='w3-col s6'>
                         <div class='w3-col s6 '>Win coefficient:</div>

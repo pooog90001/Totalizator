@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static by.epam.litvin.constant.GeneralConstant.*;
 import static by.epam.litvin.constant.SQLRequestConstant.*;
 
 public class CommonDAOImpl extends DAO {
@@ -122,11 +123,10 @@ public class CommonDAOImpl extends DAO {
             statisticMap = new HashMap<>();
 
             if (resultSet.next()) {
-                statisticMap.put("countRegistered", resultSet.getInt("countRegistered"));
-                statisticMap.put("countConfirmed", resultSet.getInt("countConfirmed"));
-                statisticMap.put("countLocked", resultSet.getInt("countLocked"));
-                statisticMap.put("countNews", resultSet.getInt("countNews"));
-                statisticMap.put("countSports", resultSet.getInt("countSports"));
+                statisticMap.put(COUNT_REGISTERED, resultSet.getInt(COUNT_REGISTERED));
+                statisticMap.put(COUNT_LOCKED, resultSet.getInt(COUNT_LOCKED));
+                statisticMap.put(COUNT_NEWS, resultSet.getInt(COUNT_NEWS));
+                statisticMap.put(COUNT_SPORTS, resultSet.getInt(COUNT_SPORTS));
             }
 
         } catch (SQLException e) {

@@ -33,9 +33,6 @@
 
             <p>
                 <input class="w3-button w3-black" type="submit" id="submit" value="${signIn}">
-                <a href="#" class="w3-margin-left w3-small w3-button w3-hover-none w3-border-white w3-bottombar w3-hover-border-black" >
-                    ${forgotPassword}?
-                </a>
             </p>
         </form>
     </div>

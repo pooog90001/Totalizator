@@ -38,7 +38,7 @@ public class SignUpCommand extends AbstractCommand {
 
             } else {
                 router.setRouteType(RouteType.REDIRECT);
-                router.setRoutePath(PageType.CONFIRM.getPage());
+                router.setRoutePath(PageType.INDEX.getPage());
             }
 
         } catch (ReceiverException e) {

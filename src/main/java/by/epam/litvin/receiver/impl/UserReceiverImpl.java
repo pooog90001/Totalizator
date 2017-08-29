@@ -13,8 +13,8 @@ import by.epam.litvin.receiver.UserReceiver;
 import by.epam.litvin.type.UploadType;
 import by.epam.litvin.type.UserType;
 import by.epam.litvin.util.Formatter;
+import by.epam.litvin.util.ImageUploader;
 import by.epam.litvin.util.StringEncoder;
-import by.epam.litvin.util.Uploader;
 import by.epam.litvin.validator.impl.CommonValidatorImpl;
 import by.epam.litvin.validator.impl.UserValidatorImpl;
 import com.google.gson.Gson;
@@ -37,7 +37,7 @@ public class UserReceiverImpl implements UserReceiver {
     @Override
     public void changeAvatar(RequestContent content) throws ReceiverException {
         CommonValidatorImpl validator = new CommonValidatorImpl();
-        Uploader uploader = new Uploader();
+        ImageUploader uploader = new ImageUploader();
         UserEntity user = (UserEntity) content.getSessionAttributes().get(USER);
         File uploadPath = new File(content.getRealPath(), UploadType.AVATARS.getUploadFolder());
         Part imagePart = content.getRequestParts().get(IMAGE);
@@ -201,7 +201,6 @@ public class UserReceiverImpl implements UserReceiver {
         String[] email = content.getRequestParameters().get(EMAIL);
         String[] password = content.getRequestParameters().get(PASSWORD);
         String[] repeatPassword = content.getRequestParameters().get(REPEAT_PASSWORD);
-        String confirmURL;
         String dbPassword;
         boolean isValidData = true;
 
@@ -235,13 +234,11 @@ public class UserReceiverImpl implements UserReceiver {
         }
 
         dbPassword = StringEncoder.encode(password[0]);
-        confirmURL = StringEncoder.encode(email[0]);
 
         UserEntity user = new UserEntity();
         user.setName(name[0]);
         user.setEmail(email[0]);
         user.setPassword(dbPassword);
-        user.setConfirmUrl(confirmURL);
 
         TransactionManager handler = new TransactionManager();
         try {
@@ -304,9 +301,6 @@ public class UserReceiverImpl implements UserReceiver {
                 if (foundUser.getIsBlocked()) {
                     content.getSessionAttributes().put(TEXT, foundUser.getBlockedText());
                     content.getRequestAttributes().put(IS_BLOCKED, true);
-
-                } else if (!foundUser.getIsConfirm()) {
-                    content.getRequestAttributes().put(IS_NOT_CONFIRMED, true);
 
                 } else {
                     content.getSessionAttributes().put(USER, foundUser);
@@ -431,7 +425,7 @@ public class UserReceiverImpl implements UserReceiver {
                                     CompetitorDAOImpl competitorDAO) throws DAOException {
         for (Map<String, Object> betAndGame : betsAndGames) {
             CompetitionEntity game = (CompetitionEntity) betAndGame.get(COMPETITION);
-            List<Map<String, Object>> competitors = competitorDAO.findWithCommandByGameId(game.getId());
+            List<Map<String, Object>> competitors = competitorDAO.findWithTeamByGameId(game.getId());
             betAndGame.put(COMPETITORS, competitors);
         }
     }

@@ -1,12 +1,13 @@
 package by.epam.litvin.bean;
 
-public class CommandEntity extends Entity {
+public class TeamEntity extends Entity {
 
     private int id;
     private String name;
     private int kindOfSportId;
 
-    public CommandEntity() {}
+    public TeamEntity() {
+    }
 
     public int getId() {
         return id;
@@ -35,9 +36,9 @@ public class CommandEntity extends Entity {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof CommandEntity)) return false;
+        if (!(o instanceof TeamEntity)) return false;
 
-        CommandEntity that = (CommandEntity) o;
+        TeamEntity that = (TeamEntity) o;
 
         if (id != that.id) return false;
         if (kindOfSportId != that.kindOfSportId) return false;

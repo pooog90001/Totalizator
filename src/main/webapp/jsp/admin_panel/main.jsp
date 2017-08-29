@@ -33,27 +33,22 @@
         <div class="w3-row-padding w3-container w3-margin-bottom">
             <div class="w3-col s12 w3-card-2 w3-large">
                 <p>
-                    <i>Count registered people:</i>
+                    <i>Registered people:</i>
                     <b class="w3-xlarge"><c:out value="${statisticMap.countRegistered}"/></b>
                 </p>
                 <hr>
                 <p>
-                    <i>Count confirmed people:</i>
-                    <b class="w3-xlarge" ><c:out value="${statisticMap.countConfirmed}"/></b>
-                </p>
-                <hr>
-                <p>
-                    <i>Count locked people:</i>
+                    <i>Locked people:</i>
                     <b class="w3-xlarge" ><c:out value="${statisticMap.countLocked}"/></b>
                 </p>
                 <hr>
                 <p>
-                    <i>Count news:</i>
+                    <i>News:</i>
                     <b class="w3-xlarge" ><c:out value="${statisticMap.countNews}"/></b>
                 </p>
                 <hr>
                 <p>
-                    <i>Count kinds of sport:</i>
+                    <i>Kinds of sport:</i>
                     <b class="w3-xlarge" ><c:out value="${statisticMap.countSports}"/></b>
                 </p>
             </div>

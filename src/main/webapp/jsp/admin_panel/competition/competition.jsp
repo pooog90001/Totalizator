@@ -48,7 +48,9 @@
                                     <select id="selectKind" required name="sportId" class="w3-select">
                                         <option value='' selected disabled> Choose sport</option>
                                         <c:forEach var="kind" items="${kindsOfSport}">
-                                            <option value="${kind.id}" count="${kind.competitorCount}">${kind.name}</option>
+                                            <option value="${kind.id}" count="${kind.competitorCount}">
+                                                <c:out value="${kind.name}"/>
+                                            </option>
                                         </c:forEach>
                                     </select>
 
@@ -60,7 +62,9 @@
                                     <select id="competitionType" required name="typeId" class="w3-select">
                                         <option value='' selected disabled> Choose competition type</option>
                                         <c:forEach var="type" items="${competitionTypes}">
-                                            <option value="${type.id}">${type.name}</option>
+                                            <option value="${type.id}">
+                                                <c:out value="${type.name}"/>
+                                            </option>
                                         </c:forEach>
                                     </select>
 
@@ -138,13 +142,13 @@
                         </div>
                     </c:if>
                     <c:if test="${requestScope.get('createError') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Transaction error, check commands for duplicate</div>
+                        <div id="wrong" class="w3-row w3-text-red">Transaction error, check teams for duplicate</div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongType') != null}">
                         <div id="wrong" class="w3-row w3-text-red">Competition type is not correct</div>
                     </c:if>
                     <div id="wrongJS" class="w3-row w3-text-red" style="display: none">All fields must by filled and
-                        commands mustn't duplicate
+                        teams mustn't duplicate
                     </div>
                 </div>
             </div>

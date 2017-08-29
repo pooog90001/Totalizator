@@ -11,11 +11,10 @@ import static by.epam.litvin.constant.GeneralConstant.PAGE_PATH_PROPERTIES;
 
 public enum PageType {
 
-    //general pages
+    /* ------ General pages ------*/
     MAIN,
     SIGN_UP,
     SIGN_IN,
-    CONFIRM,
     ALL_NEWS,
     ALL_UPCOMING_COMPETITIONS,
     ALL_PAST_COMPETITIONS,
@@ -28,10 +27,10 @@ public enum PageType {
     BLOCK,
     INDEX,
 
-    //Admin pages
+    /* ------- Admin pages --------*/
     ADMIN_MAIN,
-    ADMIN_COMMAND,
-    ADMIN_COMMAND_ADD,
+    ADMIN_TEAM,
+    ADMIN_TEAM_ADD,
     ADMIN_COMPETITION_TYPE,
     ADMIN_COMPETITION_TYPE_ADD,
     ADMIN_COMPETITION,
@@ -41,7 +40,7 @@ public enum PageType {
     ADMIN_NEWS,
     ADMIN_USER,
 
-    //Error pages
+    /* ------- Error pages ------- */
     ERROR_404,
     ERROR_500,
     ERROR_SERVER;

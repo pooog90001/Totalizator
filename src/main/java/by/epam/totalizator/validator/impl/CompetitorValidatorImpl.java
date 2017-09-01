@@ -4,6 +4,9 @@ import by.epam.totalizator.bean.CompetitorEntity;
 import by.epam.totalizator.validator.CompetitorValidator;
 
 public class CompetitorValidatorImpl implements CompetitorValidator {
+    public static final int MIN_SCORE = 0;
+    public static final int MAX_SCORE = 9999;
+
     @Override
     public boolean isPlacesValid(CompetitorEntity[] competitors) {
         boolean isValid = true;
@@ -29,7 +32,7 @@ public class CompetitorValidatorImpl implements CompetitorValidator {
         boolean isValid = true;
 
         for (CompetitorEntity competitor: competitors) {
-            if (competitor.getResult() < 0 || competitor.getResult() > 9999) {
+            if (competitor.getResult() < MIN_SCORE || competitor.getResult() > MAX_SCORE) {
                 isValid = false;
                 break;
             }

@@ -88,7 +88,8 @@ $('#createNews').click(function (e) {
                 }
 
             } else {
-                $("#openProfile").submit();
+                document.getElementById("success").style.display = 'inherit';
+
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

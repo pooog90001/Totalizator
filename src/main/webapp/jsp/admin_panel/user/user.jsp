@@ -1,6 +1,44 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.before.delete.competition" var="txtBeforeDelete"/>
+<fmt:message bundle="${rb}" key="txt.yes" var="txtYes"/>
+<fmt:message bundle="${rb}" key="txt.symbols" var="txtSymbols"/>
+<fmt:message bundle="${rb}" key="txt.all.fields.be.filled" var="txtAllFieldsMustFilled"/>
+<fmt:message bundle="${rb}" key="txt.competition.type.not.correct" var="txtTypeNotCorrect"/>
+<fmt:message bundle="${rb}" key="txt.delete.error" var="txtDeleteError"/>
+<fmt:message bundle="${rb}" key="txt.try.again" var="txtTryAgain"/>
+<fmt:message bundle="${rb}" key="txt.wrong.access" var="txtWrongAccess"/>
+<fmt:message bundle="${rb}" key="txt.delete.failed" var="txtDeleteFailed"/>
+<fmt:message bundle="${rb}" key="txt.edit.error" var="txtEditError"/>
+<fmt:message bundle="${rb}" key="txt.wrong.number.format" var="txtWrongNumberFormat"/>
+<fmt:message bundle="${rb}" key="txt.some.kind.mistake" var="txtSomeKindMistake"/>
+<fmt:message bundle="${rb}" key="txt.check.input.data" var="txtCheckInputData"/>
+<fmt:message bundle="${rb}" key="lbl.or" var="txtOr"/>
+<fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
+<fmt:message bundle="${rb}" key="txt.no" var="txtNo"/>
+<fmt:message bundle="${rb}" key="txt.invalid.value" var="txtInvalidValue"/>
+<fmt:message bundle="${rb}" key="txt.without" var="txtWithout"/>
+<fmt:message bundle="${rb}" key="txt.name.already.exist" var="txtNameAlreadyExist"/>
+<fmt:message bundle="${rb}" key="txt.users" var="txtUsers"/>
+<fmt:message bundle="${rb}" key="txt.user" var="txtUser"/>
+<fmt:message bundle="${rb}" key="txt.admin" var="txtAdmin"/>
+<fmt:message bundle="${rb}" key="txt.bookmaker" var="txtBookmaker"/>
+<fmt:message bundle="${rb}" key="txt.cash" var="txtCash"/>
+<fmt:message bundle="${rb}" key="txt.role" var="txtRole"/>
+<fmt:message bundle="${rb}" key="txt.email" var="txtEmail"/>
+<fmt:message bundle="${rb}" key="txt.blocked" var="txtBlocked"/>
+<fmt:message bundle="${rb}" key="txt.blocked.text" var="txtBlockedText"/>
+<fmt:message bundle="${rb}" key="txt.before.unlock.user" var="txtBeforeUnlockUser"/>
+<fmt:message bundle="${rb}" key="txt.before.block.user" var="txtBeforeBlockUser"/>
+<fmt:message bundle="${rb}" key="txt.blocking.reason" var="txtBlockingReason"/>
+<fmt:message bundle="${rb}" key="txt.select.role" var="txtSelectRole"/>
+<fmt:message bundle="${rb}" key="txt.change.role.wrong" var="txtChangeWrongRole"/>
+<fmt:message bundle="${rb}" key="txt.change.lock.wrong" var="txtChangeWrongLock"/>
+<fmt:message bundle="${rb}" key="lbl.Name" var="txtName"/>
+<fmt:message bundle="${rb}" key="txt.error.check.connection" var="txtErrorCheckConnection"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -26,7 +64,7 @@
         <!-- First Photo Grid-->
         <div class="w3-row-padding">
             <div class="w3-container w3-xlarge">
-                USERS
+                ${txtUsers}
             </div>
 
             <div class="w3-col s12">
@@ -43,22 +81,21 @@
                                                     onclick="(modal_change_role${userEntity.id}).style.display='block'">
                                                 <i class="fa fa-users"></i>
                                             </button>
+                                            <c:choose>
+                                                <c:when test="${userEntity.isBlocked}">
+                                                    <button class="w3-button w3-black w3-padding-small"
+                                                            onclick="(modal_change_lock${userEntity.id}).style.display='block'">
+                                                        <i class="fa fa-plus-square w3-text-green"></i>
+                                                    </button>
+                                                </c:when>
+                                                <c:otherwise>
+                                                    <button class="w3-button w3-black w3-padding-small"
+                                                            onclick="(modal_change_lock${userEntity.id}).style.display='block'">
+                                                        <i class="fa fa-minus-square w3-text-red"></i>
+                                                    </button>
+                                                </c:otherwise>
+                                            </c:choose>
                                         </c:if>
-
-                                        <c:choose>
-                                            <c:when test="${userEntity.isBlocked}">
-                                                <button class="w3-button w3-black w3-padding-small"
-                                                        onclick="(modal_change_lock${userEntity.id}).style.display='block'">
-                                                    <i class="fa fa-plus-square w3-text-green"></i>
-                                                </button>
-                                            </c:when>
-                                            <c:otherwise>
-                                                <button class="w3-button w3-black w3-padding-small"
-                                                        onclick="(modal_change_lock${userEntity.id}).style.display='block'">
-                                                    <i class="fa fa-minus-square w3-text-red"></i>
-                                                </button>
-                                            </c:otherwise>
-                                        </c:choose>
                                     </div>
                                 </c:if>
 
@@ -70,32 +107,33 @@
                                                   class="w3-button w3-display-topright">
                                                 &times;
                                             </span>
-                                            <form id="lockForm${userEntity.id}" method="post" action="/ajaxController" onsubmit="return false">
+                                            <form id="lockForm${userEntity.id}" method="post" action="/ajaxController"
+                                                  onsubmit="return false">
                                                 <input type="hidden" name="command" value="CHANGE_USER_LOCK">
                                                 <input type="hidden" name="userId" value="${userEntity.id}">
                                                 <input type="hidden" name="blockState" value="${userEntity.isBlocked}">
-                                            <c:choose>
-                                                <c:when test="${userEntity.isBlocked}">
-                                                    <p> Do you really want unlock this user?</p>
-                                                </c:when>
-                                                <c:otherwise>
-                                                    <p> Do you really want block this user?</p>
-                                                    <p>
-                                                        <span>Blocking reason:</span>
-                                                        <input type="text" name="textBlock" required>
-                                                    </p>
-                                                </c:otherwise>
-                                            </c:choose>
+                                                <c:choose>
+                                                    <c:when test="${userEntity.isBlocked}">
+                                                        <p> ${txtBeforeUnlockUser}</p>
+                                                    </c:when>
+                                                    <c:otherwise>
+                                                        <p> ${txtBeforeBlockUser}</p>
+                                                        <p>
+                                                            <span>${txtBlockingReason}:</span>
+                                                            <input type="text" name="textBlock" required>
+                                                        </p>
+                                                    </c:otherwise>
+                                                </c:choose>
                                             </form>
                                             <div class="w3-row">
                                                 <div class="w3-half">
                                                     <input onclick="
                                                             changeLock(this,'lockForm${userEntity.id}', 'modal_change_lock${userEntity.id}');"
                                                            type="button"
-                                                           class="w3-button" value="Yes">
+                                                           class="w3-button" value="${txtYes}">
                                                 </div>
                                                 <div class="w3-half">
-                                                    <input type="button" class="w3-button" value="NO"
+                                                    <input type="button" class="w3-button" value="${txtNo}"
                                                            onclick="(modal_change_lock${userEntity.id}).style.display='none'">
                                                 </div>
                                             </div>
@@ -110,30 +148,33 @@
                                                   class="w3-button w3-display-topright">
                                                 &times;
                                             </span>
-                                            <p>Select role</p>
+                                            <p>${txtSelectRole}:</p>
                                             <p>
-                                            <form method="post" id="roleForm${userEntity.id}" action="/ajaxController" onsubmit="return false">
-                                                 <input type="hidden" name="command" value="CHANGE_USER_ROLE">
-                                                 <input type="hidden" name="userId" value="${userEntity.id}">
-                                                 <label class="w3-padding-small">User
-                                                     <input type="radio" class="w3-radio" name="userType" value="USER"
-                                                            required>
-                                                 </label>
-                                                 <label class="w3-padding-small">Admin
-                                                     <input type="radio" class="w3-radio" name="userType" value="ADMIN">
-                                                 </label>
-                                                 <label class="w3-padding-small">Bookmaker
-                                                     <input type="radio" class="w3-radio" name="userType" value="BOOKMAKER">
-                                                 </label>
+                                            <form method="post" id="roleForm${userEntity.id}" action="/ajaxController"
+                                                  onsubmit="return false">
+                                                <input type="hidden" name="command" value="CHANGE_USER_ROLE">
+                                                <input type="hidden" name="userId" value="${userEntity.id}">
+                                                <label class="w3-padding-small">${txtUser}
+                                                    <input type="radio" class="w3-radio" name="userType" value="USER"
+                                                           required>
+                                                </label>
+                                                <label class="w3-padding-small">${txtAdmin}
+                                                    <input type="radio" class="w3-radio" name="userType" value="ADMIN">
+                                                </label>
+                                                <label class="w3-padding-small">${txtBookmaker}
+                                                    <input type="radio" class="w3-radio" name="userType"
+                                                           value="BOOKMAKER">
+                                                </label>
                                             </form>
                                             </p>
                                             <div class="w3-row">
                                                 <div class="w3-half">
-                                                    <input onclick="changeRole(this, 'roleForm${userEntity.id}', 'modal_change_role${userEntity.id}')" type="button"
-                                                           class="w3-button" value="Yes">
+                                                    <input onclick="changeRole(this, 'roleForm${userEntity.id}', 'modal_change_role${userEntity.id}')"
+                                                           type="button"
+                                                           class="w3-button" value="${txtYes}">
                                                 </div>
                                                 <div class="w3-half">
-                                                    <input type="button" class="w3-button" value="NO"
+                                                    <input type="button" class="w3-button" value="${txtNo}"
                                                            onclick="(modal_change_role${userEntity.id}).style.display='none'">
                                                 </div>
                                             </div>
@@ -152,27 +193,27 @@
                                     <div class="w3-row">
                                         <div class="w3-col s12 w3-left-align w3-small ">
                                             <div style="margin: 4px">
-                                               <i>Name: </i>
-                                               <b> <c:out value="${userEntity.name}"/> </b>
-                                               <i>Cash: </i>
-                                               <b> <ctg:decimal-presenter number="${userEntity.cash}"/>$ </b>
+                                                <i>${txtName}: </i>
+                                                <b> <c:out value="${userEntity.name}"/> </b>
+                                                <i>${txtCash}: </i>
+                                                <b> <ctg:decimal-presenter number="${userEntity.cash}"/>$ </b>
                                             </div>
                                             <div style="margin: 4px">
-                                               <i>Role: </i>
-                                               <b> <c:out value="${userEntity.type}"/>  </b>
+                                                <i>${txtRole}: </i>
+                                                <b> <c:out value="${userEntity.type}"/> </b>
                                             </div>
                                             <div style="margin: 4px">
-                                               <i>Email: </i>
-                                               <b> <c:out value="${userEntity.email}"/>  </b>
+                                                <i>${txtEmail}: </i>
+                                                <b> <c:out value="${userEntity.email}"/> </b>
                                             </div>
                                             <div style="margin: 4px">
-                                               <i>Blocked: </i>
-                                               <b> <c:out value="${userEntity.isBlocked}"/>  </b>
+                                                <i>${txtBlocked}: </i>
+                                                <b> <c:out value="${userEntity.isBlocked}"/> </b>
                                             </div>
                                             <c:if test="${userEntity.isBlocked}">
                                                 <div style="margin: 4px">
-                                               <i>Blocked text: </i>
-                                               <b> <c:out value="${userEntity.blockedText}"/> </b>
+                                                    <i>${txtBlockedText}: </i>
+                                                    <b> <c:out value="${userEntity.blockedText}"/> </b>
                                                 </div>
                                             </c:if>
 
@@ -195,8 +236,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_role_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Change role error, check connection</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_role_error).style.display='none'">
+            <p>${txtErrorCheckConnection}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_role_error).style.display='none'">
         </div>
     </div>
 </div>
@@ -204,8 +245,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_role_wrong).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Please, check format data. And you can't change yourself</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_role_wrong).style.display='none'">
+            <p>${txtChangeWrongRole}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_role_wrong).style.display='none'">
         </div>
     </div>
 </div>
@@ -215,8 +256,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_lock_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Connection error</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_lock_error).style.display='none'">
+            <p>${txtErrorCheckConnection}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_lock_error).style.display='none'">
         </div>
     </div>
 </div>
@@ -224,8 +265,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_lock_wrong).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Field is empty or you try lock yourself</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_lock_wrong).style.display='none'">
+            <p>${txtChangeWrongLock}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_lock_wrong).style.display='none'">
         </div>
     </div>
 </div>

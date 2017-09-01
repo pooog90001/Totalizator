@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.results" var="txtResults"/>
+<fmt:message bundle="${rb}" key="txt.upcoming" var="txtUpcoming"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -29,11 +32,11 @@
                 <div class="w3-bar w3-black w3-card-2 w3-margin-bottom">
                     <button class="w3-bar-item w3-button generalLink w3-white"
                             onclick="openTab(event,'Upcoming', 'general', 'generalLink')">
-                        Upcoming
+                        ${txtUpcoming}
                     </button>
                     <button class="w3-bar-item w3-button generalLink"
                             onclick="openTab(event,'Past', 'general', 'generalLink')">
-                        Results
+                        ${txtResults}
                     </button>
 
                 </div>

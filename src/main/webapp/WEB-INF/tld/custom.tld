@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<taglib version="2.1"
+<taglib xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        version="2.1"
         xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd">
     <tlib-version>1.0</tlib-version>
     <short-name>ctg</short-name>
     <uri>customtags</uri>
     <tag>
         <name>info-time</name>
-        <tag-class>by.epam.litvin.tag.FirstTag</tag-class>
+        <tag-class>by.epam.totalizator.tag.FirstTag</tag-class>
         <body-content>empty</body-content>
     </tag>
     <tag>
         <name>pagination</name>
-        <tag-class>by.epam.litvin.tag.PaginationTag</tag-class>
+        <tag-class>by.epam.totalizator.tag.PaginationTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>total</name>
@@ -33,7 +33,7 @@
     </tag>
     <tag>
         <name>decimal-presenter</name>
-        <tag-class>by.epam.litvin.tag.DecimalPresenterTag</tag-class>
+        <tag-class>by.epam.totalizator.tag.DecimalPresenterTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>number</name>
@@ -47,7 +47,7 @@
     </tag>
     <tag>
         <name>date-presenter</name>
-        <tag-class>by.epam.litvin.tag.DatePresenterTag</tag-class>
+        <tag-class>by.epam.totalizator.tag.DatePresenterTag</tag-class>
         <body-content>scriptless</body-content>
         <attribute>
             <name>date</name>

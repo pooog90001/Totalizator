@@ -2,12 +2,20 @@
 <%@include file="/jsp/partial/header.jsp" %>
 <script src="${pageContext.request.contextPath}/js/sign_in.js"></script>
 
-<fmt:message key="lbl.ForgotPassword" bundle="${rb}" var="forgotPassword"/>
-<fmt:message key="lbl.SignIn" bundle="${rb}" var="signIn"/>
-<fmt:message key="lbl.Authorization" bundle="${rb}" var="authorization"/>
-<fmt:message key="lbl.Password" bundle="${rb}" var="password"/>
-<fmt:message key="lbl.Email" bundle="${rb}" var="email"/>
-<fmt:message key="warn.wrongEmailorPassword" bundle="${rb}" var="wrongData"/>
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.back.on.main.page" var="txtBackOnMainPage"/>
+<fmt:message bundle="${rb}" key="txt.account.blocked" var="txtAccountBlocked"/>
+<fmt:message bundle="${rb}" key="txt.change.avatar" var="txtChangeAvatar"/>
+<fmt:message bundle="${rb}" key="txt.fill.all.fields" var="txtFillAllFields"/>
+<fmt:message bundle="${rb}" key="txt.image" var="txtImage"/>
+<fmt:message bundle="${rb}" key="txt.select.region" var="txtSelectRegion"/>
+<fmt:message bundle="${rb}" key="txt.database.error" var="txtDatabaseError"/>
+<fmt:message bundle="${rb}" key="txt.upload.error" var="txtUploadError"/>
+<fmt:message bundle="${rb}" key="txt.session.is.empty" var="txtSessionError"/>
+<fmt:message bundle="${rb}" key="txt.database.or.upload.error" var="txtDatabaseOrUploadError"/>
+<fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
+<fmt:message bundle="${rb}" key="txt.avatar.changed" var="txtAvatarChanged"/>
 
 <body>
 <div class="w3-row-padding">
@@ -23,7 +31,7 @@
                         <i class='fa fa-long-arrow-left'></i>
                     </button>
                 </div>
-                <h1>Change avatar</h1>
+                <h1>${txtChangeAvatar}</h1>
             </div>
         </div>
         <div class="w3-row w3-hover-light-grey w3-card-2">
@@ -40,7 +48,7 @@
                 <div class="w3-row w3-padding-small">
 
                     <div class="w3-col s2 w3-padding">
-                        Image:
+                        ${txtImage}:
                     </div>
                     <div class="w3-col s6">
                         <input type="file" required id="imgInp" name="image" accept="image/*" class="w3-button">
@@ -55,34 +63,43 @@
                     </div>
                 </div>
                 <div class="w3-row w3-padding-small w3-margin-top">
-                    <input type="button" id="createNews" value="Accept" class="w3-button w3-theme w3">
+                    <input type="button" id="createNews" value="${txtOk}" class="w3-button w3-theme w3">
                 </div>
             </form>
             <div id="wrongData" class="wrong w3-row w3-text-red" style="display: none">
-                Please, fill all fields. And select region on image too.
+                ${txtFillAllFields}. ${txtSelectRegion}.
             </div>
             <div id="wrongDB" class="wrong w3-row w3-text-red" style="display: none">
-                Data base error;
+                ${txtDatabaseError}.
             </div>
             <div id="wrongUpload" class="wrong w3-row w3-text-red" style="display: none">
-                Upload error.
+                ${txtUploadError}.
             </div>
             <div id="accessDenied" class="wrong w3-row w3-text-red" style="display: none">
-                You session is empty. Reload page, and try again.
+                ${txtSessionError}.
             </div>
             <div id="errorResponse" class="wrong w3-row w3-text-red" style="display: none">
-                Server or upload image error. Max image size 10 MB.
+                ${txtDatabaseOrUploadError}.
             </div>
         </div>
     </div>
     <div class="w3-third">
         <div class="w3-container"></div>
     </div>
-    <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="post">
-        <input type="hidden" name="command" value="OPEN_PROFILE">
-    </form>
 </div>
 
+<div id="success" class="w3-modal">
+    <div class="w3-modal-content" style="max-width: 50%;">
+        <div class="w3-container">
+            <span onclick="(success).style.display='none'" class="w3-button w3-display-topright">&times;</span>
+            <p>${txtAvatarChanged}</p>
+            <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="post">
+                <input type="hidden" name="command" value="OPEN_PROFILE">
+                <input type="submit" class="w3-button" value="${txtOk}">
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 <script src="${pageContext.request.contextPath}/js/change_avatar.js"></script>
 <link rel="stylesheet" type="text/css"

@@ -2,6 +2,21 @@
 <%@ taglib prefix="ctg" uri="customtags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.T" var="txtT"/>
+<fmt:message bundle="${rb}" key="txt.M" var="txtM"/>
+<fmt:message bundle="${rb}" key="txt.L" var="txtL"/>
+<fmt:message bundle="${rb}" key="txt.X" var="txtX"/>
+<fmt:message bundle="${rb}" key="txt.W" var="txtW"/>
+<fmt:message bundle="${rb}" key="txt.bets" var="txtBets"/>
+<fmt:message bundle="${rb}" key="txt.team" var="txtTeam"/>
+<fmt:message bundle="${rb}" key="txt.score" var="txtScore"/>
+<fmt:message bundle="${rb}" key="txt.place" var="txtPlace"/>
+<fmt:message bundle="${rb}" key="txt.winner" var="txtWinner"/>
+<fmt:message bundle="${rb}" key="txt.win" var="txtWin"/>
+<fmt:message bundle="${rb}" key="txt.lose" var="txtLose"/>
+
 <c:forEach var="betAndGame" items="${pastBetsAndGames}">
     <div>
         <div id="upcomingGame${betAndGame['competition_id']}"
@@ -25,10 +40,10 @@
                 <div class="w3-bar-item w3-padding-small">
                     <c:choose>
                         <c:when test="${betAndGame.bet.win}">
-                            <b class="w3-text-green">WIN</b>
+                            <b class="w3-text-green">${txtWin}</b>
                         </c:when>
                         <c:otherwise>
-                            <b class="w3-text-red">LOSE</b>
+                            <b class="w3-text-red">${txtLose}</b>
                         </c:otherwise>
                     </c:choose>
                 </div>
@@ -47,7 +62,7 @@
                 </div>
                 <c:if test="${betAndGame['competitors'].size() == 2}">
                     <div class='w3-col s3'>
-                        <div class='w3-col s2 w3-text-gray'>T:</div>
+                        <div class='w3-col s2 w3-text-gray'>${txtT}:</div>
                         <div class='w3-col s3'>
                             <span name="total">
                                 <ctg:decimal-presenter number="${betAndGame.competition.total}"/>
@@ -57,13 +72,13 @@
                     <div class='w3-col s3'>
                         <c:choose>
                             <c:when test="${'LESS' eq betAndGame.bet.expectedResult.toString() and betAndGame.bet.win}">
-                                <span class='w3-col s2 w3-text-green'>L:</span>
+                                <span class='w3-col s2 w3-text-green'>${txtL}:</span>
                                 <span class="w3-text-green">
                                     <ctg:decimal-presenter number="${betAndGame.competition.lessTotal}"/>
                                 </span>
                             </c:when>
                             <c:otherwise>
-                                <span class='w3-col s2 w3-text-gray'>L:</span>
+                                <span class='w3-col s2 w3-text-gray'>${txtL}:</span>
                                 <span>
                                     <ctg:decimal-presenter number="${betAndGame.competition.lessTotal}"/>
                                 </span>
@@ -74,13 +89,13 @@
                     <div class='w3-col s3'>
                         <c:choose>
                             <c:when test="${'MORE' eq betAndGame.bet.expectedResult.toString()}">
-                                <span class='w3-col s2 w3-text-green'>M:</span>
+                                <span class='w3-col s2 w3-text-green'>${txtM}:</span>
                                 <span class="w3-text-green">
                                     <ctg:decimal-presenter number="${betAndGame.competition.moreTotal}"/>
                                 </span>
                             </c:when>
                             <c:otherwise>
-                                <span class='w3-col s2 w3-text-gray'>M:</span>
+                                <span class='w3-col s2 w3-text-gray'>${txtM}:</span>
                                 <span>
                                     <ctg:decimal-presenter number="${betAndGame.competition.moreTotal}"/>
                                 </span>
@@ -91,13 +106,13 @@
                     <div class='w3-col m2 s3'>
                         <c:choose>
                             <c:when test="${'EQUALS' eq betAndGame.bet.expectedResult.toString()}">
-                                <span class='w3-col s2 w3-text-green'>X:</span>
+                                <span class='w3-col s2 w3-text-green'>${txtX}:</span>
                                 <span class="w3-text-green">
                                     <ctg:decimal-presenter number="${betAndGame.competition.standoff}"/>
                                 </span>
                             </c:when>
                             <c:otherwise>
-                                <span class='w3-col s2 w3-text-gray'>X:</span>
+                                <span class='w3-col s2 w3-text-gray'>${txtX}:</span>
                                 <span>
                                   <ctg:decimal-presenter number="${betAndGame.competition.standoff}"/>
                                 </span>
@@ -116,13 +131,13 @@
                             <div class='w3-col s5'> ${competitor['team_name']} </div>
                             <c:choose>
                                 <c:when test="${betAndGame.bet.competitorId eq competitor['competitor_id']}">
-                                    <span class='w3-col s3 w3-text-green'>W:
+                                    <span class='w3-col s3 w3-text-green'>${txtW}:
                                     <span class="w3-text-green">
                                     <ctg:decimal-presenter number="${competitor['competitor_win_coeff']}"/>
                                 </span></span>
                                 </c:when>
                                 <c:otherwise>
-                                    <span class='w3-col s3 w3-text-gray'>W:
+                                    <span class='w3-col s3 w3-text-gray'>${txtW}:
                                     <span>
                                         <ctg:decimal-presenter number="${competitor['competitor_win_coeff']}"/>
                                     </span></span>
@@ -131,14 +146,14 @@
                             <div class="w3-col s3">
                                 <c:choose>
                                     <c:when test="${betAndGame['competitors'].size() == 2}">
-                                        <span class="w3-tiny"> (Score: ${competitor['competitor_result']}) </span>
+                                        <span class="w3-tiny"> (${txtScore}: ${competitor['competitor_result']}) </span>
                                     </c:when>
                                     <c:otherwise>
-                                        <span class="w3-tiny"> (Place: ${competitor['competitor_result']}) </span>
+                                        <span class="w3-tiny"> (${txtPlace}: ${competitor['competitor_result']}) </span>
                                     </c:otherwise>
                                 </c:choose>
                                 <c:if test="${competitor['competitor_is_win']}">
-                                    <i class="w3-tiny w3-text-green">winner</i>
+                                    <i class="w3-tiny w3-text-green">${txtWinner}</i>
                                 </c:if>
                             </div>
                         </div>

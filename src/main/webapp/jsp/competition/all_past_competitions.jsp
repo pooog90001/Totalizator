@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
-
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.results" var="txtResults"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -23,7 +24,7 @@
 
         <div class="w3-row-padding">
             <div class="w3-container w3-xlarge">
-                Results
+                ${txtResults}
             </div>
             <div class="w3-container">
                 <%@include file="/jsp/competition/part/past_competition.jsp"%>

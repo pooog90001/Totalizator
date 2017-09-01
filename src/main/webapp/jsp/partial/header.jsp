@@ -51,12 +51,14 @@
                 <c:when test="${user != null}">
 
                     <div class="w3-bar-item w3-dropdown-hover w3-right w3-hide-small" style="padding: 0">
-                        <a href="#" class="w3-button w3-padding-small">
+                        <form action="${pageContext.request.contextPath}/generalController">
+                            <input type="hidden" name="command" value="OPEN_PROFILE">
+                            <button type="submit" class="w3-button w3-padding-small">
                             <div class="w3-row" style="max-width: 200px">
                                 <div class="w3-col s8">
                                     <div class="w3-row w3-right-align w3-small">
                                         <div class="w3-col s12 w3-padding-small">
-                                                <c:out value="${user.name}"/>
+                                            <c:out value="${user.name}"/>
                                         </div>
                                         <div class="w3-col s12 w3-padding-small">
                                             <ctg:decimal-presenter number="${user.cash}"/>$
@@ -68,7 +70,8 @@
                                          src="${userImagePath}${user.avatarURL}"/>
                                 </div>
                             </div>
-                        </a>
+                            </button>
+                        </form>
                         <div class="w3-dropdown-content w3-bar-block w3-border">
                             <form action="${pageContext.request.contextPath}/generalController">
                                 <input type="hidden" name="command" value="OPEN_PROFILE">
@@ -143,24 +146,33 @@
             <c:choose>
                 <%--Present if user signed--%>
                 <c:when test="${user != null}">
-                    <div class="w3-col s8">
-                        <div class="w3-row w3-right-align">
-                            <div class="w3-col s12">
-                                <div class="w3-container">
-                                    <p class="w3-padding-small"> <c:out value="${user.name}"/></p>
+                    <form action="${pageContext.request.contextPath}/generalController"
+                          class="w3-bar-item w3-padding-small">
+                        <input type="hidden" name="command" value="OPEN_PROFILE">
+                        <button type="submit"
+                                class=" w3-bar-item w3-button w3-padding w3-bar-item">
+                            <div class="w3-col s8">
+                                <div class="w3-row w3-right-align">
+                                    <div class="w3-col s12">
+                                        <div class="w3-container">
+                                            <p class="w3-padding-small"><c:out value="${user.name}"/></p>
+                                        </div>
+                                    </div>
+                                    <div class="w3-col s12">
+                                        <div class="w3-container">
+                                            <p class="w3-padding-small"><c:out
+                                                    value="${user.cash.toPlainString()}"/>$</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="w3-col s12">
-                                <div class="w3-container">
-                                    <p class="w3-padding-small"><c:out value="${user.cash.toPlainString()}"/>$</p>
-                                </div>
+
+                            <div class="w3-col s4">
+                                <img style="width:50px" class="w3-circle"
+                                     src="${userImagePath}${user.avatarURL}"/>
                             </div>
-                        </div>
-                    </div>
-                    <div class="w3-col s4">
-                        <img style="width:80px" class="w3-circle"
-                             src="https://organicthemes.com/demo/profile/files/2012/12/profile_img.png"/>
-                    </div>
+                        </button>
+                    </form>
                 </c:when>
                 <%--Present if user not signed--%>
                 <c:otherwise>
@@ -181,24 +193,23 @@
         </div>
 
 
-        <form>
+        <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
             <input type="hidden" name="command" value="open_all_news">
-            <input type="submit" class="w3-button w3-padding w3-bar-item" value="${news}">
+            <input type="submit" class=" w3-bar-item w3-button w3-padding w3-bar-item" value="${news}">
         </form>
-        <a href="#" class="w3-bar-item w3-button w3-padding">
-            <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
-                <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
-                       value="${upcoming}">
-            </form>
-        </a>
-        <a href="#" class="w3-bar-item w3-button w3-padding">
-            <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
-                <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
-                <input type="submit" class="w3-button w3-hide-small w3-padding-small w3-hover-none w3-hover-text-yellow"
-                       value="${results}">
-            </form>
-        </a>
+        <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
+            <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
+            <input type="submit"
+                   class=" w3-bar-item w3-button w3-padding w3-bar-item"
+                   value="${upcoming}">
+        </form>
+        <form action="${pageContext.request.contextPath}/generalController" class="w3-bar-item w3-padding-small">
+            <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
+            <input type="submit"
+                   class=" w3-bar-item w3-button w3-padding w3-bar-item"
+                   value="${results}">
+        </form>
+
         <a href="${pageContext.request.contextPath}/jsp/help/help.jsp" class="w3-bar-item w3-button w3-padding">
             <c:out value="${help}"/>
         </a>

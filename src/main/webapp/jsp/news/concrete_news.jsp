@@ -1,6 +1,19 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="lbl.News" var="txtNews"/>
+<fmt:message bundle="${rb}" key="txt.must.be" var="txtMustbe"/>
+<fmt:message bundle="${rb}" key="txt.symbols" var="txtSymbols"/>
+<fmt:message bundle="${rb}" key="txt.post.comment" var="txtPostComment"/>
+<fmt:message bundle="${rb}" key="txt.server.error.or.havent.access" var="txtServerErrorOrAccess"/>
+<fmt:message bundle="${rb}" key="txt.for.post" var="txtForPost"/>
+<fmt:message bundle="${rb}" key="txt.block" var="txtBlock"/>
+<fmt:message bundle="${rb}" key="txt.unlock" var="txtUnlock"/>
+<fmt:message bundle="${rb}" key="txt.error.check.connection" var="txtErrorCheckConnection"/>
+<fmt:message bundle="${rb}" key="txt.wrong.access" var="txtWrongAccess"/>
+<fmt:message bundle="${rb}" key="txt.comment.blocked" var="txtCommentBlocked"/>
+<fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -46,7 +59,6 @@
                     <div class="w3-container w3-padding-large">
                         <p class="w3-small">
                             <c:out value="${attrNews.text}"/>
-
                         </p>
                     </div>
                 </div>
@@ -67,16 +79,16 @@
                                             <input type="hidden" name="command" value="create_comment"/>
                                             <input type="hidden" name="newsId" value="${attrNews.id}"/>
                                             <input type="text" name="text" class="w3-input w3-border" required
-                                                      maxlength="300" placeholder="Оставьте ваш комментарий"/>
+                                                   maxlength="300" placeholder=""/>
                                             <button type="button" onclick="createCommentt(this, 'createForm');"
                                                     class="w3-padding-small w3-button w3-theme w3-right w3-margin-top">
-                                                <a href="#lastComment">post comment</a>
+                                                    ${txtPostComment}
                                             </button>
                                              <div id="createWarn" style="display: none;" class="w3-row w3-text-red">
-                                                 Must be 1-300 symbols
+                                                     ${txtMustbe} 1-300 ${txtSymbols}
                                              </div>
                                              <div id="createError" style="display: none;" class="w3-row w3-text-red">
-                                                 Server error or you haven't access
+                                                     ${txtServerErrorOrAccess}
                                              </div>
                                         </form>
                                     </div>
@@ -92,7 +104,7 @@
                                 <div class="w3-container">
                                     <div class="w3-card-2">
                                         <div class="w3-center w3-padding-24">
-                                            <p>Войдите или зарегестрируйтесь, чтобы оставить комментарий</p>
+                                            <p>${txtForPost}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -116,13 +128,13 @@
                                             <c:when test="${comment['comment_is_blocked']}">
                                                 <button type="button" onclick="changeLockComment(this, '${comment['comment_id']}')"
                                                         class="w3-padding-small w3-button w3-theme w3-right w3-margin-top">
-                                                    Разблокировать
+                                                        ${txtUnlock}
                                                 </button>
                                             </c:when>
                                             <c:otherwise>
                                                 <button type="button" onclick="changeLockComment(this, '${comment['comment_id']}')"
                                                         class="w3-padding-small w3-button w3-theme w3-right w3-margin-top">
-                                                    Заблокировать
+                                                        ${txtBlock}
                                                 </button>
                                             </c:otherwise>
                                         </c:choose>
@@ -155,7 +167,7 @@
                                             <div class="w3-col s12">
                                                 <div class="w3-display-container">
                                                     <p class="w3-display-middle w3-small">
-                                                        Данный комментарий заблокирован
+                                                            ${txtCommentBlocked}
                                                     </p>
                                                 </div>
                                                 <c:if test="${user.type.toString().equals('ADMIN') || user.type.toString().equals('BOOKMAKER')}">
@@ -186,16 +198,18 @@
 <div id="accessDenied" class="w3-modal" style="display: none;">
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
-            <p>Access denied. </p>
-            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="Ok" onclick="(accessDenied).style.display='none'">
+            <p>${txtWrongAccess} </p>
+            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="${txtOk}"
+                   onclick="(accessDenied).style.display='none'">
         </div>
     </div>
 </div>
 <div id="serverError" class="w3-modal" style="display: none;">
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
-            <p>Server error. Check connection.</p>
-            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="Ok" onclick="(serverError).style.display='none'">
+            <p>${txtErrorCheckConnection}</p>
+            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="${txtOk}"
+                   onclick="(serverError).style.display='none'">
         </div>
     </div>
 </div>

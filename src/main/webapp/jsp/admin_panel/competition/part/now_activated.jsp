@@ -2,6 +2,7 @@
 <fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
 <fmt:setBundle basename="locale/text" var="rb"/>
 <fmt:message bundle="${rb}" key="txt.before.delete.competition" var="txtBeforeDelete"/>
+<fmt:message bundle="${rb}" key="txt.return.money.delete" var="txtReturnMoney"/>
 <fmt:message bundle="${rb}" key="txt.date.start" var="txtDateStart"/>
 <fmt:message bundle="${rb}" key="txt.date.finish" var="txtDateFinish"/>
 <fmt:message bundle="${rb}" key="txt.T" var="txtT"/>
@@ -11,6 +12,8 @@
 <fmt:message bundle="${rb}" key="txt.W" var="txtW"/>
 <fmt:message bundle="${rb}" key="txt.bets" var="txtBets"/>
 <fmt:message bundle="${rb}" key="txt.team" var="txtTeam"/>
+<fmt:message bundle="${rb}" key="txt.yes" var="txtYes"/>
+<fmt:message bundle="${rb}" key="txt.no" var="txtNo"/>
 
 <div id="NowActivated" class="now">
 
@@ -38,23 +41,22 @@
                         </span>
                         <p>
                             <c:out value="${txtBeforeDelete}"/>
+                            <c:out value="${txtReturnMoney}"/>
                         </p>
                         <div class="w3-row">
                             <div class="w3-half">
                                 <input onclick="(amodal_del${competition['competition_id']}).style.display='none';
                                         delUnfilled(this, 'nowActiveGame'+${competition['competition_id']});"
-                                       type="button" class="w3-button" value="Yes">
+                                       type="button" class="w3-button" value="<c:out value="${txtYes}"/>">
                             </div>
                             <div class="w3-half">
-                                <input type="button" class="w3-button" value="NO"
+                                <input type="button" class="w3-button" value="<c:out value="${txtNo}"/>"
                                        onclick="(amodal_del${competition['competition_id']}).style.display='none'">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-
-
             <div class="w3-row w3-small">
                 <div class="w3-col s1">
                         ${competition['competition_id']}
@@ -139,10 +141,10 @@
                     <div class='w3-col s6'>
                         <div class='w3-col s6 '><c:out value="${txtW}"/>:</div>
                         <div class='w3-col s6'>
-                                                <span name="competitorCoeff">
-                                                    <ctg:decimal-presenter
-                                                            number="${competitor['competitor_win_coeff']}"/>
-                                                </span>
+                            <span name="competitorCoeff">
+                                <ctg:decimal-presenter
+                                        number="${competitor['competitor_win_coeff']}"/>
+                            </span>
                             <span class="w3-tiny">
                                 (${competitor['betsCount']}
                                 <c:out value="${txtBets}"/>

@@ -1,6 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ctg" uri="customtags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.T" var="txtT"/>
+<fmt:message bundle="${rb}" key="txt.bets" var="txtBets"/>
+<fmt:message bundle="${rb}" key="txt.team" var="txtTeam"/>
+<fmt:message bundle="${rb}" key="txt.score" var="txtScore"/>
+<fmt:message bundle="${rb}" key="txt.place" var="txtPlace"/>
+<fmt:message bundle="${rb}" key="txt.winner" var="txtWinner"/>
+
 <c:forEach var="competition" items="${pastGames}">
 
     <div id="upcomingGame${competition['competition_id']}"
@@ -32,7 +42,7 @@
 
             <c:if test="${competition['competitors'].size() == 2}">
                 <div class='w3-col m2 s3'>
-                    <div class='w3-col s2 w3-text-gray'>T:</div>
+                    <div class='w3-col s2 w3-text-gray'>${txtT}:</div>
                     <div class='w3-col s3'>
                             <span name="total">
                             <ctg:decimal-presenter number="${competition['competition_total']}"/>
@@ -51,10 +61,10 @@
                     <div class='w3-col s2 w3-text-gray'>
                         <c:choose>
                             <c:when test="${competition['competitors'].size() == 2}">
-                                Score:
+                                ${txtScore}:
                             </c:when>
                             <c:otherwise>
-                                Place:
+                                ${txtPlace}:
                             </c:otherwise>
                         </c:choose>
                     </div>
@@ -62,7 +72,7 @@
                             <span >
                                 <c:out value="${competitor['competitor_result']}"/>
                                 <c:if test="${competitor['competitor_is_win']}">
-                                   <i class="w3-tiny">winner</i>
+                                    <i class="w3-tiny">${txtWinner}</i>
                                 </c:if>
                             </span>
                     </div>

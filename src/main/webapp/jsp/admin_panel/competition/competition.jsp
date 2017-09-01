@@ -1,6 +1,64 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.before.delete.competition" var="txtBeforeDelete"/>
+<fmt:message bundle="${rb}" key="txt.return.money.delete" var="txtReturnMoney"/>
+<fmt:message bundle="${rb}" key="txt.date.start" var="txtDateStart"/>
+<fmt:message bundle="${rb}" key="txt.date.finish" var="txtDateFinish"/>
+<fmt:message bundle="${rb}" key="txt.T" var="txtT"/>
+<fmt:message bundle="${rb}" key="txt.M" var="txtM"/>
+<fmt:message bundle="${rb}" key="txt.L" var="txtL"/>
+<fmt:message bundle="${rb}" key="txt.X" var="txtX"/>
+<fmt:message bundle="${rb}" key="txt.W" var="txtW"/>
+<fmt:message bundle="${rb}" key="txt.bets" var="txtBets"/>
+<fmt:message bundle="${rb}" key="txt.team" var="txtTeam"/>
+<fmt:message bundle="${rb}" key="txt.score" var="txtScore"/>
+<fmt:message bundle="${rb}" key="txt.place" var="txtPlace"/>
+<fmt:message bundle="${rb}" key="txt.winner" var="txtWinner"/>
+<fmt:message bundle="${rb}" key="txt.before.activate" var="txtBeforeActivate"/>
+<fmt:message bundle="${rb}" key="txt.competitions" var="txtCompetitions"/>
+<fmt:message bundle="${rb}" key="txt.choose.sport" var="txtChooseSport"/>
+<fmt:message bundle="${rb}" key="txt.competition.type" var="txtCompetitionType"/>
+<fmt:message bundle="${rb}" key="txt.choose.competition.type" var="txtChooseCompetitionType"/>
+<fmt:message bundle="${rb}" key="txt.yes" var="txtYes"/>
+<fmt:message bundle="${rb}" key="txt.no" var="txtNo"/>
+<fmt:message bundle="${rb}" key="txt.competition.name" var="txtCompetitionName"/>
+<fmt:message bundle="${rb}" key="txt.time.start" var="txtTimeStart"/>
+<fmt:message bundle="${rb}" key="txt.time.finish" var="txtTimeFinish"/>
+<fmt:message bundle="${rb}" key="txt.active" var="txtActive"/>
+<fmt:message bundle="${rb}" key="txt.in.name.must.be" var="txtInNameMustBe"/>
+<fmt:message bundle="${rb}" key="txt.symbols" var="txtSymbols"/>
+<fmt:message bundle="${rb}" key="txt.all.fields.be.filled" var="txtAllFieldsMustFilled"/>
+<fmt:message bundle="${rb}" key="txt.wrong.date.format" var="txtWrongDateFormat"/>
+<fmt:message bundle="${rb}" key="txt.finish.later.start" var="txtFinishLaterStart"/>
+<fmt:message bundle="${rb}" key="txt.competitors.data.wrong" var="txtCompetitorsDataWrong"/>
+<fmt:message bundle="${rb}" key="txt.for.active.competition" var="txtForActiveCompetition"/>
+<fmt:message bundle="${rb}" key="txt.teams.must.not.duplicate" var="txtTeamsNotDuplicate"/>
+<fmt:message bundle="${rb}" key="txt.competition.type.not.correct" var="txtTypeNotCorrect"/>
+<fmt:message bundle="${rb}" key="txt.now" var="txtNow"/>
+<fmt:message bundle="${rb}" key="txt.upcoming" var="txtUpcoming"/>
+<fmt:message bundle="${rb}" key="txt.past" var="txtPast"/>
+<fmt:message bundle="${rb}" key="txt.activated" var="txtActivated"/>
+<fmt:message bundle="${rb}" key="txt.deactivated" var="txtDeactivated"/>
+<fmt:message bundle="${rb}" key="txt.filled" var="txtFilled"/>
+<fmt:message bundle="${rb}" key="txt.unfilled" var="txtUnfilled"/>
+<fmt:message bundle="${rb}" key="txt.delete.error" var="txtDeleteError"/>
+<fmt:message bundle="${rb}" key="txt.try.again" var="txtTryAgain"/>
+<fmt:message bundle="${rb}" key="txt.wrong.access" var="txtWrongAccess"/>
+<fmt:message bundle="${rb}" key="txt.delete.failed" var="txtDeleteFailed"/>
+<fmt:message bundle="${rb}" key="txt.edit.error" var="txtEditError"/>
+<fmt:message bundle="${rb}" key="txt.wrong.number.format" var="txtWrongNumberFormat"/>
+<fmt:message bundle="${rb}" key="txt.some.kind.mistake" var="txtSomeKindMistake"/>
+<fmt:message bundle="${rb}" key="txt.duplicate.place" var="txtDuplicatePlace"/>
+<fmt:message bundle="${rb}" key="txt.deactivate.error" var="txtDeactivateError"/>
+<fmt:message bundle="${rb}" key="txt.fill.result.error" var="txtFillResultError"/>
+<fmt:message bundle="${rb}" key="txt.check.input.data" var="txtCheckInputData"/>
+<fmt:message bundle="${rb}" key="lbl.or" var="txtOr"/>
+<fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
+<fmt:message bundle="${rb}" key="txt.sport.name" var="txtSportName"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -32,7 +90,7 @@
                         <i class='fa fa-plus-circle'></i>
                     </button>
                 </div>
-                Competitions
+                <c:out value="${txtCompetitions}"/>
             </div>
 
             <%--Start create block--%>
@@ -44,9 +102,9 @@
                         <div class="w3-row">
                             <div class="w3-col s4 w3-padding-small">
                                 <label>
-                                    Sport name
+                                    ${txtSportName}
                                     <select id="selectKind" required name="sportId" class="w3-select">
-                                        <option value='' selected disabled> Choose sport</option>
+                                        <option value='' selected disabled><c:out value="${txtChooseSport}"/></option>
                                         <c:forEach var="kind" items="${kindsOfSport}">
                                             <option value="${kind.id}" count="${kind.competitorCount}">
                                                 <c:out value="${kind.name}"/>
@@ -58,9 +116,9 @@
                             </div>
                             <div class="w3-col s4 w3-padding-small">
                                 <label>
-                                    Competition type
+                                    <c:out value="${txtCompetitionType}"/>
                                     <select id="competitionType" required name="typeId" class="w3-select">
-                                        <option value='' selected disabled> Choose competition type</option>
+                                        <option value='' selected disabled> ${txtChooseCompetitionType}</option>
                                         <c:forEach var="type" items="${competitionTypes}">
                                             <option value="${type.id}">
                                                 <c:out value="${type.name}"/>
@@ -72,7 +130,7 @@
                             </div>
                             <div class="w3-col s4 w3-padding-small">
                                 <label>
-                                    Competition name
+                                    ${txtCompetitionName}
                                     <input type="text" class="w3-input" id="competitionName" name="competitionName"
                                            maxlength="100" required >
                                 </label>
@@ -80,28 +138,27 @@
                             <div class="w3-row">
                                 <div class="w3-col s3 w3-padding-small">
                                     <label>
-                                        Date start
+                                        ${txtDateStart}
                                         <input id='dateStart' type="date" class="w3-input" name="dateStart"
                                                required>
                                     </label>
                                 </div>
                                 <div class="w3-col s3 w3-padding-small">
                                     <label>
-                                        Time start
+                                        ${txtTimeStart}
                                         <input id='timeStart' type="time" class="w3-input" name="timeStart"
                                                required>
                                     </label>
                                 </div>
                                 <div class="w3-col s3 w3-padding-small">
                                     <label>
-                                        Date finish
+                                        ${txtDateFinish}
                                         <input id='dateFinish' type="date" class="w3-input" name="dateFinish" required/>
-
                                     </label>
                                 </div>
                                 <div class="w3-col s3 w3-padding-small">
                                     <label>
-                                        Time finish
+                                        ${txtTimeFinish}
                                         <input id='timeFinish' type="time" class="w3-input" name="timeFinish"
                                                required>
                                     </label>
@@ -118,37 +175,47 @@
                         <c:if test="${user.type.toString().equals('BOOKMAKER')}">
                             <div class="w3-col s2 w3-padding-small w3-margin-top">
                                 <label>
-                                    Active
+                                        ${txtActive}
                                     <input type="checkbox" class="w3-check" id="isActive" name="isActive">
                                 </label>
                             </div>
                         </c:if>
-                        <div id="errorBox" class="w3-text-red" style="display: none;">All fields must be defined</div>
+                        <div id="errorBox" class="w3-text-red" style="display: none;">
+                            ${txtAllFieldsMustFilled}
+                        </div>
                     </form>
                     <c:if test="${requestScope.get('wrongName') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">In name field must be 1-45 symbols</div>
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtInNameMustBe} 1-45 ${txtSymbols}.
+                        </div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongDate') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Wrong date format. Date start can't be later date
-                            finish and earlier
-                            now.
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtWrongDateFormat}. ${txtFinishLaterStart}.
                         </div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongCompetitors') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Competitors data wrong</div>
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtCompetitorsDataWrong}
+                        </div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongActive') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">For activate competition all fields must be filled
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtForActiveCompetition}
                         </div>
                     </c:if>
                     <c:if test="${requestScope.get('createError') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Transaction error, check teams for duplicate</div>
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtAllFieldsMustFilled}. ${txtTeamsNotDuplicate}.
+                        </div>
                     </c:if>
                     <c:if test="${requestScope.get('wrongType') != null}">
-                        <div id="wrong" class="w3-row w3-text-red">Competition type is not correct</div>
+                        <div id="wrong" class="w3-row w3-text-red">
+                                ${txtTypeNotCorrect}.
+                        </div>
                     </c:if>
-                    <div id="wrongJS" class="w3-row w3-text-red" style="display: none">All fields must by filled and
-                        teams mustn't duplicate
+                    <div id="wrongJS" class="w3-row w3-text-red" style="display: none">
+                        ${txtAllFieldsMustFilled}. ${txtTeamsNotDuplicate}.
                     </div>
                 </div>
             </div>
@@ -161,15 +228,15 @@
                 <div class="w3-bar w3-black">
                     <button class="w3-bar-item w3-button generalLink w3-white"
                             onclick="openTab(event,'Upcoming', 'general', 'generalLink')">
-                        Upcoming
+                        ${txtUpcoming}
                     </button>
                     <button class="w3-bar-item w3-button generalLink"
                             onclick="openTab(event,'Past', 'general', 'generalLink')">
-                        Past
+                        ${txtPast}
                     </button>
                     <button class="w3-bar-item w3-button generalLink"
                             onclick="openTab(event,'Now', 'general', 'generalLink')">
-                        Now
+                        ${txtNow}
                     </button>
                 </div>
                 <%--End main headers tab block--%>
@@ -180,11 +247,11 @@
                     <div class="w3-bar w3-black">
                         <button class="w3-bar-item w3-button upcomingLink w3-white"
                                 onclick="openTab(event,'Activated', 'upcoming', 'upcomingLink')">
-                            Activated
+                            ${txtActivated}
                         </button>
                         <button class="w3-bar-item w3-button upcomingLink"
                                 onclick="openTab(event,'Deactivated', 'upcoming', 'upcomingLink')">
-                            Deactivated
+                            ${txtDeactivated}
                         </button>
                     </div>
 
@@ -200,15 +267,15 @@
                     <div class="w3-bar w3-black">
                         <button class="w3-bar-item w3-button pastLink w3-white"
                                 onclick="openTab(event,'PastFilled', 'past', 'pastLink')">
-                            Filled
+                            ${txtFilled}
                         </button>
                         <button class="w3-bar-item w3-button pastLink"
                                 onclick="openTab(event,'PastUnfilled', 'past', 'pastLink')">
-                            Unfilled
+                            ${txtUnfilled}
                         </button>
                         <button class="w3-bar-item w3-button pastLink"
                                 onclick="openTab(event,'PastDeactivated', 'past', 'pastLink')">
-                            Deactivated
+                            ${txtDeactivated}
                         </button>
                     </div>
 
@@ -226,11 +293,11 @@
                     <div class="w3-bar w3-black">
                         <button class="w3-bar-item w3-button nowLink w3-white"
                                 onclick="openTab(event,'NowActivated', 'now', 'nowLink')">
-                            Activated
+                            ${txtActivated}
                         </button>
                         <button class="w3-bar-item w3-button nowLink"
                                 onclick="openTab(event,'NowDeactivated', 'now', 'nowLink')">
-                            Deactivated
+                            ${txtDeactivated}
                         </button>
                     </div>
 
@@ -249,8 +316,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_del_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Delete error. try again</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_del_error).style.display='none'">
+            <p>${txtDeleteError}. ${txtTryAgain}. </p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_del_error).style.display='none'">
         </div>
     </div>
 </div>
@@ -258,9 +325,8 @@
     <div class="w3-modal-content">
         <div class="w3-container">
             <span onclick="(modal_del_wrong).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>This kind of sport use others tables.
-                To be able to remove this sport, it is necessary that it is not used by anyone</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_del_wrong).style.display='none'">
+            <p>${txtWrongAccess}. ${txtDeleteFailed}.</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_del_wrong).style.display='none'">
         </div>
     </div>
 </div>
@@ -270,8 +336,8 @@
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
             <span onclick="(modal_edit_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Edit error. Try again</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_edit_error).style.display='none'">
+            <p>${txtEditError}. ${txtEditError}.</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_edit_error).style.display='none'">
         </div>
     </div>
 </div>
@@ -279,8 +345,8 @@
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
             <span onclick="(modal_edit_wrong).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Incorrect number format or just some kind of mistake</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_edit_wrong).style.display='none'">
+            <p>${txtWrongNumberFormat} ${txtOr} ${txtSomeKindMistake}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_edit_wrong).style.display='none'">
         </div>
     </div>
 </div>
@@ -288,8 +354,8 @@
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
             <span onclick="(modal_fill_warning).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-            <p>Incorrect number format or duplicate place</p>
-            <input type="button" class="w3-button" value="Ok" onclick="(modal_fill_warning).style.display='none'">
+            <p>${txtWrongNumberFormat} ${txtOr} ${txtDuplicatePlace}</p>
+            <input type="button" class="w3-button" value="${txtOk}" onclick="(modal_fill_warning).style.display='none'">
         </div>
     </div>
 </div>
@@ -298,8 +364,8 @@
         <div class="w3-modal-content">
             <div class="w3-container w3-center">
                 <span onclick="(modal_deactivate_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <p>Deactivate error</p>
-                <input type="button" class="w3-button" value="Ok"
+                <p>${txtDeactivateError}</p>
+                <input type="button" class="w3-button" value="${txtOk}"
                        onclick="(modal_deactivate_error).style.display='none'">
             </div>
         </div>
@@ -310,8 +376,8 @@
         <div class="w3-modal-content">
             <div class="w3-container w3-center">
                 <span onclick="(modal_fill_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <p>Fill result database error.</p>
-                <input type="button" class="w3-button" value="Ok"
+                <p>${txtFillResultError}.</p>
+                <input type="button" class="w3-button" value="${txtOk}"
                        onclick="(modal_fill_error).style.display='none'">
             </div>
         </div>
@@ -322,8 +388,8 @@
         <div class="w3-modal-content">
             <div class="w3-container w3-center">
                 <span onclick="(modal_number_error).style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                <p>Fill result error. Please, check input date</p>
-                <input type="button" class="w3-button" value="Ok"
+                <p>${txtFillResultError}. ${txtCheckInputData}.</p>
+                <input type="button" class="w3-button" value="${txtOk}"
                        onclick="(modal_number_error).style.display='none'">
             </div>
         </div>

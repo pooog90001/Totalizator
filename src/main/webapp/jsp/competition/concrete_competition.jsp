@@ -1,6 +1,24 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.error.check.connection" var="txtError"/>
+<fmt:message bundle="${rb}" key="txt.less.total" var="txtLessTotal"/>
+<fmt:message bundle="${rb}" key="txt.more.total" var="txtMoreTotal"/>
+<fmt:message bundle="${rb}" key="txt.total" var="txtTotal"/>
+<fmt:message bundle="${rb}" key="txt.standoff" var="txtStandoff"/>
+<fmt:message bundle="${rb}" key="txt.type" var="txtType"/>
+<fmt:message bundle="${rb}" key="txt.win" var="txtWin"/>
+<fmt:message bundle="${rb}" key="txt.bet.size" var="txtBetSize"/>
+<fmt:message bundle="${rb}" key="txt.dont.have.money" var="txtDontHaveMoney"/>
+<fmt:message bundle="${rb}" key="txt.wrong.access" var="txtWrongAccess"/>
+<fmt:message bundle="${rb}" key="txt.fill.all.fields" var="txtFillAllFields"/>
+<fmt:message bundle="${rb}" key="txt.date.start" var="txtDateStart"/>
+<fmt:message bundle="${rb}" key="txt.do.bet" var="txtDoBet"/>
+<fmt:message bundle="${rb}" key="txt.before.do.bet" var="txtBeforeDoBet"/>
+<fmt:message bundle="${rb}" key="txt.yes" var="txtYes"/>
+<fmt:message bundle="${rb}" key="txt.no" var="txtNo"/>
+<fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -42,10 +60,10 @@
                             <c:out value="${competition['kind_of_sport_name']}"/>
                         </div>
                         <div class="w3-padding-small">
-                            Тип: <b><c:out value="${competition['competition_type_name']}"/></b>
+                            ${txtType}: <b><c:out value="${competition['competition_type_name']}"/></b>
                         </div>
                         <div class="w3-padding-small">
-                            Дата проведения: <b><ctg:date-presenter
+                            ${txtDateStart}: <b><ctg:date-presenter
                                 date="${competition['competition_date_start']}"/></b>
                         </div>
                         <div class="w3-row  w3-padding-small">
@@ -53,26 +71,27 @@
                             <c:if test="${competition['competitors'].size() == 2}">
                                 <div class='w3-col l5'>
                                     <label class="w3-padding-small">
-                                        Total: <ctg:decimal-presenter number="${competition['competition_total']}"/>
+                                            ${txtTotal}: <ctg:decimal-presenter
+                                            number="${competition['competition_total']}"/>
                                     </label>
                                 </div>
                                 <div class='w3-col l5'>
                                     <label class="w3-padding-small">
-                                        Less total: <ctg:decimal-presenter
+                                            ${txtLessTotal}: <ctg:decimal-presenter
                                             number="${competition['competition_less_total_coeff']}"/>
                                         <input type="radio" onTeam="false" value="LESS" name="bet">
                                     </label>
                                 </div>
                                 <div class='w3-col l5'>
                                     <label class="w3-padding-small">
-                                        More total: <ctg:decimal-presenter
+                                            ${txtMoreTotal}: <ctg:decimal-presenter
                                             number="${competition['competition_more_total_coeff']}"/>
                                         <input type="radio" onTeam="false" value="MORE" name="bet">
                                     </label>
                                 </div>
                                 <div class='w3-col l5 '>
                                     <label class="w3-padding-small">
-                                        Standdoff: <ctg:decimal-presenter
+                                            ${txtStandoff}: <ctg:decimal-presenter
                                             number="${competition['competition_standoff_coeff']}"/>
                                         <input type="radio" name="bet" onTeam="false" value="EQUALS" required>
                                     </label>
@@ -87,7 +106,7 @@
 
                                         <div class='w3-col s5 w3-right-align'>
                                             <label class="w3-padding-small">
-                                                Win: <ctg:decimal-presenter
+                                                    ${txtWin}: <ctg:decimal-presenter
                                                     number="${competitor['competitor_win_coeff']}"/>
                                                 <input type="radio" name="bet" onTeam="true"
                                                        value="${competitor['competitor_id']}">
@@ -103,20 +122,22 @@
                 <div class="w3-col m6 w3-container">
                     <div class="w3-card-2">
                         <div class="w3-padding">
-                            Bet size ($)
+                            ${txtBetSize}($)
                             <input type="number" id="cash" name="cash" class="w3-input w3-border" min="1"  step="1"
                                    value="0" />
-                            <input type="button" class="w3-button w3-theme-d2 w3-small w3-margin-top" value="Do bet"
+                            <input type="button" class="w3-button w3-theme-d2 w3-small w3-margin-top"
+                                   value="${txtDoBet}"
                                    onclick="checkFormFields(this, 'doBetForm')">
                         </div>
                         <div>
-                            <div class="w3-text-red" id="dataEmpty" style="display: none;">Please, fill all fields</div>
-                            <div class="w3-text-red" id="wrongCash" style="display: none;">bet size 1-1000 </div>
-                            <div class="w3-text-red" id="littleMoney" style="display: none;">You do not have so much money</div>
-                            <div class="w3-text-red" id="wrongCompetition" style="display: none;" >Please, fill all fields </div>
-                            <div class="w3-text-red" id="wrongCreation" style="display: none;" >Please, fill all fields </div>
-                            <div class="w3-text-red" id="accessDenied" style="display: none;" >You have not access for this operation</div>
-                            <div class="w3-text-red" id="ServerError" style="display: none;" >Server error, check conection</div>
+                            <div class="w3-text-red" id="dataEmpty" style="display: none;">${txtFillAllFields}</div>
+                            <div class="w3-text-red" id="wrongCash" style="display: none;">${txtBetSize} 1-1000$</div>
+                            <div class="w3-text-red" id="littleMoney" style="display: none;">${txtDontHaveMoney}</div>
+                            <div class="w3-text-red" id="wrongCompetition"
+                                 style="display: none;">${txtFillAllFields}</div>
+                            <div class="w3-text-red" id="wrongCreation" style="display: none;">${txtFillAllFields}</div>
+                            <div class="w3-text-red" id="accessDenied" style="display: none;">${txtWrongAccess}</div>
+                            <div class="w3-text-red" id="ServerError" style="display: none;">${txtError}</div>
                         </div>
                     </div>
                 </div>
@@ -131,20 +152,20 @@
         <div class="w3-container w3-center">
             <span onclick="(modalBeforeDoBet).style.display='none'" class="w3-button w3-display-topright">&times;</span>
             <p>
-                Eсли вы сделаете ставку, то не сможете её отменить
-                If you make a bet, you will not be able to cancel it
-                Сделать ставку?
+                ${txtBeforeDoBet}
+                ${txtDoBet}?
             </p>
-            <input type="button" class="w3-button" value="Ok" onclick="doBet(this, 'doBetForm')">
-            <input type="button" class="w3-button" value="Cancel" onclick="(modalBeforeDoBet).style.display='none'">
+            <input type="button" class="w3-button" value="${txtYes}" onclick="doBet(this, 'doBetForm')">
+            <input type="button" class="w3-button" value="${txtNo}" onclick="(modalBeforeDoBet).style.display='none'">
         </div>
     </div>
 </div>
 <div id="modalBetSuccess" class="w3-modal">
     <div class="w3-modal-content">
         <div class="w3-container w3-center">
-            <p>Bet success. You can see bet status in your profile.</p>
-            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="Ok" onclick="window.location.reload();">
+            <p>${txtBetSuccess}</p>
+            <input type="button" class="w3-button w3-theme-d2 w3-margin-top" value="${txtOk}"
+                   onclick="window.location.reload();">
         </div>
     </div>
 </div>

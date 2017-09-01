@@ -1,23 +1,31 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
 <%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <jsp:include page="/jsp/partial/header.jsp"/>
+
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.back.on.main.page" var="txtBackOnMainPage"/>
+<fmt:message bundle="${rb}" key="txt.account.blocked" var="txtAccountBlocked"/>
+<fmt:message bundle="${rb}" key="txt.blocking.reason" var="txtBlockingReason"/>
+
 <body>
 <div class="w3-row">
     <div class="w3-col m2">
         <div class="w3-container"></div>
     </div>
     <div class="w3-col m8 w3-margin-bottom">
-        <h1>Your account is blocked :( </h1>
+        <h1>${txtAccountBlocked} :( </h1>
         <div class="w3-container w3-card-2">
             <h3 class="w3-container w3-center">
                 <p>
-                    <span>Blocked reason: <c:out value="${text}"/> </span>
+                    <span>${txtBlockingReason}: <c:out value="${text}"/> </span>
                 </p>
             </h3>
 
             <div class="w3-container w3-center">
                 <a class=" w3-button w3-theme-l2 w3-hover-border-black"
-                   href="${pageContext.request.contextPath}/index.jsp">Back on main page</a>
+                   href="${pageContext.request.contextPath}/index.jsp">${txtBackOnMainPage}</a>
             </div>
             <br>
 

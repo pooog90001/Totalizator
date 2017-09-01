@@ -1,6 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.wrong.data.check.fields" var="txtWrongDataCheckFields"/>
+<fmt:message bundle="${rb}" key="txt.success.email" var="txtSuccessEmail"/>
+<fmt:message bundle="${rb}" key="txt.your.email" var="txtYourEmail"/>
+<fmt:message bundle="${rb}" key="txt.title.help" var="txtTitleHelp"/>
+<fmt:message bundle="${rb}" key="txt.question" var="txtQuestion"/>
+<fmt:message bundle="${rb}" key="txt.help" var="txtHelp"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -28,31 +35,31 @@
         <!-- First Photo Grid-->
         <div class=" w3-container">
             <span class="w3-xlarge w3-padding w3-hover-none">
-                Help
+                ${txtHelp}
             </span>
         </div>
         <div class="w3-card-2 w3-container">
-            <h3>If you have some problems or questions you can write to us and we answer. </h3>
+            <h3>${txtTitleHelp}</h3>
 
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController" method="post">
                 <input class="w3-input w3-border" type="hidden" name="command" value="SEND_QUESTION_EMAIL"/>
                 <label>
-                    Your email:
+                    ${txtYourEmail}:
                     <input class="w3-input w3-border" type="email" name="email" required style="max-width: 250px;">
                 </label>
                 <br>
                 <label>
-                    Problem:
+                    ${txtQuestion}:
                     <textarea class="w3-input w3-border" name="text" id="text" cols="30" rows="3" required
                               style="resize: none;" maxlength="1000"></textarea>
                 </label>
                 <br>
                 <input type="submit" value="Send" class="w3-button w3-theme-l3"/>
                 <c:if test="${temporary['wrongData']}">
-                    <span class="w3-text-red"> Wrong data, check fields </span>
+                    <span class="w3-text-red"> ${txtWrongDataCheckFields} </span>
                 </c:if>
                 <c:if test="${temporary['success']}">
-                    <span class="w3-text-green">Mail successfully sent.</span>
+                    <span class="w3-text-green"> ${txtSuccessEmail}</span>
                 </c:if>
 
             </form>

@@ -1,6 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@include file="/jsp/partial/header.jsp" %>
 
+<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+<fmt:setBundle basename="locale/text" var="rb"/>
+<fmt:message bundle="${rb}" key="txt.all.results" var="txtAllResults"/>
+<fmt:message bundle="${rb}" key="txt.all.upcoming" var="txtAllUpcoming"/>
+<fmt:message bundle="${rb}" key="txt.all.news" var="txtAllNews"/>
+<fmt:message bundle="${rb}" key="txt.results" var="txtResults"/>
 
 <nav class="w3-sidebar w3-bar-block w3-card " id="mySidebar" style="display: none;">
     <div class="w3-container w3-theme-d2">
@@ -30,7 +36,7 @@
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="open_all_news">
                 <button type="submit" class="w3-xlarge w3-button w3-hover-none">
-                    Новости
+                    ${news}
                 </button>
             </form>
 
@@ -64,7 +70,7 @@
             <form class="w3-container w3-margin-bottom" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="open_all_news">
                 <button type="submit" class="w3-right w3-button w3-small">
-                    Все новости
+                    ${txtAllNews}
                 </button>
             </form>
 
@@ -85,7 +91,7 @@
             <form class="w3-container w3-margin-bottom" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="OPEN_ALL_UPCOMING_COMPETITIONS">
                 <button type="submit" class="w3-right w3-button w3-small">
-                    Все ${upcoming}
+                    ${txtAllUpcoming}
                 </button>
             </form>
         </div>
@@ -96,7 +102,7 @@
             <form class="w3-container" action="${pageContext.request.contextPath}/generalController">
                 <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                 <button type="submit" class="w3-xlarge w3-button w3-hover-none">
-                    <c:out value="${past}"/>
+                    <c:out value="${txtResults}"/>
                 </button>
             </form>
             <div class=" w3-container w3-padding-small w3-center">
@@ -108,7 +114,7 @@
                       action="${pageContext.request.contextPath}/generalController">
                     <input type="hidden" name="command" value="OPEN_ALL_PAST_COMPETITIONS">
                     <button type="submit" class="w3-right w3-button w3-small">
-                        Все <c:out value="${past}"/>
+                        ${txtAllResults}
                     </button>
                 </form>
             </div>

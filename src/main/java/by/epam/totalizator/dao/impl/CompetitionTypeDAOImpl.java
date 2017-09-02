@@ -4,7 +4,7 @@ import by.epam.totalizator.bean.CompetitionTypeEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.CompetitionTypeDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CompetitionTypeDAOImpl extends DAO<CompetitionTypeEntity> {
+public class CompetitionTypeDAOImpl extends CompetitionTypeDAO {
     @Override
     public List<CompetitionTypeEntity> findAll() throws DAOException {
         List<CompetitionTypeEntity> competitionTypeList;

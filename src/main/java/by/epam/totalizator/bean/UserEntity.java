@@ -26,7 +26,7 @@ public class UserEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return user id
      */
     public int getId() {
         return id;
@@ -35,7 +35,7 @@ public class UserEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id user id
      */
     public void setId(int id) {
         this.id = id;
@@ -44,7 +44,7 @@ public class UserEntity extends Entity {
     /**
      * Get name.
      *
-     * @return
+     * @return user name
      */
     public String getName() {
         return name;
@@ -53,7 +53,7 @@ public class UserEntity extends Entity {
     /**
      * Set name.
      *
-     * @param name
+     * @param name user name
      */
     public void setName(String name) {
         this.name = name;
@@ -62,7 +62,7 @@ public class UserEntity extends Entity {
     /**
      * Get email.
      *
-     * @return
+     * @return user mail
      */
     public String getEmail() {
         return email;
@@ -71,7 +71,7 @@ public class UserEntity extends Entity {
     /**
      * Set email.
      *
-     * @param email
+     * @param email user mail
      */
     public void setEmail(String email) {
         this.email = email;
@@ -80,7 +80,7 @@ public class UserEntity extends Entity {
     /**
      * Get password.
      *
-     * @return
+     * @return user password
      */
     public String getPassword() {
         return password;
@@ -89,7 +89,7 @@ public class UserEntity extends Entity {
     /**
      * Set password.
      *
-     * @param password
+     * @param password user password
      */
     public void setPassword(String password) {
         this.password = password;
@@ -98,7 +98,7 @@ public class UserEntity extends Entity {
     /**
      * Get type.
      *
-     * @return
+     * @return user type
      */
     public UserType getType() {
         return type;
@@ -107,7 +107,7 @@ public class UserEntity extends Entity {
     /**
      * Set type.
      *
-     * @param type
+     * @param type user type
      */
     public void setType(UserType type) {
         this.type = type;
@@ -116,7 +116,7 @@ public class UserEntity extends Entity {
     /**
      * Get is confirm.
      *
-     * @return
+     * @return user confirm state
      */
     public boolean getIsConfirm() {
         return isConfirm;
@@ -125,7 +125,7 @@ public class UserEntity extends Entity {
     /**
      * Set confirm.
      *
-     * @param confirm
+     * @param confirm user confirm state
      */
     public void setConfirm(boolean confirm) {
         isConfirm = confirm;
@@ -134,7 +134,7 @@ public class UserEntity extends Entity {
     /**
      * Get is blocked.
      *
-     * @return
+     * @return user blocked state
      */
     public boolean getIsBlocked() {
         return isBlocked;
@@ -143,7 +143,7 @@ public class UserEntity extends Entity {
     /**
      * Set blocked.
      *
-     * @param blocked
+     * @param blocked user blocked state
      */
     public void setBlocked(boolean blocked) {
         isBlocked = blocked;
@@ -152,7 +152,7 @@ public class UserEntity extends Entity {
     /**
      * Get cash.
      *
-     * @return
+     * @return user cash
      */
     public BigDecimal getCash() {
         return cash;
@@ -161,7 +161,7 @@ public class UserEntity extends Entity {
     /**
      * Set cash.
      *
-     * @param cash
+     * @param cash user cash
      */
     public void setCash(BigDecimal cash) {
         this.cash = cash;
@@ -170,7 +170,7 @@ public class UserEntity extends Entity {
     /**
      * Get confirm URL.
      *
-     * @return
+     * @return user confirm url
      */
     public String getConfirmUrl() {
         return confirmUrl;
@@ -179,7 +179,7 @@ public class UserEntity extends Entity {
     /**
      * Set confirm URL.
      *
-     * @param confirmUrl
+     * @param confirmUrl user confirm url
      */
     public void setConfirmUrl(String confirmUrl) {
         this.confirmUrl = confirmUrl;
@@ -188,7 +188,7 @@ public class UserEntity extends Entity {
     /**
      * Get avatar URL.
      *
-     * @return
+     * @return user avatar url
      */
     public String getAvatarURL() {
         return avatarURL;
@@ -197,7 +197,7 @@ public class UserEntity extends Entity {
     /**
      * Set avatar URL.
      *
-     * @param avatarURL
+     * @param avatarURL user avatar url
      */
     public void setAvatarURL(String avatarURL) {
         this.avatarURL = avatarURL;
@@ -206,7 +206,7 @@ public class UserEntity extends Entity {
     /**
      * Get blocked text.
      *
-     * @return
+     * @return user blocked text
      */
     public String getBlockedText() {
         return blockedText;
@@ -215,7 +215,7 @@ public class UserEntity extends Entity {
     /**
      * Set blocked text.
      *
-     * @param blockedText
+     * @param blockedText user blocked text
      */
     public void setBlockedText(String blockedText) {
         this.blockedText = blockedText;
@@ -223,22 +223,45 @@ public class UserEntity extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserEntity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof UserEntity)) {
+            return false;
+        }
 
         UserEntity user = (UserEntity) o;
 
-        if (id != user.id) return false;
-        if (isConfirm != user.isConfirm) return false;
-        if (isBlocked != user.isBlocked) return false;
-        if (name != null ? !name.equals(user.name) : user.name != null) return false;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        if (password != null ? !password.equals(user.password) : user.password != null) return false;
-        if (type != user.type) return false;
-        if (confirmUrl != null ? !confirmUrl.equals(user.confirmUrl) : user.confirmUrl != null) return false;
-        if (blockedText != null ? !blockedText.equals(user.blockedText) : user.blockedText != null)
+        if (id != user.id) {
             return false;
-        if (cash != null ? !cash.equals(user.cash) : user.cash != null) return false;
+        }
+        if (isConfirm != user.isConfirm) {
+            return false;
+        }
+        if (isBlocked != user.isBlocked) {
+            return false;
+        }
+        if (name != null ? !name.equals(user.name) : user.name != null) {
+            return false;
+        }
+        if (email != null ? !email.equals(user.email) : user.email != null) {
+            return false;
+        }
+        if (password != null ? !password.equals(user.password) : user.password != null) {
+            return false;
+        }
+        if (type != user.type) {
+            return false;
+        }
+        if (confirmUrl != null ? !confirmUrl.equals(user.confirmUrl) : user.confirmUrl != null) {
+            return false;
+        }
+        if (blockedText != null ? !blockedText.equals(user.blockedText) : user.blockedText != null) {
+            return false;
+        }
+        if (cash != null ? !cash.equals(user.cash) : user.cash != null) {
+            return false;
+        }
         return avatarURL != null ? avatarURL.equals(user.avatarURL) : user.avatarURL == null;
     }
 

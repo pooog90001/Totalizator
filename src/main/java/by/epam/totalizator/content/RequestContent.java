@@ -16,6 +16,9 @@ import java.util.stream.Collectors;
 
 import static by.epam.totalizator.constant.GeneralConstant.SUCCESS;
 
+/**
+ * Class with request content
+ */
 public class RequestContent {
     private HashMap<String, Object> requestAttributes;
     private HashMap<String, String[]> requestParameters;

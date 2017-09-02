@@ -1,28 +1,27 @@
 package by.epam.totalizator.constant;
 
+/**
+ * Class with constant
+ */
 final public class GeneralConstant {
 
     public static final String NEWS_ID = "newsId";
     public static final String NEWS_LIST = "newsList";
     public static final String _NEWS_DOT = "_news.";
     public static final String _AVATAR_DOT = "_avatar.";
-    public static final String NEWS = "news";
     public static final String DB_PROPERTIES = "config/database";
     public static final String PAGE_PATH_PROPERTIES = "config/pages";
     public static final String UPLOAD_PROPERTIES = "config/upload";
     public static final String EMAIL_PROPERTIES = "config/email";
 
-    public static final String SALT = "totalizator";
     public static final String DUPLICATE_UNIQUE_INDEX = "23000";
     public static final String CAN_NOT_DELETE_OR_UPDATE = "23000";
     public static final String TEMPORARY = "temporary";
     public static final String ACCESS_DENIED = "accessDenied";
     public static final String DATA_EMPTY = "dataEmpty";
     public static final String WRONG_CASH = "wrongCash";
-    public static final String WRONG_NEWS = "wrongNews";
     public static final String WRONG_DATA = "wrongData";
     public static final String WRONG_DATE = "wrongDate";
-    public static final String WRONG_EXTENSION = "wrongExtension";
     public static final String WRONG_COMPETITION = "wrongCompetition";
     public static final String WRONG_COMPETITORS = "wrongCompetitors";
     public static final String WRONG_TYPE = "wrongType";
@@ -66,9 +65,7 @@ final public class GeneralConstant {
     public static final String LOCALE = "locale";
     public static final String COMMENT_ID = "commentId";
     public static final String IS_BLOCKED = "isBlocked";
-    public static final String IS_NOT_CONFIRMED = "isNotConfirmed";
     public static final String TEXT = "text";
-    public static final String INVALID_TEXT = "invalidText";
     public static final String KIND_OF_SPORT_ID = "kindOfSportId";
     public static final String TEAM_ID = "teamId";
     public static final String COMPETITOR_ID = "competitorId";
@@ -122,14 +119,11 @@ final public class GeneralConstant {
     public static final String LESS_AMOUNT_OF_MONEY = "lessAmountOfMoney";
     public static final String MORE_AMOUNT_OF_MONEY = "moreAmountOfMoney";
     public static final String STANDOFF_AMOUNT_OF_MONEY = "standoffAmountOfMoney";
-    public static final String KINDS_OF_SPORT_LIST = "kindsOfSportList";
     public static final String KIND_OF_SPORT = "kindOfSport";
-    public static final String CURRENT_ID = "currentId";
     public static final String SUCCESS = "success";
     public static final String COUNT = "count";
     public static final String CASH = "cash";
     public static final String VALUE = "value";
-    public static final String TEAM = "team";
     public static final String PAGE_NOT_FOUND = "pageNotFound";
     public static final String PAGE_NUMBER = "pageNumber";
     public static final String LITTLE_MONEY = "littleMoney";

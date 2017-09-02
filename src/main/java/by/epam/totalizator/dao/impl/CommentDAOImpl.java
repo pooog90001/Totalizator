@@ -3,7 +3,7 @@ package by.epam.totalizator.dao.impl;
 import by.epam.totalizator.bean.CommentEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.CommentDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommentDAOImpl extends DAO<CommentEntity> {
+public class CommentDAOImpl extends CommentDAO {
     @Override
     public List<CommentEntity> findAll() throws DAOException {
         throw new UnsupportedOperationException();
@@ -76,10 +76,10 @@ public class CommentDAOImpl extends DAO<CommentEntity> {
         return isCreated;
     }
 
-    public void changeLockCommentById(int idComment, boolean changeValue) throws DAOException {
+    public void changeLockCommentById(int commentId, boolean changeValue) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CHANGE_LOCK_COMMENT)) {
             statement.setBoolean(1, changeValue);
-            statement.setInt(2, idComment);
+            statement.setInt(2, commentId);
             statement.executeUpdate();
 
         } catch (SQLException e) {

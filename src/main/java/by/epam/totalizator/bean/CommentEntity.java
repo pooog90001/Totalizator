@@ -20,7 +20,7 @@ public class CommentEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return comment id
      */
     public int getId() {
         return id;
@@ -110,7 +110,7 @@ public class CommentEntity extends Entity {
     /**
      * Get user ID.
      *
-     * @return
+     * @return user id
      */
     public int getUserId() {
         return userId;
@@ -119,7 +119,7 @@ public class CommentEntity extends Entity {
     /**
      * Set user ID.
      *
-     * @param userId
+     * @param userId user id
      */
     public void setUserId(int userId) {
         this.userId = userId;

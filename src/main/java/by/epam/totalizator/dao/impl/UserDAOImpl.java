@@ -4,7 +4,7 @@ import by.epam.totalizator.bean.UserEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.UserDAO;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.type.UserType;
 
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class UserDAOImpl extends DAO<UserEntity> {
+public class UserDAOImpl extends UserDAO {
 
     @Override
     public List<UserEntity> findAll() {
@@ -38,6 +38,40 @@ public class UserDAOImpl extends DAO<UserEntity> {
         return foundUser;
     }
 
+    @Override
+    public boolean delete(int id) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean delete(UserEntity entity) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public boolean create(UserEntity entity) throws DAOException {
+        boolean isCreated = false;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getEmail());
+            statement.setString(3, entity.getPassword());
+
+            isCreated = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            if (!GeneralConstant.DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
+                throw new DAOException("Create user error ", e);
+            }
+        }
+        return isCreated;
+    }
+
+    @Override
+    public boolean update(UserEntity entity) {
+        throw new UnsupportedOperationException();
+    }
+
     private UserEntity extractUser(ResultSet result) throws SQLException {
         UserEntity foundUser = null;
         if (result.next()) {
@@ -55,22 +89,6 @@ public class UserDAOImpl extends DAO<UserEntity> {
             String userType = result.getString(SQLFieldConstant.User.TYPE);
             foundUser.setType(UserType.valueOf(userType));
         }
-        return foundUser;
-    }
-
-    public UserEntity findUser(UserEntity user) throws DAOException {
-        UserEntity foundUser;
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER_BY_EMAIL_AND_PASSWORD)) {
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getPassword());
-            ResultSet result = statement.executeQuery();
-            foundUser = extractUser(result);
-
-        } catch (SQLException e) {
-            throw new DAOException("Find user error ", e);
-        }
-
         return foundUser;
     }
 
@@ -125,38 +143,20 @@ public class UserDAOImpl extends DAO<UserEntity> {
         return count;
     }
 
-    @Override
-    public boolean delete(int id) {
-        throw new UnsupportedOperationException();
-    }
+    public UserEntity findUser(UserEntity user) throws DAOException {
+        UserEntity foundUser;
 
-    @Override
-    public boolean delete(UserEntity entity) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
-    public boolean create(UserEntity entity) throws DAOException {
-        boolean isCreated = false;
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_USER)) {
-            statement.setString(1, entity.getName());
-            statement.setString(2, entity.getEmail());
-            statement.setString(3, entity.getPassword());
-
-            isCreated = statement.executeUpdate() == 1;
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_USER_BY_EMAIL_AND_PASSWORD)) {
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getPassword());
+            ResultSet result = statement.executeQuery();
+            foundUser = extractUser(result);
 
         } catch (SQLException e) {
-            if (!GeneralConstant.DUPLICATE_UNIQUE_INDEX.equals(e.getSQLState())) {
-                throw new DAOException("Create user error ", e);
-            }
+            throw new DAOException("Find user error ", e);
         }
-        return isCreated;
-    }
 
-    @Override
-    public boolean update(UserEntity entity) {
-        throw new UnsupportedOperationException();
+        return foundUser;
     }
 
     public boolean updateRole(UserEntity entity) throws DAOException {
@@ -239,7 +239,6 @@ public class UserDAOImpl extends DAO<UserEntity> {
 
         return isUpdated;
     }
-
 
     public void returnMoneyForBets(int competitionId) throws DAOException {
         try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.RETURN_MONEY_FOR_BETS)) {

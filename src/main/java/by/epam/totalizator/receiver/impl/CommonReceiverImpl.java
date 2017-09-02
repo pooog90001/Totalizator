@@ -55,10 +55,6 @@ public class CommonReceiverImpl implements CommonReceiver {
 
     }
 
-    @Override
-    public void sendConfirmEmail(RequestContent content) throws ReceiverException {
-
-    }
 
     @Override
     public void changeLocale(RequestContent requestContent) throws ReceiverException {

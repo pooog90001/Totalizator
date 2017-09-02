@@ -20,7 +20,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Get result.
      *
-     * @return
+     * @return competitor result
      */
     public int getResult() {
         return result;
@@ -29,7 +29,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Set result.
      *
-     * @param result
+     * @param result competitor result
      */
     public void setResult(int result) {
         this.result = result;
@@ -38,7 +38,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return competitor id
      */
     public int getId() {
         return id;
@@ -47,7 +47,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id competitor id
      */
     public void setId(int id) {
         this.id = id;
@@ -56,7 +56,9 @@ public class CompetitorEntity extends Entity {
     /**
      * Get team ID.
      *
-     * @return
+     * @return team id
+     *
+     * @see TeamEntity
      */
     public int getTeamId() {
         return teamId;
@@ -65,7 +67,9 @@ public class CompetitorEntity extends Entity {
     /**
      * Set team ID.
      *
-     * @param teamId
+     * @param teamId competitor id
+     *
+     * @see TeamEntity
      */
     public void setTeamId(int teamId) {
         this.teamId = teamId;
@@ -74,7 +78,9 @@ public class CompetitorEntity extends Entity {
     /**
      * Get competition ID.
      *
-     * @return
+     * @return competition id
+     *
+     * @see CompetitionEntity
      */
     public int getCompetitionId() {
         return competitionId;
@@ -83,7 +89,9 @@ public class CompetitorEntity extends Entity {
     /**
      * Set competition ID.
      *
-     * @param competitionId
+     * @param competitionId competition id
+     *
+     * @see CompetitionEntity
      */
     public void setCompetitionId(int competitionId) {
         this.competitionId = competitionId;
@@ -92,7 +100,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Get win.
      *
-     * @return
+     * @return competitor win state
      */
     public Boolean getWin() {
         return isWin;
@@ -101,7 +109,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Set win.
      *
-     * @param win
+     * @param win competitor win state
      */
     public void setWin(Boolean win) {
         isWin = win;
@@ -110,7 +118,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Get win coefficient.
      *
-     * @return
+     * @return competitor win state
      */
     public BigDecimal getWinCoeff() {
         return winCoeff;
@@ -119,7 +127,7 @@ public class CompetitorEntity extends Entity {
     /**
      * Set win coefficient.
      *
-     * @param winCoeff
+     * @param winCoeff competitor win state
      */
     public void setWinCoeff(BigDecimal winCoeff) {
         this.winCoeff = winCoeff;
@@ -127,16 +135,30 @@ public class CompetitorEntity extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof CompetitorEntity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof CompetitorEntity)) {
+            return false;
+        }
 
         CompetitorEntity that = (CompetitorEntity) o;
 
-        if (id != that.id) return false;
-        if (teamId != that.teamId) return false;
-        if (competitionId != that.competitionId) return false;
-        if (result != that.result) return false;
-        if (winCoeff != null ? !winCoeff.equals(that.winCoeff) : that.winCoeff != null) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (teamId != that.teamId) {
+            return false;
+        }
+        if (competitionId != that.competitionId) {
+            return false;
+        }
+        if (result != that.result) {
+            return false;
+        }
+        if (winCoeff != null ? !winCoeff.equals(that.winCoeff) : that.winCoeff != null) {
+            return false;
+        }
         return isWin != null ? isWin.equals(that.isWin) : that.isWin == null;
     }
 

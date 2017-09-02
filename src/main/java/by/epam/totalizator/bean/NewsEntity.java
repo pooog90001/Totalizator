@@ -17,7 +17,7 @@ public class NewsEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return news id
      */
     public int getId() {
         return id;
@@ -26,7 +26,7 @@ public class NewsEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id news id
      */
     public void setId(int id) {
         this.id = id;
@@ -35,7 +35,7 @@ public class NewsEntity extends Entity {
     /**
      * Get title.
      *
-     * @return
+     * @return news title
      */
     public String getTitle() {
         return title;
@@ -44,7 +44,7 @@ public class NewsEntity extends Entity {
     /**
      * Set title.
      *
-     * @param title
+     * @param title news title
      */
     public void setTitle(String title) {
         this.title = title;
@@ -53,7 +53,7 @@ public class NewsEntity extends Entity {
     /**
      * Get text.
      *
-     * @return
+     * @return news title
      */
     public String getText() {
         return text;
@@ -62,7 +62,7 @@ public class NewsEntity extends Entity {
     /**
      * Set text.
      *
-     * @param text
+     * @param text news title
      */
     public void setText(String text) {
         this.text = text;
@@ -71,7 +71,7 @@ public class NewsEntity extends Entity {
     /**
      * Get image URL.
      *
-     * @return
+     * @return news image url
      */
     public String getImageUrl() {
         return imageUrl;
@@ -80,7 +80,7 @@ public class NewsEntity extends Entity {
     /**
      * Set image URL.
      *
-     * @param imageUrl
+     * @param imageUrl news image url
      */
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
@@ -89,7 +89,7 @@ public class NewsEntity extends Entity {
     /**
      * Get date creation.
      *
-     * @return
+     * @return news date creation
      */
     public Date getDateCreation() {
         return dateCreation;
@@ -98,7 +98,7 @@ public class NewsEntity extends Entity {
     /**
      * Set date creation.
      *
-     * @param dateCreation
+     * @param dateCreation news date creation
      */
     public void setDateCreation(Date dateCreation) {
         this.dateCreation = dateCreation;

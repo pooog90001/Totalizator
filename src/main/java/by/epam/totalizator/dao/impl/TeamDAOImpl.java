@@ -4,7 +4,7 @@ import by.epam.totalizator.bean.TeamEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.TeamDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class TeamDAOImpl extends DAO<TeamEntity> {
+public class TeamDAOImpl extends TeamDAO {
     @Override
     public List<TeamEntity> findAll() throws DAOException {
         List<TeamEntity> teamList;
@@ -88,7 +88,6 @@ public class TeamDAOImpl extends DAO<TeamEntity> {
 
         return teamList;
     }
-
 
     @Override
     public TeamEntity findEntityById(int id) throws DAOException {

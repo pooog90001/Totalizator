@@ -3,7 +3,7 @@ package by.epam.totalizator.dao.impl;
 import by.epam.totalizator.bean.CompetitionEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.CompetitionDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -18,18 +18,9 @@ import java.util.Map;
 import static by.epam.totalizator.constant.GeneralConstant.COUNT;
 import static by.epam.totalizator.constant.SQLRequestConstant.*;
 
-public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
+public class CompetitionDAOImpl extends CompetitionDAO {
 
 
-    /**
-     * Find limit upcoming competitions
-     *
-     * @param startIndex
-     * @param limit
-     * @param isActivated
-     * @return List with upcoming games
-     * @throws DAOException
-     */
     public List<Map<String, Object>> findLimitUpcomingGames(int startIndex,
                                                             int limit, boolean isActivated) throws DAOException {
         List<Map<String, Object>> upcomingGames;
@@ -48,13 +39,6 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return upcomingGames;
     }
 
-    /**
-     * Find all upcoming competitions, activated or deactivated
-     *
-     * @param isActivated Bets are accepted for this competition or not
-     * @return List with upcoming games and competition type
-     * @throws DAOException if database error.
-     */
     public List<Map<String, Object>> findAllUpcomingGames(boolean isActivated) throws DAOException {
         List<Map<String, Object>> upcomingGamesList;
 
@@ -135,8 +119,6 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         }
         return pastGamesList;
     }
-
-
 
     public List<Map<String, Object>> findLimitPastGames(int startIndex, int limit,
                                                         boolean isResultFilled,
@@ -356,11 +338,11 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return isUpdated;
     }
 
-    public boolean updateActiveState(int competitionId, boolean state) throws DAOException {
+    public boolean updateActiveState(int competitionId, boolean activeState) throws DAOException {
         boolean isChanged;
 
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_ACTIVE_STATE)) {
-            statement.setBoolean(1, state);
+            statement.setBoolean(1, activeState);
             statement.setInt(2, competitionId);
 
             isChanged = statement.executeUpdate() == 1;
@@ -372,11 +354,11 @@ public class CompetitionDAOImpl extends DAO<CompetitionEntity> {
         return isChanged;
     }
 
-    public boolean updateResultFillState(int competitionId, boolean state) throws DAOException {
+    public boolean updateResultFillState(int competitionId, boolean fillState) throws DAOException {
         boolean isChanged;
 
         try (PreparedStatement statement = connection.prepareStatement(CHANGE_COMPETITION_RESULT_FILL_STATE)) {
-            statement.setBoolean(1, state);
+            statement.setBoolean(1, fillState);
             statement.setInt(2, competitionId);
 
             isChanged = statement.executeUpdate() == 1;

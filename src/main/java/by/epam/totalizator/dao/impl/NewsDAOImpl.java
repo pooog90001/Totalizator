@@ -3,7 +3,7 @@ package by.epam.totalizator.dao.impl;
 import by.epam.totalizator.bean.NewsEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.NewsDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -16,7 +16,7 @@ import static by.epam.totalizator.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPD
 import static by.epam.totalizator.constant.GeneralConstant.COUNT;
 import static by.epam.totalizator.constant.SQLRequestConstant.UPDATE_IMAGE_PATH_NEWS;
 
-public class NewsDAOImpl extends DAO<NewsEntity> {
+public class NewsDAOImpl extends NewsDAO {
 
     @Override
     public List<NewsEntity> findAll() throws DAOException {
@@ -65,6 +65,64 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
         return newsList;
     }
 
+    public int createAndGetId(NewsEntity entity) throws DAOException {
+        int newsId = 0;
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_NEWS,
+                PreparedStatement.RETURN_GENERATED_KEYS)) {
+
+            statement.setString(1, entity.getTitle());
+            statement.setString(2, entity.getText());
+
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+
+            if (resultSet.next()) {
+                newsId = resultSet.getInt(1);
+            }
+        } catch (SQLException e) {
+            throw new DAOException("Create news error ", e);
+        }
+
+        return newsId;
+    }
+
+    public int findNewsCount() throws DAOException {
+        int countNews = 0;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_NEWS_COUNT)) {
+
+            ResultSet resultSet = statement.executeQuery();
+
+
+            if (resultSet.next()) {
+                countNews = resultSet.getInt(COUNT);
+            }
+
+        } catch (SQLException e) {
+            throw new DAOException("Find count news error ", e);
+        }
+
+        return countNews;
+    }
+
+    public boolean updateImagePath(NewsEntity entity) throws DAOException {
+        boolean isUpdated;
+
+        try (PreparedStatement statement = connection.prepareStatement(UPDATE_IMAGE_PATH_NEWS)) {
+
+            statement.setString(1, entity.getImageUrl());
+            statement.setInt(2, entity.getId());
+
+            isUpdated = statement.executeUpdate() == 1;
+
+        } catch (SQLException e) {
+            throw new DAOException("Update news error ", e);
+        }
+
+        return isUpdated;
+    }
+
     @Override
     public NewsEntity findEntityById(int id) throws DAOException {
         NewsEntity news;
@@ -89,25 +147,6 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
         return news;
     }
 
-    public int findNewsCount() throws DAOException {
-        int countNews = 0;
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_NEWS_COUNT)) {
-
-            ResultSet resultSet = statement.executeQuery();
-
-
-            if (resultSet.next()) {
-                countNews = resultSet.getInt(COUNT);
-            }
-
-        } catch (SQLException e) {
-            throw new DAOException("Find count news error ", e);
-        }
-
-        return countNews;
-    }
-
     @Override
     public boolean delete(int id) throws DAOException {
         boolean isDeleted = false;
@@ -125,6 +164,7 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
         return isDeleted;
     }
 
+
     @Override
     public boolean delete(NewsEntity entity) {
         throw new UnsupportedOperationException();
@@ -133,46 +173,6 @@ public class NewsDAOImpl extends DAO<NewsEntity> {
     @Override
     public boolean create(NewsEntity entity) throws DAOException {
         throw new UnsupportedOperationException();
-    }
-
-
-    public int createAndGetId(NewsEntity entity) throws DAOException {
-        int newsId = 0;
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.CREATE_NEWS,
-                PreparedStatement.RETURN_GENERATED_KEYS)) {
-
-            statement.setString(1, entity.getTitle());
-            statement.setString(2, entity.getText());
-
-            statement.executeUpdate();
-
-            ResultSet resultSet = statement.getGeneratedKeys();
-
-            if (resultSet.next()) {
-                newsId = resultSet.getInt(1);
-            }
-        } catch (SQLException e) {
-            throw new DAOException("Create news error ", e);
-        }
-
-        return newsId;
-    }
-
-    public boolean updateImagePath(NewsEntity entity) throws DAOException {
-        boolean isUpdated;
-
-        try (PreparedStatement statement = connection.prepareStatement(UPDATE_IMAGE_PATH_NEWS)) {
-
-            statement.setString(1, entity.getImageUrl());
-            statement.setInt(2, entity.getId());
-
-            isUpdated = statement.executeUpdate() == 1;
-
-        } catch (SQLException e) {
-            throw new DAOException("Update news error ", e);
-        }
-
-        return isUpdated;
     }
 
     @Override

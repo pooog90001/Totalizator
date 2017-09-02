@@ -3,7 +3,7 @@ package by.epam.totalizator.dao.impl;
 import by.epam.totalizator.bean.Entity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.CommonDAO;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.type.ExpectResultType;
 
@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class CommonDAOImpl extends DAO {
+public class CommonDAOImpl extends CommonDAO {
 
     @Override
     public List findAll() throws DAOException {

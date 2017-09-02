@@ -24,10 +24,12 @@ public class BetEntity extends Entity {
     /**
      * Constructor with params.
      *
-     * @param userId
-     * @param cash
-     * @param competitorId
-     * @param expectedResult
+     * @param userId user id
+     * @param cash cash
+     * @param competitorId competitor id
+     * @param expectedResult expected result
+     *
+     * @see ExpectResultType
      */
     public BetEntity(int userId, BigDecimal cash, int competitorId, ExpectResultType expectedResult) {
         this.userId = userId;
@@ -39,7 +41,7 @@ public class BetEntity extends Entity {
     /**
      * Get id.
      *
-     * @return
+     * @return bet id
      */
     public int getId() {
         return id;
@@ -48,7 +50,7 @@ public class BetEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id bet id
      */
     public void setId(int id) {
         this.id = id;
@@ -57,7 +59,7 @@ public class BetEntity extends Entity {
     /**
      * Get user ID.
      *
-     * @return
+     * @return user id
      */
     public int getUserId() {
         return userId;
@@ -66,7 +68,7 @@ public class BetEntity extends Entity {
     /**
      * Set user ID.
      *
-     * @param userId
+     * @param userId user id
      */
     public void setUserId(int userId) {
         this.userId = userId;
@@ -75,7 +77,7 @@ public class BetEntity extends Entity {
     /**
      * Get cash.
      *
-     * @return
+     * @return bet cash
      */
     public BigDecimal getCash() {
         return cash;
@@ -84,7 +86,7 @@ public class BetEntity extends Entity {
     /**
      * Set cash.
      *
-     * @param cash
+     * @param cash bet cash
      */
     public void setCash(BigDecimal cash) {
         this.cash = cash;
@@ -93,7 +95,7 @@ public class BetEntity extends Entity {
     /**
      * Get win.
      *
-     * @return
+     * @return true if bet won, false if lost
      */
     public Boolean getWin() {
         return isWin;
@@ -102,7 +104,7 @@ public class BetEntity extends Entity {
     /**
      * Set win.
      *
-     * @param win
+     * @param win win state
      */
     public void setWin(Boolean win) {
         isWin = win;
@@ -111,7 +113,7 @@ public class BetEntity extends Entity {
     /**
      * Get active.
      *
-     * @return
+     * @return active state
      */
     public Boolean getActive() {
         return isActive;
@@ -120,7 +122,7 @@ public class BetEntity extends Entity {
     /**
      * Set active.
      *
-     * @param active
+     * @param active active state
      */
     public void setActive(Boolean active) {
         isActive = active;
@@ -129,7 +131,7 @@ public class BetEntity extends Entity {
     /**
      * Get competitor ID.
      *
-     * @return
+     * @return competitor id
      */
     public int getCompetitorId() {
         return competitorId;
@@ -138,7 +140,7 @@ public class BetEntity extends Entity {
     /**
      * Set competitor ID.
      *
-     * @param competitorId
+     * @param competitorId competitor id
      */
     public void setCompetitorId(int competitorId) {
         this.competitorId = competitorId;
@@ -147,7 +149,9 @@ public class BetEntity extends Entity {
     /**
      * Get expected result.
      *
-     * @return
+     * @return expected result
+     *
+     * @see ExpectResultType
      */
     public ExpectResultType getExpectedResult() {
         return expectedResult;
@@ -156,7 +160,9 @@ public class BetEntity extends Entity {
     /**
      * Set expected result.
      *
-     * @param expectedResult
+     * @param expectedResult expected result
+     *
+     * @see ExpectResultType
      */
     public void setExpectedResult(ExpectResultType expectedResult) {
         this.expectedResult = expectedResult;
@@ -170,12 +176,24 @@ public class BetEntity extends Entity {
 
         BetEntity betEntity = (BetEntity) o;
 
-        if (id != betEntity.id) return false;
-        if (userId != betEntity.userId) return false;
-        if (competitorId != betEntity.competitorId) return false;
-        if (cash != null ? !cash.equals(betEntity.cash) : betEntity.cash != null) return false;
-        if (isWin != null ? !isWin.equals(betEntity.isWin) : betEntity.isWin != null) return false;
-        if (isActive != null ? !isActive.equals(betEntity.isActive) : betEntity.isActive != null) return false;
+        if (id != betEntity.id) {
+            return false;
+        }
+        if (userId != betEntity.userId) {
+            return false;
+        }
+        if (competitorId != betEntity.competitorId) {
+            return false;
+        }
+        if (cash != null ? !cash.equals(betEntity.cash) : betEntity.cash != null) {
+            return false;
+        }
+        if (isWin != null ? !isWin.equals(betEntity.isWin) : betEntity.isWin != null) {
+            return false;
+        }
+        if (isActive != null ? !isActive.equals(betEntity.isActive) : betEntity.isActive != null) {
+            return false;
+        }
         return expectedResult == betEntity.expectedResult;
     }
 

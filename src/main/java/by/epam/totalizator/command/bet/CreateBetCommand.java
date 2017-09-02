@@ -26,6 +26,6 @@ public class CreateBetCommand extends AbstractCommand {
             LOGGER.log(Level.ERROR, "Handle create bet receiver error", e);
         }
 
-        return null; //TODO Возвращать нуль нормально?
+        return null;
     }
 }

@@ -10,6 +10,13 @@ import java.sql.SQLException;
 public class TransactionManager {
     private ProxyConnection connection;
 
+    /**
+     * Begin transaction
+     *
+     * @param dao  dao
+     * @param daos daos
+     * @throws DAOException when sql error
+     */
     public void beginTransaction(DAO dao, DAO... daos) throws DAOException {
 
         try {
@@ -29,6 +36,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * End transaction
+     *
+     * @throws DAOException when sql error
+     */
     public void endTransaction() throws DAOException {
         try {
             connection.setAutoCommit(true);
@@ -39,6 +51,11 @@ public class TransactionManager {
         ConnectionPool.getInstance().putbackConnection(connection);
     }
 
+    /**
+     * Commit transaction
+     *
+     * @throws DAOException when sql error
+     */
     public void commit() throws DAOException {
         try {
             connection.commit();
@@ -47,6 +64,11 @@ public class TransactionManager {
         }
     }
 
+    /**
+     * Rollback transaction
+     *
+     * @throws DAOException when sql error
+     */
     public void rollback() throws DAOException {
         try {
             connection.rollback();

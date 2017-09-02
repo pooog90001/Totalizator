@@ -7,13 +7,18 @@ import by.epam.totalizator.type.CommandType;
 import by.epam.totalizator.validator.CommonValidator;
 import by.epam.totalizator.validator.impl.CommonValidatorImpl;
 import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static by.epam.totalizator.constant.GeneralConstant.COMMAND;
 
 public class FactoryCommand {
-    private static final Logger LOGGER = org.apache.logging.log4j.LogManager.getLogger();
+    private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * @param requestContent requset content
+     * @return
+     */
     public AbstractCommand initCommand(RequestContent requestContent) {
         CommonValidator commonValidator = new CommonValidatorImpl();
         AbstractCommand command;

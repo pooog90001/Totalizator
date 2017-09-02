@@ -3,7 +3,7 @@ package by.epam.totalizator.dao.impl;
 import by.epam.totalizator.bean.KindOfSportEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
-import by.epam.totalizator.dao.DAO;
+import by.epam.totalizator.dao.KindOfSportDAO;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;
@@ -17,8 +17,23 @@ import java.util.Map;
 import static by.epam.totalizator.constant.GeneralConstant.CAN_NOT_DELETE_OR_UPDATE;
 import static by.epam.totalizator.constant.GeneralConstant.DUPLICATE_UNIQUE_INDEX;
 
-public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
+public class KindOfSportDAOImpl extends KindOfSportDAO {
 
+
+    @Override
+    public List<KindOfSportEntity> findAll() throws DAOException {
+        List<KindOfSportEntity> kindOfSportList;
+
+        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_ALL_KINDS_OF_SPORT)) {
+            ResultSet resultSet = statement.executeQuery();
+            kindOfSportList = extractKindsOfSport(resultSet);
+
+        } catch (SQLException e) {
+            throw new DAOException("find all kinds of sport error", e);
+        }
+
+        return kindOfSportList;
+    }
 
     public List<Map<String, Object>> findUsingKindsOfSport() throws DAOException {
         List<Map<String, Object>> kindOfSportList;
@@ -43,21 +58,6 @@ public class KindOfSportDAOImpl extends DAO<KindOfSportEntity> {
         } catch (SQLException e) {
             throw new DAOException("find using kinds of sport error", e);
         }
-        return kindOfSportList;
-    }
-
-    @Override
-    public List<KindOfSportEntity> findAll() throws DAOException {
-        List<KindOfSportEntity> kindOfSportList;
-
-        try (PreparedStatement statement = connection.prepareStatement(SQLRequestConstant.FIND_ALL_KINDS_OF_SPORT)) {
-            ResultSet resultSet = statement.executeQuery();
-            kindOfSportList = extractKindsOfSport(resultSet);
-
-        } catch (SQLException e) {
-            throw new DAOException("find all kinds of sport error", e);
-        }
-
         return kindOfSportList;
     }
 

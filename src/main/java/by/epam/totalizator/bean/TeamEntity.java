@@ -15,7 +15,7 @@ public class TeamEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return team id
      */
     public int getId() {
         return id;
@@ -24,7 +24,7 @@ public class TeamEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id team id
      */
     public void setId(int id) {
         this.id = id;
@@ -33,7 +33,7 @@ public class TeamEntity extends Entity {
     /**
      * Get name.
      *
-     * @return
+     * @return team name
      */
     public String getName() {
         return name;
@@ -42,7 +42,7 @@ public class TeamEntity extends Entity {
     /**
      * Set name.
      *
-     * @param name
+     * @param name team name
      */
     public void setName(String name) {
         this.name = name;
@@ -51,7 +51,7 @@ public class TeamEntity extends Entity {
     /**
      * Get kind of sport ID.
      *
-     * @return
+     * @return kind of sport id
      */
     public int getKindOfSportId() {
         return kindOfSportId;
@@ -60,7 +60,7 @@ public class TeamEntity extends Entity {
     /**
      * Set kind of sport ID.
      *
-     * @param kindOfSportId
+     * @param kindOfSportId kind of sport id
      */
     public void setKindOfSportId(int kindOfSportId  ) {
         this.kindOfSportId = kindOfSportId;
@@ -68,13 +68,21 @@ public class TeamEntity extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof TeamEntity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof TeamEntity)) {
+            return false;
+        }
 
         TeamEntity that = (TeamEntity) o;
 
-        if (id != that.id) return false;
-        if (kindOfSportId != that.kindOfSportId) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (kindOfSportId != that.kindOfSportId) {
+            return false;
+        }
         return name != null ? name.equals(that.name) : that.name == null;
     }
 

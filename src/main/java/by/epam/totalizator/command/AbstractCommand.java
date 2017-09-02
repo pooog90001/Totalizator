@@ -10,7 +10,9 @@ public abstract class AbstractCommand {
     /**
      * Default constructor.
      *
-     * @param receiver
+     * @param receiver receiver
+     *
+     * @see Receiver
      */
     public AbstractCommand(Receiver receiver) {
         this.receiver = receiver;
@@ -19,15 +21,20 @@ public abstract class AbstractCommand {
     /**
      * Execute command.
      *
-     * @param requestContent
-     * @return
+     * @param requestContent request content
+     * @return Router
+     *
+     * @see RequestContent
+     * @see Router
      */
     public abstract Router execute(RequestContent requestContent);
 
     /**
      * Get receiver.
      *
-     * @return
+     * @return receiver
+     *
+     * @see Receiver
      */
     public Receiver getReceiver() {
         return receiver;

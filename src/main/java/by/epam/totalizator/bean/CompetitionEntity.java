@@ -27,11 +27,11 @@ public class CompetitionEntity extends Entity {
     /**
      * Constructor with params.
      *
-     * @param name
-     * @param dateStart
-     * @param dateFinish
-     * @param isActive
-     * @param typeId
+     * @param name competition name
+     * @param dateStart competition date start
+     * @param dateFinish competition date finish
+     * @param isActive competition active state
+     * @param typeId   competition type id
      */
     public CompetitionEntity(String name, Date dateStart, Date dateFinish, boolean isActive, int typeId) {
         this.name = name;
@@ -44,7 +44,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return competition id
      */
     public int getId() {
         return id;
@@ -53,7 +53,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id competition id
      */
     public void setId(int id) {
         this.id = id;
@@ -62,7 +62,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get name.
      *
-     * @return
+     * @return competition name
      */
     public String getName() {
         return name;
@@ -71,7 +71,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set name.
      *
-     * @param name
+     * @param name competition name
      */
     public void setName(String name) {
         this.name = name;
@@ -80,7 +80,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get description.
      *
-     * @return
+     * @return competition description
      */
     public String getDescripton() {
         return descripton;
@@ -89,7 +89,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set description.
      *
-     * @param descripton
+     * @param descripton competition description
      */
     public void setDescripton(String descripton) {
         this.descripton = descripton;
@@ -98,7 +98,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get date start.
      *
-     * @return
+     * @return competition date start
      */
     public Date getDateStart() {
         return dateStart;
@@ -107,7 +107,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set date start.
      *
-     * @param dateStart
+     * @param dateStart competition date start
      */
     public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
@@ -116,7 +116,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get date finish.
      *
-     * @return
+     * @return competition date finish
      */
     public Date getDateFinish() {
         return dateFinish;
@@ -125,7 +125,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set date finish.
      *
-     * @param dateFinish
+     * @param dateFinish competition date finish
      */
     public void setDateFinish(Date dateFinish) {
         this.dateFinish = dateFinish;
@@ -134,7 +134,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get active.
      *
-     * @return
+     * @return competition active state
      */
     public Boolean getActive() {
         return isActive;
@@ -143,7 +143,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set active.
      *
-     * @param active
+     * @param active competition active state
      */
     public void setActive(Boolean active) {
         isActive = active;
@@ -152,7 +152,9 @@ public class CompetitionEntity extends Entity {
     /**
      * Get type ID.
      *
-     * @return
+     * @return competition type id
+     *
+     * @see CompetitionTypeEntity
      */
     public int getTypeId() {
         return typeId;
@@ -161,7 +163,9 @@ public class CompetitionEntity extends Entity {
     /**
      * Set type ID.
      *
-     * @param typeId
+     * @param typeId competition type id
+     *
+     * @see CompetitionTypeEntity
      */
     public void setTypeId(int typeId) {
         this.typeId = typeId;
@@ -170,7 +174,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get total.
      *
-     * @return
+     * @return competition total
      */
     public BigDecimal getTotal() {
         return total;
@@ -179,7 +183,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set total.
      *
-     * @param total
+     * @param total competition total
      */
     public void setTotal(BigDecimal total) {
         this.total = total;
@@ -188,7 +192,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get more total.
      *
-     * @return
+     * @return competition more total coefficient
      */
     public BigDecimal getMoreTotal() {
         return moreTotal;
@@ -197,7 +201,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set more total.
      *
-     * @param moreTotal
+     * @param moreTotal competition more total coefficient
      */
     public void setMoreTotal(BigDecimal moreTotal) {
         this.moreTotal = moreTotal;
@@ -206,7 +210,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get less total.
      *
-     * @return
+     * @return competition less total coefficient
      */
     public BigDecimal getLessTotal() {
         return lessTotal;
@@ -215,7 +219,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set less total.
      *
-     * @param lessTotal
+     * @param lessTotal competition less total coefficient
      */
     public void setLessTotal(BigDecimal lessTotal) {
         this.lessTotal = lessTotal;
@@ -224,7 +228,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get standoff.
      *
-     * @return
+     * @return competition standoff coefficient
      */
     public BigDecimal getStandoff() {
         return standoff;
@@ -233,7 +237,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set standoff.
      *
-     * @param standoff
+     * @param standoff competition standoff coefficient
      */
     public void setStandoff(BigDecimal standoff) {
         this.standoff = standoff;
@@ -242,7 +246,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Get result filled.
      *
-     * @return
+     * @return competition result filled status
      */
     public boolean getResultFilled() {
         return isResultFilled;
@@ -251,7 +255,7 @@ public class CompetitionEntity extends Entity {
     /**
      * Set result filled.
      *
-     * @param resultFilled
+     * @param resultFilled competition result filled status
      */
     public void setResultFilled(boolean resultFilled) {
         isResultFilled = resultFilled;
@@ -264,17 +268,39 @@ public class CompetitionEntity extends Entity {
 
         CompetitionEntity that = (CompetitionEntity) o;
 
-        if (id != that.id) return false;
-        if (isResultFilled != that.isResultFilled) return false;
-        if (isActive != that.isActive) return false;
-        if (typeId != that.typeId) return false;
-        if (name != null ? !name.equals(that.name) : that.name != null) return false;
-        if (descripton != null ? !descripton.equals(that.descripton) : that.descripton != null) return false;
-        if (dateStart != null ? !dateStart.equals(that.dateStart) : that.dateStart != null) return false;
-        if (dateFinish != null ? !dateFinish.equals(that.dateFinish) : that.dateFinish != null) return false;
-        if (total != null ? !total.equals(that.total) : that.total != null) return false;
-        if (moreTotal != null ? !moreTotal.equals(that.moreTotal) : that.moreTotal != null) return false;
-        if (lessTotal != null ? !lessTotal.equals(that.lessTotal) : that.lessTotal != null) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (isResultFilled != that.isResultFilled) {
+            return false;
+        }
+        if (isActive != that.isActive) {
+            return false;
+        }
+        if (typeId != that.typeId) {
+            return false;
+        }
+        if (name != null ? !name.equals(that.name) : that.name != null) {
+            return false;
+        }
+        if (descripton != null ? !descripton.equals(that.descripton) : that.descripton != null) {
+            return false;
+        }
+        if (dateStart != null ? !dateStart.equals(that.dateStart) : that.dateStart != null) {
+            return false;
+        }
+        if (dateFinish != null ? !dateFinish.equals(that.dateFinish) : that.dateFinish != null) {
+            return false;
+        }
+        if (total != null ? !total.equals(that.total) : that.total != null) {
+            return false;
+        }
+        if (moreTotal != null ? !moreTotal.equals(that.moreTotal) : that.moreTotal != null) {
+            return false;
+        }
+        if (lessTotal != null ? !lessTotal.equals(that.lessTotal) : that.lessTotal != null) {
+            return false;
+        }
         return standoff != null ? standoff.equals(that.standoff) : that.standoff == null;
     }
 

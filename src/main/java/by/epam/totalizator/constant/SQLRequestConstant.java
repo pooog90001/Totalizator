@@ -1,8 +1,11 @@
 package by.epam.totalizator.constant;
 
 
-
+/**
+ * Class with requests for mysql
+ */
 final public class SQLRequestConstant {
+
     public static final String  CREATE_USER =
             "INSERT INTO user (user_name, user_email, user_password) " +
                     "VALUES (?, ?, ?);";
@@ -31,17 +34,14 @@ final public class SQLRequestConstant {
             "UPDATE user " +
                     "SET user_type = ? " +
                     "WHERE user_id = ?;";
-
     public static final String UPDATE_AVATAR_PATH =
             "UPDATE user " +
                     "SET user_avatar_url = ? " +
                     "WHERE user_id = ?;";
-
     public static final String UPDATE_PASSWORD =
             "UPDATE user " +
                     "SET user_password = ? " +
                     "WHERE user_id = ?;";
-
     public static final String UPDATE_USER_LOCK =
             "UPDATE user " +
                     "SET user_is_blocked = ?, " +
@@ -547,7 +547,6 @@ final public class SQLRequestConstant {
                     "          and team.team_id != 0  " +
                     "          and competitor.competition_id = competition.competition_id " +
                     "          and competition.competition_id = ?; ";
-
     public static final String FIND_ALL_COMPETITORS_GAME_ID =
                     "    SELECT  " +
                             "    competitor.competitor_id, " +
@@ -619,7 +618,6 @@ final public class SQLRequestConstant {
                     "`competition_more_total_coeff`, " +
                     "`competition_less_total_coeff`, " +
                     "`competition_standoff_coeff`) " +
-
                     "VALUES (?, '', ?, ?, ?, ?, ?, ?, ?, ?);";
     public static final String INSERT_COMPETITOR =
             "INSERT INTO `totalizatorr`.`competitor` " +
@@ -663,13 +661,6 @@ final public class SQLRequestConstant {
                     "    competitor_result = ? " +
                     "WHERE " +
                     "    competitor_id = ?;";
-    public static final String FIND_COMPETITOR_IDS_BY_COMPETITION_ID =
-            "SELECT  " +
-                    "    competitor_id " +
-                    "FROM " +
-                    "    competitor " +
-                    "WHERE " +
-                    "    competitor.competition_id = ?;";
     public static final String RETURN_MONEY_FOR_BETS =
             "UPDATE  " +
                     "    user, " +
@@ -771,6 +762,8 @@ final public class SQLRequestConstant {
 
     private SQLRequestConstant() {
     }
+
+
 }
 
 

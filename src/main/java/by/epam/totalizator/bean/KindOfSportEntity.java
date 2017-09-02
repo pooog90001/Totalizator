@@ -15,7 +15,7 @@ public class KindOfSportEntity extends Entity {
     /**
      * Get ID.
      *
-     * @return
+     * @return kind of sport id
      */
     public int getId() {
         return id;
@@ -24,7 +24,7 @@ public class KindOfSportEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id
+     * @param id kind of sport id
      */
     public void setId(int id) {
         this.id = id;
@@ -33,7 +33,7 @@ public class KindOfSportEntity extends Entity {
     /**
      * Get name.
      *
-     * @return
+     * @return kind of sport name
      */
     public String getName() {
         return name;
@@ -42,16 +42,16 @@ public class KindOfSportEntity extends Entity {
     /**
      * Set name.
      *
-     * @param name
+     * @param name kind of sport name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Get competition count.
+     * Get competitor count.
      *
-     * @return
+     * @return competitor count
      */
     public int getCompetitorCount() {
         return competitorCount;
@@ -60,7 +60,7 @@ public class KindOfSportEntity extends Entity {
     /**
      * Set competition count.
      *
-     * @param competitorCount
+     * @param competitorCount competitor count
      */
     public void setCompetitorCount(int competitorCount) {
         this.competitorCount = competitorCount;
@@ -68,13 +68,21 @@ public class KindOfSportEntity extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof KindOfSportEntity)) return false;
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof KindOfSportEntity)) {
+            return false;
+        }
 
         KindOfSportEntity that = (KindOfSportEntity) o;
 
-        if (id != that.id) return false;
-        if (competitorCount != that.competitorCount) return false;
+        if (id != that.id) {
+            return false;
+        }
+        if (competitorCount != that.competitorCount) {
+            return false;
+        }
         return name != null ? name.equals(that.name) : that.name == null;
     }
 

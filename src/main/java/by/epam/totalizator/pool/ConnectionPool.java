@@ -16,7 +16,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 
 /**
- *
+ *Class for contain connections
  */
 public class ConnectionPool {
     private final static Logger LOGGER = LogManager.getLogger();
@@ -39,7 +39,7 @@ public class ConnectionPool {
     /**
      * Get instance.
      *
-     * @return
+     * @return connection pool instance
      */
     public static ConnectionPool getInstance() {
         if (!isCreated.get()) {
@@ -54,12 +54,6 @@ public class ConnectionPool {
         return instance;
     }
 
-    /**
-     * Create connection.
-     *
-     * @return
-     * @throws SQLException
-     */
     private ProxyConnection createConnection() throws SQLException {
         Connection connection = DriverManager.getConnection(config.getUrl(), config.getProperties());
         LOGGER.log(Level.INFO, "New connection created");
@@ -69,8 +63,8 @@ public class ConnectionPool {
     /**
      * Retrieve connection.
      *
-     * @return
-     * @throws ConnectionPoolException
+     * @return proxy connection
+     * @throws ConnectionPoolException when sql error
      */
     public ProxyConnection retrieveConnection() throws ConnectionPoolException {
         ProxyConnection newConn;
@@ -90,7 +84,7 @@ public class ConnectionPool {
     /**
      * Put back connection.
      *
-     * @param connection
+     * @param connection connection
      */
     public void putbackConnection(ProxyConnection connection) {
         if (connection != null) {
@@ -103,7 +97,7 @@ public class ConnectionPool {
     /**
      * Destroy pool.
      *
-     * @throws ConnectionPoolException
+     * @throws ConnectionPoolException when sql error
      */
     public void destroyPool() throws ConnectionPoolException {
         try {

@@ -10,7 +10,7 @@ final public class ProxyConnection implements Connection, AutoCloseable{
 
     /**
      * Default constructor.
-     * @param connection
+     * @param connection connection
      */
     ProxyConnection(Connection connection) {
         this.connection = connection;

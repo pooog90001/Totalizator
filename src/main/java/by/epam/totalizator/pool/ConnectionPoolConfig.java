@@ -46,7 +46,7 @@ class ConnectionPoolConfig {
     /**
      * `get URL.
      *
-     * @return
+     * @return url
      */
     String getUrl() {
         return url;
@@ -55,7 +55,7 @@ class ConnectionPoolConfig {
     /**
      * Get properties.
      *
-     * @return
+     * @return properties
      */
     Properties getProperties() {
         return properties;
@@ -64,7 +64,7 @@ class ConnectionPoolConfig {
     /**
      * Get pool capacity.
      *
-     * @return
+     * @return pool capacity
      */
     int getPoolCapacity() {
         return Integer.valueOf(properties.getProperty(GeneralConstant.ConnectionPool.CAPACITY)); //question about this one

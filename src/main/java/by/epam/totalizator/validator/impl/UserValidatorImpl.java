@@ -11,29 +11,52 @@ public class UserValidatorImpl implements UserValidator {
     private final static  String BIG_RU_ENG_LETTER_REGEX = "[A-ZА-Я]";
     private final static  String LITTLE_RU_ENG_LETTER_REGEX = "[a-zа-я]";
     private final static  String NUMBER_REGEX = "\\d";
+    private static final int MIN_PASSWORD_LENGTH = 6;
+    private static final int MAX_PASSWORD_LENGTH = 80;
+    private static final int MAX_NAME_LENGTH = 45;
+    private static final int MIN_NAME_LENGTH = 2;
+    private static final int MAX_CASH = 1000;
+    private static final int MIN_CASH = 0;
+    private static final int MAX_EMAIL_LENGTH = 100;
+
+
 
     @Override
     public boolean checkPassword(String password) {
+        if (password == null) {
+            return false;
+        }
+
         boolean hasBigWord = Pattern.compile(BIG_RU_ENG_LETTER_REGEX).matcher(password).find();
         boolean hasWord = Pattern.compile(LITTLE_RU_ENG_LETTER_REGEX).matcher(password).find();
         boolean hasNumber = Pattern.compile(NUMBER_REGEX).matcher(password).find();
-        boolean hasSatisfactoryLength = (password.length() >= 6 && password.length() < 80);
+        boolean hasSatisfactoryLength =
+                (password.length() >= MIN_PASSWORD_LENGTH && password.length() < MAX_PASSWORD_LENGTH);
 
         return (hasBigWord && hasWord && hasNumber && hasSatisfactoryLength);
     }
 
     @Override
     public boolean checkEmail(String email) {
+        if (email == null) {
+            return false;
+        }
+        email = email.trim();
         boolean isEmail = Pattern.compile(EMAIL_REGEX).matcher(email).matches();
-        boolean hasSatisfactoryLength = email.length() < 100;
+        boolean hasSatisfactoryLength = email.length() <= MAX_EMAIL_LENGTH;
 
         return isEmail && hasSatisfactoryLength;
     }
 
     @Override
     public boolean checkName(String name) {
-        boolean isName = name.length() >= 2;
-        boolean hasSatisfactoryLength = name.length() < 45;
+        if (name == null) {
+            return false;
+        }
+
+        name = name.trim();
+        boolean isName = name.length() >= MIN_NAME_LENGTH;
+        boolean hasSatisfactoryLength = name.length() <= MAX_NAME_LENGTH;
 
         return isName && hasSatisfactoryLength;
     }
@@ -81,7 +104,7 @@ public class UserValidatorImpl implements UserValidator {
     }
 
     public boolean isCashValid(int cash) {
-        return (cash > 0 && cash < 1000);
+        return (cash > MIN_CASH && cash <= MAX_CASH);
     }
 
 }

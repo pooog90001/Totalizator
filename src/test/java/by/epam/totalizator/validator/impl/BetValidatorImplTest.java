@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator.impl;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
@@ -9,10 +9,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BetValidatorImplTest {
-    private BetValidatorImpl betValidator;
+    private static BetValidatorImpl betValidator;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         betValidator = new BetValidatorImpl();
     }
 
@@ -39,7 +39,6 @@ public class BetValidatorImplTest {
 
     @Test
     public void checkBetSize4() {
-
         assertFalse(betValidator.checkBetSize(null));
     }
 

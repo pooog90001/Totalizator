@@ -18,7 +18,7 @@ function addMoney(e, closableModal) {
     var addCashValue = parseInt(document.getElementById("addCash").value);
 
     if (isNaN(addCashValue) || addCashValue < 1 || addCashValue > 1000) {
-        document.getElementById("wrongAddCash").style.display = 'inherit';
+        document.getElementById("wrongData").style.display = 'inherit';
         return;
     }
 

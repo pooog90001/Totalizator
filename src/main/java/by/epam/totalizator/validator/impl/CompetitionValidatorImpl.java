@@ -7,12 +7,17 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 public class CompetitionValidatorImpl implements CompetitionValidator {
+    private static final int MAX_NAME_LENGTH = 100;
+    private static final int CASH_SCALE = 2;
+    private static final int MIN_NUMBER_VALUE = 0;
+    private static final int MIN_COEFFICIENT = 1;
 
     @Override
     public boolean isNameValid(String name) {
         boolean isValid = true;
 
-        if (name == null || name.trim().isEmpty() || name.length() > 100) {
+        if (name == null || name.trim().isEmpty() ||
+                name.trim().length() > MAX_NAME_LENGTH) {
             isValid = false;
         }
 
@@ -23,7 +28,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
     public boolean isCoeffValid(BigDecimal coeff) {
         boolean isValid = true;
 
-        if (coeff == null || (coeff.compareTo(new BigDecimal("1.00")) == -1)) {
+        if (coeff == null || (coeff.compareTo(new BigDecimal(MIN_COEFFICIENT)) == -1)) {
             isValid = false;
         }
 
@@ -35,7 +40,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
 
         try {
             if (coeff == null || coeff.isEmpty() ||
-                    (new BigDecimal(coeff).compareTo(new BigDecimal("1.00")) == -1)) {
+                    (new BigDecimal(coeff).compareTo(new BigDecimal(MIN_COEFFICIENT)) == -1)) {
                 isValid = false;
             }
         } catch (NumberFormatException e) {
@@ -49,7 +54,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
     public boolean isNumberValid(BigDecimal number) {
         boolean isValid = true;
 
-        if (number == null || (number.compareTo(new BigDecimal("0.00")) == -1)) {
+        if (number == null || (number.compareTo(new BigDecimal(MIN_NUMBER_VALUE)) == -1)) {
             isValid = false;
         }
 
@@ -64,7 +69,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
         if (stringCoeff != null && !stringCoeff.isEmpty()) {
             try {
                 BigDecimal decimal = new BigDecimal(stringCoeff);
-                decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                decimal = decimal.setScale(CASH_SCALE, BigDecimal.ROUND_HALF_UP);
 
                 if (isCoeffValid(decimal)) {
                     coeff = decimal;
@@ -86,7 +91,7 @@ public class CompetitionValidatorImpl implements CompetitionValidator {
         try {
             if (stringCoeff != null && !stringCoeff.isEmpty()) {
                 BigDecimal decimal = new BigDecimal(stringCoeff);
-                decimal = decimal.setScale(2, BigDecimal.ROUND_HALF_UP);
+                decimal = decimal.setScale(CASH_SCALE, BigDecimal.ROUND_HALF_UP);
 
                 if (isNumberValid(decimal)) {
                     number = decimal;

@@ -1,16 +1,16 @@
 package by.epam.totalizator.validator.impl;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CommentValidatorImplTest {
-    CommentValidatorImpl commentValidator;
+    private static CommentValidatorImpl commentValidator;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         commentValidator = new CommentValidatorImpl();
     }
 

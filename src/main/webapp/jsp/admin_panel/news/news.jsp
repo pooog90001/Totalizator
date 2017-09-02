@@ -129,7 +129,7 @@
                             </div>
                         </div>
                         <div class="w3-row w3-padding-small w3-margin-top">
-                            <input type="button" id="createNews" value="Create" class="w3-button w3-theme w3">
+                            <input type="submit" id="createNews" value="Create" class="w3-button w3-theme w3">
                         </div>
                     </form>
                     <div id="wrongData" class="wrong w3-row w3-text-red" style="display: none">

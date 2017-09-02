@@ -101,24 +101,6 @@ public class ConnectionPool {
     }
 
     /**
-     * Get available connections count.
-     *
-     * @return
-     */
-    public int getAvailableConnsCount() {
-        int result;
-
-        if ((availableConns.size() + usedConns.size()) < config.getPoolCapacity()) {
-            int notCreated = config.getPoolCapacity() - (availableConns.size() + usedConns.size());
-            result = notCreated + availableConns.size();
-
-        } else {
-            result = availableConns.size();
-        }
-        return result;
-    }
-
-    /**
      * Destroy pool.
      *
      * @throws ConnectionPoolException

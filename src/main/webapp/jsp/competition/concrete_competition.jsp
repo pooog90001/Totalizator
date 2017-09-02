@@ -50,7 +50,7 @@
                 </div>
                 <h2><c:out value="${competition['competition_name']}"/></h2>
             </div>
-            <form class="w3-row w3-container" id="doBetForm">
+            <div class="w3-row w3-container" id="doBetForm">
                 <input type="hidden" name="competitionId" value="${competition['competition_id']}">
                 <input type="hidden" name="command" value="CREATE_BET">
                 <div class="w3-col m6 w3-container">
@@ -141,7 +141,7 @@
                         </div>
                     </div>
                 </div>
-            </form>
+            </div>
 
         </div>
     </div>

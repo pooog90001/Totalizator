@@ -53,8 +53,8 @@ function imgCrop(img, selection) {
 }
 
 
- $('#createNews').click(function (e) {
-
+$('#form').submit(function (e) {
+    e.preventDefault();
      $('#form').validate();
 
     if (!$('#form').valid()) {

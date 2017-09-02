@@ -1,16 +1,16 @@
 package by.epam.totalizator.validator.impl;
 
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class CommonValidatorImplTest {
-    CommonValidatorImpl commonValidator;
+    private static CommonValidatorImpl commonValidator;
 
-    @Before
-    public void setUp() throws Exception {
+    @BeforeClass
+    public static void setUp() throws Exception {
         commonValidator = new CommonValidatorImpl();
     }
 
@@ -80,6 +80,43 @@ public class CommonValidatorImplTest {
 
     @Test
     public void checkParamsForInteger() {
+        String[] param1 = {"213"};
+        String[] param2 = {"213"};
+        String[] param3 = {"213"};
+
+        assertTrue(commonValidator.checkParamsForInteger(param1, param2, param3));
+    }
+
+    @Test
+    public void checkParamsForInteger1() {
+        String[] param1 = {"213"};
+        String[] param2 = {"213"};
+        String[] param3 = {"213"};
+
+        assertTrue(commonValidator.checkParamsForInteger(param1, param2, param3));
+    }
+
+    @Test
+    public void checkParamsForInteger2() {
+        String[] param1 = {"213"};
+        String[] param2 = {"mk"};
+        String[] param3 = {"213"};
+
+        assertFalse(commonValidator.checkParamsForInteger(param1, param2, param3));
+    }
+
+    @Test
+    public void checkParamsForInteger3() {
+        String[] param1 = {"213"};
+        String[] param2 = {null};
+        String[] param3 = {"213"};
+
+        assertFalse(commonValidator.checkParamsForInteger(param1, param2, param3));
+    }
+
+    @Test
+    public void checkParamsForInteger4() {
+        assertFalse(commonValidator.checkParamsForInteger(null, null));
     }
 
 }

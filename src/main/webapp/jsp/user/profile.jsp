@@ -140,26 +140,26 @@
 <div id="modalAddMoney" class="w3-modal">
     <div class="w3-modal-content" style="max-width: 50%;">
         <div class="w3-container">
-            <form id="addCashForm">
+            <div id="addCashForm">
                 <input type="hidden" name="command" value="ADD_MONEY"/>
                 <span onclick="(modalAddMoney).style.display='none'"
                       class="w3-button w3-display-topright">&times;</span>
                 <p>${txtEnterAmount}($) : </p>
                 <p>
-                    <input type="number" name="cash" id="addCash" step="1" class="w3-input w3-border" min="1"
-                           max="1000"/>
+                    <input type="number" name="cash" id="addCash" step="1"
+                           class="w3-input w3-border" min="1" max="1000"/>
                 </p>
                 <input type="button" class="w3-button" value="${txtAdd}" onclick="addMoney(this, 'modalAddMoney');">
                 <input type="button" class="w3-button" value="${txtCancel}"
                        onclick="(modalAddMoney).style.display='none'">
-            </form>
+            </div>
         </div>
     </div>
 </div>
 <div id="modalWithdrawMoney" class="w3-modal">
     <div class="w3-modal-content" style="max-width: 50%;">
         <div class="w3-container">
-            <form id="withdrawCashForm">
+            <div id="withdrawCashForm">
                 <input type="hidden" name="command" value="WITHDRAW_MONEY"/>
                 <span onclick="(modalWithdrawMoney).style.display='none'"
                       class="w3-button w3-display-topright">&times;</span>
@@ -173,7 +173,7 @@
                 <input type="button" class="w3-button" value="${txtCancel}"
                        onclick="(modalWithdrawMoney).style.display='none'">
                 <div class="w3-text-red" id="littleMoney" style="display: none">${txtHaventMatchMoney}.</div>
-            </form>
+            </div>
         </div>
     </div>
 </div>

@@ -34,7 +34,7 @@
     <link rel='stylesheet' href='${pageContext.request.contextPath}/css/style.css'>
     <link rel='stylesheet' href='${pageContext.request.contextPath}/font/open-sans.css'>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>
+    <script src="${pageContext.request.contextPath}/vendors/jquery1-6-1.min.js"></script>
 </head>
 
 <header>

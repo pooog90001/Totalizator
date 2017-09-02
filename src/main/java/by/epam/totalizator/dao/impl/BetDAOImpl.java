@@ -75,7 +75,6 @@ public class BetDAOImpl extends BetDAO {
         } catch (SQLException e) {
             throw new DAOException("Find past bets error", e);
         }
-
         return betsAndGames;
     }
 

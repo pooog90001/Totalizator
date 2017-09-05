@@ -1,13 +1,13 @@
 package by.epam.totalizator.receiver.impl;
 
-import by.epam.totalizator.bean.CompetitionTypeEntity;
-import by.epam.totalizator.bean.KindOfSportEntity;
-import by.epam.totalizator.bean.NewsEntity;
-import by.epam.totalizator.bean.UserEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.content.RequestContent;
 import by.epam.totalizator.dao.TransactionManager;
 import by.epam.totalizator.dao.impl.*;
+import by.epam.totalizator.entity.CompetitionTypeEntity;
+import by.epam.totalizator.entity.KindOfSportEntity;
+import by.epam.totalizator.entity.NewsEntity;
+import by.epam.totalizator.entity.UserEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.exception.ReceiverException;
 import by.epam.totalizator.receiver.CommonReceiver;

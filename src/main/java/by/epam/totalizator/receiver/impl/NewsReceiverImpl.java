@@ -1,11 +1,11 @@
 package by.epam.totalizator.receiver.impl;
 
-import by.epam.totalizator.bean.NewsEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.content.RequestContent;
 import by.epam.totalizator.dao.TransactionManager;
 import by.epam.totalizator.dao.impl.CommentDAOImpl;
 import by.epam.totalizator.dao.impl.NewsDAOImpl;
+import by.epam.totalizator.entity.NewsEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.exception.ReceiverException;
 import by.epam.totalizator.receiver.NewsReceiver;

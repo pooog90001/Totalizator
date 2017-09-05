@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator;
 
-import by.epam.totalizator.bean.CompetitionEntity;
+import by.epam.totalizator.entity.CompetitionEntity;
 
 import java.math.BigDecimal;
 

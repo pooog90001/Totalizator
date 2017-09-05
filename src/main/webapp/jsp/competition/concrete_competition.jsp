@@ -16,6 +16,7 @@
 <fmt:message bundle="${rb}" key="txt.date.start" var="txtDateStart"/>
 <fmt:message bundle="${rb}" key="txt.do.bet" var="txtDoBet"/>
 <fmt:message bundle="${rb}" key="txt.before.do.bet" var="txtBeforeDoBet"/>
+<fmt:message bundle="${rb}" key="txt.bet.success" var="txtBetSuccess"/>
 <fmt:message bundle="${rb}" key="txt.yes" var="txtYes"/>
 <fmt:message bundle="${rb}" key="txt.no" var="txtNo"/>
 <fmt:message bundle="${rb}" key="txt.ok" var="txtOk"/>
@@ -53,7 +54,7 @@
             <div class="w3-row w3-container" id="doBetForm">
                 <input type="hidden" name="competitionId" value="${competition['competition_id']}">
                 <input type="hidden" name="command" value="CREATE_BET">
-                <div class="w3-col m6 w3-container">
+                <div class="w3-col m8 w3-container">
                     <div class=" w3-card-2  w3-margin-bottom w3-small w3-display-container w3-medium">
                         <div class="w3-theme w3-padding">
                             № ${competition['competition_id']}
@@ -119,7 +120,7 @@
 
                     </div>
                 </div>
-                <div class="w3-col m6 w3-container">
+                <div class="w3-col m4 w3-container">
                     <div class="w3-card-2">
                         <div class="w3-padding">
                             ${txtBetSize}($)

@@ -12,15 +12,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 abstract class AbstractController extends HttpServlet {
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        executeRequest(req, resp);
-    }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        executeRequest(req, resp);
-    }
 
     protected void executeRequest(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {

@@ -36,6 +36,7 @@ public class ConnectionPoolTest {
     @Test
     public void destroyPool() throws Exception {
         connectionPool.destroyPool();
+
     }
 
 }

@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator.impl;
 
-import by.epam.totalizator.bean.CompetitorEntity;
+import by.epam.totalizator.entity.CompetitorEntity;
 import org.junit.BeforeClass;
 import org.junit.Test;
 

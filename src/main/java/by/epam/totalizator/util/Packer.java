@@ -1,8 +1,8 @@
 package by.epam.totalizator.util;
 
-import by.epam.totalizator.bean.CompetitionTypeEntity;
-import by.epam.totalizator.bean.KindOfSportEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
+import by.epam.totalizator.entity.CompetitionTypeEntity;
+import by.epam.totalizator.entity.KindOfSportEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator;
 
-import by.epam.totalizator.bean.UserEntity;
+import by.epam.totalizator.entity.UserEntity;
 
 public interface UserValidator extends Validator {
     /**

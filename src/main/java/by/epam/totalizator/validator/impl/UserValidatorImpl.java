@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator.impl;
 
-import by.epam.totalizator.bean.UserEntity;
+import by.epam.totalizator.entity.UserEntity;
 import by.epam.totalizator.type.UserType;
 import by.epam.totalizator.validator.UserValidator;
 

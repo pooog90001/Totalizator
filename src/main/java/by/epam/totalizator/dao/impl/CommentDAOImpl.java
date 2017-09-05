@@ -1,9 +1,9 @@
 package by.epam.totalizator.dao.impl;
 
-import by.epam.totalizator.bean.CommentEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
 import by.epam.totalizator.dao.CommentDAO;
+import by.epam.totalizator.entity.CommentEntity;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;

@@ -89,7 +89,7 @@
         <div class="w3-container">
             <span onclick="(success).style.display='none'" class="w3-button w3-display-topright">&times;</span>
             <p>${txtPasswordChanged}</p>
-            <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="post">
+            <form id="openProfile" action="${pageContext.request.contextPath}/generalController" method="get">
                 <input type="hidden" name="command" value="OPEN_PROFILE">
                 <input type="submit" class="w3-button" value="${txtOk}">
             </form>

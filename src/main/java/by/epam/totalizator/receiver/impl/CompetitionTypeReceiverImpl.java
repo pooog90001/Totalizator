@@ -1,9 +1,9 @@
 package by.epam.totalizator.receiver.impl;
 
-import by.epam.totalizator.bean.CompetitionTypeEntity;
 import by.epam.totalizator.content.RequestContent;
 import by.epam.totalizator.dao.TransactionManager;
 import by.epam.totalizator.dao.impl.CompetitionTypeDAOImpl;
+import by.epam.totalizator.entity.CompetitionTypeEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.exception.ReceiverException;
 import by.epam.totalizator.receiver.CompetitonTypeReceiver;

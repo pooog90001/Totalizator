@@ -67,7 +67,7 @@ class ConnectionPoolConfig {
      * @return pool capacity
      */
     int getPoolCapacity() {
-        return Integer.valueOf(properties.getProperty(GeneralConstant.ConnectionPool.CAPACITY)); //question about this one
+        return Integer.valueOf(properties.getProperty(GeneralConstant.ConnectionPool.CAPACITY));
     }
 
 }

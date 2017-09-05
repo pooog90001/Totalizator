@@ -1,15 +1,15 @@
 package by.epam.totalizator.receiver.impl;
 
-import by.epam.totalizator.bean.BetEntity;
-import by.epam.totalizator.bean.CompetitionEntity;
-import by.epam.totalizator.bean.CompetitorEntity;
-import by.epam.totalizator.bean.UserEntity;
 import by.epam.totalizator.content.RequestContent;
 import by.epam.totalizator.dao.TransactionManager;
 import by.epam.totalizator.dao.impl.BetDAOImpl;
 import by.epam.totalizator.dao.impl.CompetitionDAOImpl;
 import by.epam.totalizator.dao.impl.CompetitorDAOImpl;
 import by.epam.totalizator.dao.impl.UserDAOImpl;
+import by.epam.totalizator.entity.BetEntity;
+import by.epam.totalizator.entity.CompetitionEntity;
+import by.epam.totalizator.entity.CompetitorEntity;
+import by.epam.totalizator.entity.UserEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.exception.ReceiverException;
 import by.epam.totalizator.receiver.BetReceiver;

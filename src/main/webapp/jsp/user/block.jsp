@@ -1,9 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt" %>
-<%@ page isErrorPage="true" contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
-<jsp:include page="/jsp/partial/header.jsp"/>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
+<%@include file="/jsp/partial/header.jsp" %>
 
-<fmt:setLocale value="${sessionScope.get('locale')}" scope="session"/>
+
 <fmt:setBundle basename="locale/text" var="rb"/>
 <fmt:message bundle="${rb}" key="txt.back.on.main.page" var="txtBackOnMainPage"/>
 <fmt:message bundle="${rb}" key="txt.account.blocked" var="txtAccountBlocked"/>
@@ -18,9 +16,7 @@
         <h1>${txtAccountBlocked} :( </h1>
         <div class="w3-container w3-card-2">
             <h3 class="w3-container w3-center">
-                <p>
                     <span>${txtBlockingReason}: <c:out value="${text}"/> </span>
-                </p>
             </h3>
 
             <div class="w3-container w3-center">

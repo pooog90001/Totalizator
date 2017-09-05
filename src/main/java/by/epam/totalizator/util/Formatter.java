@@ -1,6 +1,6 @@
 package by.epam.totalizator.util;
 
-import by.epam.totalizator.bean.NewsEntity;
+import by.epam.totalizator.entity.NewsEntity;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.RasterFormatException;

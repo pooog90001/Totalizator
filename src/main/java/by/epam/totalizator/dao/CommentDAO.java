@@ -1,6 +1,6 @@
 package by.epam.totalizator.dao;
 
-import by.epam.totalizator.bean.CommentEntity;
+import by.epam.totalizator.entity.CommentEntity;
 import by.epam.totalizator.exception.DAOException;
 
 public abstract class CommentDAO extends DAO<CommentEntity> {

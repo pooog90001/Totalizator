@@ -1,6 +1,6 @@
 package by.epam.totalizator.dao;
 
-import by.epam.totalizator.bean.NewsEntity;
+import by.epam.totalizator.entity.NewsEntity;
 import by.epam.totalizator.exception.DAOException;
 
 import java.util.List;

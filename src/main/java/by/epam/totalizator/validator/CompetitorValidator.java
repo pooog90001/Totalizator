@@ -1,6 +1,6 @@
 package by.epam.totalizator.validator;
 
-import by.epam.totalizator.bean.CompetitorEntity;
+import by.epam.totalizator.entity.CompetitorEntity;
 
 public interface CompetitorValidator extends Validator {
     /**

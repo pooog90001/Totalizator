@@ -1,4 +1,4 @@
-package by.epam.totalizator.bean;
+package by.epam.totalizator.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

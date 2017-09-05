@@ -7,11 +7,13 @@ header p {
 	margin: 0;
 }
 
+
 .footer {
-    position: absolute;
-    height: 80px;
+    position: relative;
+    bottom: -200px;
     width: 100%;
 }
+
 body .main-container {
 	max-width:1400px;
 	margin-top: 30px;

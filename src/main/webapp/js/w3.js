@@ -63,7 +63,7 @@ function changeLanguage(element) {
     });
 }
 
-document.onload = function () {
+/*document.onload = function () {
 
     var windowHeight = window.innerHeight(true);
 
@@ -72,9 +72,35 @@ document.onload = function () {
         $("footer").css('marginTop', marginTop + "px");
     }
 
-};
+ };*/
 
-$(document).ready(function () {
+/*$(document).ready(function () {
     var bodyHeight = $("body").height();
-    $("footer").css('top', bodyHeight - 80);
-});
+ $("footer").css('top', bodyHeight);
+
+
+ document.getElementsByTagName("body").onresize = function(event) {
+ var bodyHeight = $("body").height();
+ $("footer").css('top', bodyHeight);
+ };
+
+ var body = document.getElementsByTagName("body");
+
+ [].forEach.call(body, function(el){
+ el.addEventListener('onresize', function (e) {
+ var bodyHeight = $("body").height();
+ $("footer").css('top', bodyHeight);
+ })
+ });
+
+ });
+
+ $("body").resize(function() {
+ var bodyHeight = $("body").height();
+ $("footer").css('top', bodyHeight);
+ });
+
+ document.getElementsByTagName("body").onresize = function(event) {
+ var bodyHeight = $("body").height();
+ $("footer").css('top', bodyHeight);
+ };*/

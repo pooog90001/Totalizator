@@ -1,4 +1,4 @@
-package by.epam.totalizator.bean;
+package by.epam.totalizator.entity;
 
 import by.epam.totalizator.type.UserType;
 

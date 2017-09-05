@@ -1,7 +1,7 @@
 package by.epam.totalizator.filter;
 
-import by.epam.totalizator.bean.UserEntity;
 import by.epam.totalizator.constant.GeneralConstant;
+import by.epam.totalizator.entity.UserEntity;
 import by.epam.totalizator.type.PageType;
 
 import javax.servlet.*;

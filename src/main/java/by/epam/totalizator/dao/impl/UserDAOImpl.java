@@ -1,10 +1,10 @@
 package by.epam.totalizator.dao.impl;
 
-import by.epam.totalizator.bean.UserEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
 import by.epam.totalizator.dao.UserDAO;
+import by.epam.totalizator.entity.UserEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.type.UserType;
 

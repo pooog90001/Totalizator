@@ -89,7 +89,6 @@ $('#createNews').click(function (e) {
 
             } else {
                 document.getElementById("success").style.display = 'inherit';
-
             }
         },
         error: function (jqXHR, textStatus, errorThrown) {

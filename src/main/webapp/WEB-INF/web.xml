@@ -7,16 +7,7 @@
     <context-param>
         <param-name>isLog4jAutoInitializationDisabled</param-name>
         <param-value>true</param-value>
-    </context-param><!--
-    <context-param>
-        <param-name>log4jContextName</param-name>
-        <param-value>Totalizator</param-value>
     </context-param>
-    <context-param>
-        <param-name>log4jConfiguration</param-name>
-        <param-value>config/log4j2.xml</param-value>
-    </context-param>-->
-
     <jsp-config>
         <taglib>
             <taglib-uri>customtags</taglib-uri>
@@ -35,40 +26,4 @@
         <location>/jsp/error/runtime.jsp</location>
     </error-page>
 
-    <!--<filter>
-        <filter-name>sessionFilter</filter-name>
-        <filter-class>by.epam.litvin.filter.SessionFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>sessionFilter</filter-name>
-        <url-pattern>/generalController</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>encodingFilter</filter-name>
-        <filter-class>by.epam.litvin.filter.EncodingFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>encodingFilter</filter-name>
-        <url-pattern>/generalController</url-pattern>
-        <url-pattern>/ajaxController</url-pattern>
-        <url-pattern>/uploadController</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>accessFilter</filter-name>
-        <filter-class>by.epam.litvin.filter.AccessFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>accessFilter</filter-name>
-        <url-pattern>/jsp/admin_panel/*</url-pattern>
-    </filter-mapping>
-    <filter>
-        <filter-name>temporaryDataFilter</filter-name>
-        <filter-class>by.epam.litvin.filter.TemporaryDataFilter</filter-class>
-    </filter>
-    <filter-mapping>
-        <filter-name>temporaryDataFilter</filter-name>
-        <url-pattern>/generalController</url-pattern>
-        <url-pattern>/ajaxController</url-pattern>
-        <url-pattern>/uploadController</url-pattern>
-    </filter-mapping>-->
 </web-app>

@@ -1,10 +1,10 @@
 package by.epam.totalizator.dao.impl;
 
-import by.epam.totalizator.bean.BetEntity;
-import by.epam.totalizator.bean.CompetitionEntity;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
 import by.epam.totalizator.dao.BetDAO;
+import by.epam.totalizator.entity.BetEntity;
+import by.epam.totalizator.entity.CompetitionEntity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.type.ExpectResultType;
 

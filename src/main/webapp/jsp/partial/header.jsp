@@ -21,6 +21,7 @@
 <fmt:message bundle="${rb}" key="lbl.Rules" var="rules"/>
 <fmt:message bundle="${rb}" key="lbl.Upcoming" var="upcoming"/>
 <fmt:message bundle="${rb}" key="lbl.Past" var="past"/>
+<fmt:message bundle="${rb}" key="txt.admin.panel" var="txtAdminPanel"/>
 
 
 <html>
@@ -75,17 +76,17 @@
                         <div class="w3-dropdown-content w3-bar-block w3-border">
                             <form action="${pageContext.request.contextPath}/generalController">
                                 <input type="hidden" name="command" value="OPEN_PROFILE">
-                                <input type="submit" class="w3-bar-item w3-button" value="Profile"/>
+                                <input type="submit" class="w3-bar-item w3-button" value="${profile}"/>
                             </form>
                             <c:if test="${user.type.toString().equals('ADMIN') || user.type.toString().equals('BOOKMAKER')}">
                                 <form action="${pageContext.request.contextPath}/generalController" method="post">
                                     <input type="hidden" name="command" value="OPEN_ADMIN_STATISTIC">
-                                    <input type="submit" class="w3-bar-item w3-button" value="Admin panel"/>
+                                    <input type="submit" class="w3-bar-item w3-button" value="${txtAdminPanel}"/>
                                 </form>
                             </c:if>
                             <form action="${pageContext.request.contextPath}/generalController">
                                 <input type="hidden" name="command" value="SIGN_OUT">
-                                <input type="submit" class="w3-bar-item w3-button" value="Sign out"/>
+                                <input type="submit" class="w3-bar-item w3-button" value="${signOut}"/>
                             </form>
                         </div>
                     </div>

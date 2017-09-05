@@ -1,10 +1,10 @@
 package by.epam.totalizator.dao.impl;
 
-import by.epam.totalizator.bean.CompetitionTypeEntity;
 import by.epam.totalizator.constant.GeneralConstant;
 import by.epam.totalizator.constant.SQLFieldConstant;
 import by.epam.totalizator.constant.SQLRequestConstant;
 import by.epam.totalizator.dao.CompetitionTypeDAO;
+import by.epam.totalizator.entity.CompetitionTypeEntity;
 import by.epam.totalizator.exception.DAOException;
 
 import java.sql.PreparedStatement;

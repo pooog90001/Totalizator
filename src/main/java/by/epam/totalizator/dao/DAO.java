@@ -1,6 +1,6 @@
 package by.epam.totalizator.dao;
 
-import by.epam.totalizator.bean.Entity;
+import by.epam.totalizator.entity.Entity;
 import by.epam.totalizator.exception.DAOException;
 import by.epam.totalizator.pool.ProxyConnection;
 import org.apache.logging.log4j.LogManager;

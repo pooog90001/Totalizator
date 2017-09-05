@@ -1,21 +1,21 @@
-package by.epam.totalizator.bean;
+package by.epam.totalizator.entity;
 
-public class TeamEntity extends Entity {
+
+public class KindOfSportEntity extends Entity {
 
     private int id;
     private String name;
-    private int kindOfSportId;
+    private int competitorCount;
 
     /**
      * Default constructor.
      */
-    public TeamEntity() {
-    }
+    public KindOfSportEntity() {}
 
     /**
      * Get ID.
      *
-     * @return team id
+     * @return kind of sport id
      */
     public int getId() {
         return id;
@@ -24,7 +24,7 @@ public class TeamEntity extends Entity {
     /**
      * Set ID.
      *
-     * @param id team id
+     * @param id kind of sport id
      */
     public void setId(int id) {
         this.id = id;
@@ -33,7 +33,7 @@ public class TeamEntity extends Entity {
     /**
      * Get name.
      *
-     * @return team name
+     * @return kind of sport name
      */
     public String getName() {
         return name;
@@ -42,28 +42,28 @@ public class TeamEntity extends Entity {
     /**
      * Set name.
      *
-     * @param name team name
+     * @param name kind of sport name
      */
     public void setName(String name) {
         this.name = name;
     }
 
     /**
-     * Get kind of sport ID.
+     * Get competitor count.
      *
-     * @return kind of sport id
+     * @return competitor count
      */
-    public int getKindOfSportId() {
-        return kindOfSportId;
+    public int getCompetitorCount() {
+        return competitorCount;
     }
 
     /**
-     * Set kind of sport ID.
+     * Set competition count.
      *
-     * @param kindOfSportId kind of sport id
+     * @param competitorCount competitor count
      */
-    public void setKindOfSportId(int kindOfSportId  ) {
-        this.kindOfSportId = kindOfSportId;
+    public void setCompetitorCount(int competitorCount) {
+        this.competitorCount = competitorCount;
     }
 
     @Override
@@ -71,16 +71,16 @@ public class TeamEntity extends Entity {
         if (this == o) {
             return true;
         }
-        if (!(o instanceof TeamEntity)) {
+        if (!(o instanceof KindOfSportEntity)) {
             return false;
         }
 
-        TeamEntity that = (TeamEntity) o;
+        KindOfSportEntity that = (KindOfSportEntity) o;
 
         if (id != that.id) {
             return false;
         }
-        if (kindOfSportId != that.kindOfSportId) {
+        if (competitorCount != that.competitorCount) {
             return false;
         }
         return name != null ? name.equals(that.name) : that.name == null;
@@ -90,7 +90,7 @@ public class TeamEntity extends Entity {
     public int hashCode() {
         int result = id;
         result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + kindOfSportId;
+        result = 31 * result + competitorCount;
         return result;
     }
 }

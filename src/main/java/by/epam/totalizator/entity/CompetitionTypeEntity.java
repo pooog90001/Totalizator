@@ -1,4 +1,4 @@
-package by.epam.totalizator.bean;
+package by.epam.totalizator.entity;
 
 
 public class CompetitionTypeEntity extends Entity {

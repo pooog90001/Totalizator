@@ -563,8 +563,9 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         String[] stringGameId = content.getRequestParameters().get(COMPETITION_ID);
         UserValidatorImpl userValidator = new UserValidatorImpl();
 
-        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringGameId) ||
-                commonValidator.isInteger(stringGameId[0])) {
+        if (!userValidator.isBookmaker(user) ||
+                !commonValidator.isVarExist(stringGameId) ||
+                !commonValidator.isInteger(stringGameId[0])) {
             content.setAjaxSuccess(false);
             return;
         }
@@ -623,8 +624,9 @@ public class CompetitionReceiverImpl implements CompetitionReceiver {
         UserValidatorImpl userValidator = new UserValidatorImpl();
 
 
-        if (!userValidator.isBookmaker(user) || !commonValidator.isVarExist(stringGameId) ||
-                commonValidator.isInteger(stringGameId[0])) {
+        if (!userValidator.isBookmaker(user) ||
+                !commonValidator.isVarExist(stringGameId) ||
+                !commonValidator.isInteger(stringGameId[0])) {
             content.setAjaxSuccess(false);
             return;
         }

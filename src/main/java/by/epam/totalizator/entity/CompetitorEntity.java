@@ -9,7 +9,7 @@ public class CompetitorEntity extends Entity {
     private int teamId;
     private int competitionId;
     private BigDecimal winCoeff;
-    private Boolean isWin;
+    private boolean isWin;
     private int result;
 
     /**
@@ -102,7 +102,7 @@ public class CompetitorEntity extends Entity {
      *
      * @return competitor win state
      */
-    public Boolean getWin() {
+    public boolean getWin() {
         return isWin;
     }
 
@@ -111,7 +111,7 @@ public class CompetitorEntity extends Entity {
      *
      * @param win competitor win state
      */
-    public void setWin(Boolean win) {
+    public void setWin(boolean win) {
         isWin = win;
     }
 
@@ -135,31 +135,17 @@ public class CompetitorEntity extends Entity {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (!(o instanceof CompetitorEntity)) {
-            return false;
-        }
+        if (this == o) return true;
+        if (!(o instanceof CompetitorEntity)) return false;
 
         CompetitorEntity that = (CompetitorEntity) o;
 
-        if (id != that.id) {
-            return false;
-        }
-        if (teamId != that.teamId) {
-            return false;
-        }
-        if (competitionId != that.competitionId) {
-            return false;
-        }
-        if (result != that.result) {
-            return false;
-        }
-        if (winCoeff != null ? !winCoeff.equals(that.winCoeff) : that.winCoeff != null) {
-            return false;
-        }
-        return isWin != null ? isWin.equals(that.isWin) : that.isWin == null;
+        if (id != that.id) return false;
+        if (teamId != that.teamId) return false;
+        if (competitionId != that.competitionId) return false;
+        if (isWin != that.isWin) return false;
+        if (result != that.result) return false;
+        return winCoeff != null ? winCoeff.equals(that.winCoeff) : that.winCoeff == null;
     }
 
     @Override
@@ -168,7 +154,7 @@ public class CompetitorEntity extends Entity {
         result1 = 31 * result1 + teamId;
         result1 = 31 * result1 + competitionId;
         result1 = 31 * result1 + (winCoeff != null ? winCoeff.hashCode() : 0);
-        result1 = 31 * result1 + (isWin != null ? isWin.hashCode() : 0);
+        result1 = 31 * result1 + (isWin ? 1 : 0);
         result1 = 31 * result1 + result;
         return result1;
     }
